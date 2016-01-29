@@ -1,0 +1,1 @@
+<?phpnamespace MCBundle\Controller;use Symfony\Bundle\FrameworkBundle\Controller\Controller;class MatiesChillController extends Controller{    public function indexAction()    {        return $this->render('MCBundle:Pages:index.html.twig');    }}

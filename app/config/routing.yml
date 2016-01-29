@@ -1,0 +1,3 @@
+mc:
+    resource: "@MCBundle/Resources/config/routing.yml"
+    prefix:   /
