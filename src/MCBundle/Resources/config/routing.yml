@@ -7,6 +7,8 @@ mc_sessions:
 mc_films:
     path:     /films
     defaults: { _controller: MCBundle:MatiesChill:film }
-mc_profil:
-    path:     /profil
-    defaults: { _controller: MCBundle:MatiesChill:profil }
+mc_search_film:
+    path:     /search/{keyword}
+    defaults: { _controller: MCBundle:MatiesChill:searchFilm }
+#    requirements:
+#        _method: GET 

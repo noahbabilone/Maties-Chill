@@ -5,7 +5,39 @@
 {% endblock %}
 
 {% block body_mc %}
-<div class="row">
-    
-</div>
+    <div class="row">
+        <div class="col-sm-12">
+            <h3>Films Rechercher: {{ motsCles }}</h3>
+        </div>
+        <div class="col-sm-12">
+            <div class="row">
+                {% if movie is defined %}
+
+                    {% for index, film in movie %}
+                        <div class="col-sm-4">
+                            <div class="">
+                                <div class="caption clearfix">
+                                    <img src="{{ film.posterURL }}" width="120" height="174" class="thumbnail pull-left margin-right"
+                                         alt="{{ film.title }}" >
+                                    <ul class="list-unstyled " >
+                                        <li><b>Titre: </b>{{ film.title }}</li>
+                                        <li><b>Date de sortie: </b>{{ film.release.releaseDate }}</li>
+                                        {#<li><b>Directeur Casting:</b> {{ film.castingShort.directors }}</li>#}
+                                        <li><b>Acteurs: </b>{{ film.castingShort.actors }}</li>
+                                        <li><b>Note presse: </b>{{ film.statistics.pressRating }}</li>
+                                        <li><b>Note spetacteur: </b>{{ film.statistics.userRating }}</li>
+                                    </ul>
+
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="col-md-3 hero-feature">
+                            Pas de résultat pour le film {{ motsCles }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
 {% endblock %}
