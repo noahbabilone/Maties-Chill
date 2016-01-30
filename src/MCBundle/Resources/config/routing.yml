@@ -1,3 +1,12 @@
 mc_homepage:
     path:     /
     defaults: { _controller: MCBundle:MatiesChill:index }
+mc_sessions:
+    path:     /sessions
+    defaults: { _controller: MCBundle:MatiesChill:session }
+mc_films:
+    path:     /films
+    defaults: { _controller: MCBundle:MatiesChill:film }
+mc_profil:
+    path:     /profil
+    defaults: { _controller: MCBundle:MatiesChill:profil }

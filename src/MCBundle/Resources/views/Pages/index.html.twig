@@ -1,1 +1,19 @@
-Hello World!
+{% extends "MCBundle::layout.html.twig" %}
+
+{% block title %}
+    Accueil - {{ parent() }}
+{% endblock %}
+
+{% block body_mc %}
+
+    <div class="text-center">
+        <h1 class="text-info">Partager vos séance de ciné !</h1>
+
+        <p class="lead">
+            Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus
+            commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet.</p>
+
+        <p><a class="btn btn-lg btn-success" href="#" role="button">Get started today</a></p>
+    </div>
+
+{% endblock %}

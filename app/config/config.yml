@@ -38,7 +38,14 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
-
+assetic:
+    debug:          '%kernel.debug%'
+    use_controller: '%kernel.debug%'
+    use_controller: false
+    bundles:        [ 'MCBundle']
+    filters:
+        cssrewrite: ~
+        
 # Doctrine Configuration
 doctrine:
     dbal:
