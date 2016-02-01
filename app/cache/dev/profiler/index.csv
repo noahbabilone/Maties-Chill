@@ -1,0 +1,7 @@
+603836,::1,GET,http://localhost:8888/Maties-chill/web/app_dev.php/,1454361132,,200
+84f107,::1,GET,http://localhost:8888/Maties-chill/web/app_dev.php/images/ico/favicon.ico,1454361135,d9495a,200
+d9495a,::1,GET,http://localhost:8888/Maties-chill/web/app_dev.php/images/ico/favicon.ico,1454361135,,404
+afb39e,::1,GET,http://localhost:8888/Maties-chill/web/app_dev.php/films,1454361139,,200
+5bf931,::1,GET,http://localhost:8888/Maties-chill/web/app_dev.php/search/the,1454361172,,200
+a8da40,::1,GET,http://localhost:8888/Maties-chill/web/app_dev.php/search/images/ico/favicon.ico,1454361175,708bfa,200
+708bfa,::1,GET,http://localhost:8888/Maties-chill/web/app_dev.php/search/images/ico/favicon.ico,1454361175,,404

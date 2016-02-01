@@ -4,7 +4,7 @@
     text-align: center;
     color: rgba(255, 255, 255, .8);
     background-color: #3b7fb8;        /*b84d45*/
-    background-image: url("../img/bg.png");
+    background-image: url("../images/bg.png");
     margin-bottom: 20px;
     margin-top: -20px;
     font-size: 20px
@@ -26,7 +26,7 @@
 
 @media (min-width: 768px) {
     .sb-page-header {
-        padding-top: 60px;
+        padding-top: 10px;
         padding-bottom: 60px;
         text-align: left;
         font-size: 24px
@@ -42,4 +42,8 @@
     .sb-page-header h1, .sb-page-header p {
         margin-right: 380px
     }
+}
+
+.margin-right{
+margin-right:10px;
 }
