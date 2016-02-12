@@ -52,12 +52,15 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
 
-                <form class="navbar-form navbar-left" role="search">
-                    <div class="form-group">
-                        <input type="text" class="form-control" name="search" placeholder="Rechercher">
-                    </div>
-                    <button class="btn btn-default btn-sm" id="btn-search">ok</button>
-                </form>
+                {#<form class="navbar-form navbar-left" role="search">#}
+                    {#<div class="form-group">#}
+                        {#<input type="text" class="form-control" name="search" placeholder="Rechercher">#}
+                    {#</div>#}
+                    {#<button class="btn btn-default btn-sm" id="btn-search">ok</button>#}
+                {#</form>#}
+
+                {{ render(controller("MCBundle:MatiesChill:searchField")) }}
+
                 <li><a href="#" title="Connexion"> Connexion</a></li>
                 <li><a href="#" title="Se connecter à mon compte">Inscription</a></li>
                 <li class="dropdown">
@@ -101,7 +104,7 @@
     <script type="text/javascript">
         document.querySelector("#btn-search").addEventListener('click', function (e) {
             var keyword = $.trim($('[name="search"]').val());
-            alert (keyword);
+            alert(keyword);
             var url = '{{ path("mc_search_film",{"keyword":'+keyword+' }) }}';
             alert(url);
             //    window.location.href ="http://localhost:8888/matrix/web/app_dev.php/ads/view/162"

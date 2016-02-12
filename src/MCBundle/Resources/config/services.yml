@@ -9,11 +9,11 @@ services:
     
     mc_allo_helper:
         class: MCBundle\Service\AlloHelper
-#        arguments: [%allo_throw_exceptions%,%allocine_secret_key%,%allo_utf8_decode%,%allo_auto_correct_apostrophes%,%allo_partner%,%allo_default_url_api%,%allo_default_url_images%]
-#          - %allo_throw_exceptions%
-#          - %allocine_secret_key%
-#          - %allo_utf8_decode%
-#          - %allo_auto_correct_apostrophes%
-#          - %allo_partner%
-#          - %allo_default_url_api%
-#          - %allo_default_url_images%
+        arguments: 
+          - %allo_throw_exceptions%
+          - %allocine_secret_key%
+          - %allo_utf8_decode%
+          - %allo_auto_correct_apostrophes%
+          - %allo_partner%
+          - %allo_default_url_api%
+          - %allo_default_url_images%

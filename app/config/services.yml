@@ -3,7 +3,23 @@
 parameters:
 #    parameter_name: value
 
+
 services:
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+    mc_allo_data:
+        class: MCBundle\Service\AlloData        
+    mc_allo_image:
+        class: MCBundle\Service\AlloImage
+    
+    mc_allo_helper:
+        class: MCBundle\Service\AlloHelper
+        arguments: 
+          - %allo_throw_exceptions%
+          - %allocine_secret_key%
+          - %allo_utf8_decode%
+          - %allo_auto_correct_apostrophes%
+          - %allo_partner%
+          - %allo_default_url_api%
+          - %allo_default_url_images%

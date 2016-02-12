@@ -1,0 +1,92 @@
+.sb-page-header {
+    position: relative;
+    padding: 30px 15px;
+    text-align: center;
+    color: rgba(255, 255, 255, .8);
+    background-color: #3b7fb8;        /*b84d45*/
+    background-image: url("../../bundles/mc/images/bg.png");
+    margin-bottom: 20px;
+    margin-top: -20px;
+    font-size: 20px
+}
+
+.sb-page-header h1 {
+    margin-top: 0;
+    color: #fff
+}
+
+.sb-page-header p {
+    margin-bottom: 0;
+    line-height: 1.4
+}
+
+.sb-page-header .container {
+    position: relative;
+}
+
+@media (min-width: 768px) {
+    .sb-page-header {
+        padding-top: 10px;
+        padding-bottom: 60px;
+        text-align: left;
+        font-size: 24px
+    }
+
+    .sb-page-header h1 {
+        font-size: 60px;
+        line-height: 1
+    }
+}
+
+@media (min-width: 992px) {
+    .sb-page-header h1, .sb-page-header p {
+        margin-right: 380px
+    }
+}
+
+.margin-right{
+margin-right:10px;
+}
+
+
+/*Search*/
+
+#custom-search-input {
+    margin: 0;
+    margin-top: 0px;
+    padding: 0;
+}
+
+#custom-search-input .search-query {
+    padding-right: 3px;
+    padding-right: 4px \9;
+    padding-left: 3px;
+    padding-left: 4px \9;
+    /* IE7-8 doesn't have border-radius, so don't indent the padding */
+
+    margin-bottom: 0;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+#custom-search-input button {
+    border: 0;
+    background: none;
+    /** belows styles are working good */
+    padding: 2px 5px;
+    margin-top: 2px;
+    position: relative;
+    left: -28px;
+    /* IE7-8 doesn't have border-radius, so don't indent the padding */
+    margin-bottom: 0;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    color: #23a7e0;
+}
+
+.search-query:focus + button {
+    z-index: 1;
+}
+

@@ -180,8 +180,8 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
         }
 
         // mc_search_film
-        if (0 === strpos($pathinfo, '/search') && preg_match('#^/search/(?P<keyword>[^/]++)$#s', $pathinfo, $matches)) {
-            return $this->mergeDefaults(array_replace($matches, array('_route' => 'mc_search_film')), array (  '_controller' => 'MCBundle\\Controller\\MatiesChillController::searchFilmAction',));
+        if ($pathinfo === '/search') {
+            return array (  '_controller' => 'MCBundle\\Controller\\MatiesChillController::searchFilmAction',  '_route' => 'mc_search_film',);
         }
 
         throw 0 < count($allow) ? new MethodNotAllowedException(array_unique($allow)) : new ResourceNotFoundException();

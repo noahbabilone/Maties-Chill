@@ -47,7 +47,7 @@ class appDevUrlGenerator extends Symfony\Component\Routing\Generator\UrlGenerato
         'mc_homepage' => array (  0 =>   array (  ),  1 =>   array (    '_controller' => 'MCBundle\\Controller\\MatiesChillController::indexAction',  ),  2 =>   array (  ),  3 =>   array (    0 =>     array (      0 => 'text',      1 => '/',    ),  ),  4 =>   array (  ),  5 =>   array (  ),),
         'mc_sessions' => array (  0 =>   array (  ),  1 =>   array (    '_controller' => 'MCBundle\\Controller\\MatiesChillController::sessionAction',  ),  2 =>   array (  ),  3 =>   array (    0 =>     array (      0 => 'text',      1 => '/sessions',    ),  ),  4 =>   array (  ),  5 =>   array (  ),),
         'mc_films' => array (  0 =>   array (  ),  1 =>   array (    '_controller' => 'MCBundle\\Controller\\MatiesChillController::filmAction',  ),  2 =>   array (  ),  3 =>   array (    0 =>     array (      0 => 'text',      1 => '/films',    ),  ),  4 =>   array (  ),  5 =>   array (  ),),
-        'mc_search_film' => array (  0 =>   array (    0 => 'keyword',  ),  1 =>   array (    '_controller' => 'MCBundle\\Controller\\MatiesChillController::searchFilmAction',  ),  2 =>   array (  ),  3 =>   array (    0 =>     array (      0 => 'variable',      1 => '/',      2 => '[^/]++',      3 => 'keyword',    ),    1 =>     array (      0 => 'text',      1 => '/search',    ),  ),  4 =>   array (  ),  5 =>   array (  ),),
+        'mc_search_film' => array (  0 =>   array (  ),  1 =>   array (    '_controller' => 'MCBundle\\Controller\\MatiesChillController::searchFilmAction',  ),  2 =>   array (  ),  3 =>   array (    0 =>     array (      0 => 'text',      1 => '/search',    ),  ),  4 =>   array (  ),  5 =>   array (  ),),
     );
         }
     }
