@@ -115,3 +115,17 @@ ae64f7,127.0.0.1,POST,http://127.0.0.1:8000/search,1455211041,,200
 9c36d8,127.0.0.1,GET,http://127.0.0.1:8000/,1455211292,,200
 b25553,127.0.0.1,GET,http://127.0.0.1:8000/_fragment?_path=_format%3Dhtml%26_locale%3Den%26_controller%3DMCBundle%253AMatiesChill%253AsearchField,1455211301,d2f84e,200
 d2f84e,127.0.0.1,POST,http://127.0.0.1:8000/search,1455211301,,200
+5cf45f,127.0.0.1,GET,http://127.0.0.1:8000/_fragment?_path=_format%3Dhtml%26_locale%3Den%26_controller%3DMCBundle%253AMatiesChill%253AsearchField,1455540785,d08fec,200
+d08fec,127.0.0.1,GET,http://127.0.0.1:8000/,1455540785,,200
+1f3ef1,127.0.0.1,GET,http://127.0.0.1:8000/_fragment?_path=_format%3Dhtml%26_locale%3Den%26_controller%3DMCBundle%253AMatiesChill%253AsearchField,1455540788,15202d,200
+15202d,127.0.0.1,GET,http://127.0.0.1:8000/sessions,1455540788,,200
+339fbd,127.0.0.1,GET,http://127.0.0.1:8000/_fragment?_path=_format%3Dhtml%26_locale%3Den%26_controller%3DMCBundle%253AMatiesChill%253AsearchField,1455540790,c06cde,200
+c06cde,127.0.0.1,GET,http://127.0.0.1:8000/films,1455540790,,200
+41ddce,127.0.0.1,GET,http://127.0.0.1:8000/_fragment?_path=_format%3Dhtml%26_locale%3Den%26_controller%3DMCBundle%253AMatiesChill%253AsearchField,1455540792,1cfb85,200
+1cfb85,127.0.0.1,GET,http://127.0.0.1:8000/,1455540792,,200
+7b85b0,127.0.0.1,GET,http://127.0.0.1:8000/_fragment?_path=_format%3Dhtml%26_locale%3Den%26_controller%3DMCBundle%253AMatiesChill%253AsearchField,1455540796,6fa3a9,200
+6fa3a9,127.0.0.1,GET,http://127.0.0.1:8000/,1455540796,,200
+fc1297,127.0.0.1,GET,http://127.0.0.1:8000/css/bootstrap.min.css.map,1455540815,6b6598,200
+6b6598,127.0.0.1,GET,http://127.0.0.1:8000/css/bootstrap.min.css.map,1455540815,,404
+be9286,127.0.0.1,GET,http://127.0.0.1:8000/css/bootstrap-theme.min.css.map,1455540816,f7baaf,200
+f7baaf,127.0.0.1,GET,http://127.0.0.1:8000/css/bootstrap-theme.min.css.map,1455540816,,404
