@@ -1,5 +1,0 @@
-_assetic:
-    resource: .
-    type: assetic
-_app:
-    resource: /Users/yannicksa/Sites/Projets-Groupe/Maties-chill/app/config/routing_dev.yml
