@@ -7,25 +7,29 @@
 {% block body_mc %}
     <div class="row">
         <div class="col-sm-12">
-            <h3>Rechercher: {{ motsCles }}</h3>
+            <h3>Nos Films</h3>
         </div>
         <div class="col-sm-12">
             <div class="row">
-                {% if movie is defined %}
+                {% if films is defined %}
 
-                    {% for index, film in movie %}
+                    {% for film in films %}
                         <div class="col-sm-4">
                             <div class="">
                                 <div class="caption clearfix">
-                                    <img src="{{ film.posterURL }}" width="120" height="174" class="thumbnail pull-left margin-right"
-                                         alt="{{ film.title }}" >
-                                    <ul class="list-unstyled " >
+                                    <img src="{{ film.image }}" width="110" height="164"
+                                         class="thumbnail pull-left margin-right"
+                                         alt="{{ film.title }}">
+                                    <ul class="list-unstyled ">
                                         <li><b>Titre: </b>{{ film.title }}</li>
-                                        <li><b>Date de sortie: </b>{{ film.release.releaseDate }}</li>
+                                        <li><b>Date de sortie: </b>{{ film.releaseDate | date("d F Y") }}</li>
                                         {#<li><b>Directeur Casting:</b> {{ film.castingShort.directors }}</li>#}
-                                        <li><b>Acteurs: </b>{{ film.castingShort.actors }}</li>
-                                        <li><b>Note presse: </b>{{ film.statistics.pressRating }}</li>
-                                        <li><b>Note spetacteur: </b>{{ film.statistics.userRating }}</li>
+                                        <li><b>Producteur: </b>{{ film.directors }}</li>
+                                        <li><b>Acteurs: </b>{{ film.actors }}</li>
+                                        {#<li><b>Âge Requis: </b>{{ film.ageLimit }} ans</li>#}
+                                        <li><b>Durées: </b>{{ film.duree }} </li>
+                                        <li><b>Note presse: </b>{{ film.pressRating }}</li>
+                                        <li><b>Note spetacteur: </b>{{ film.userRating }}</li>
                                     </ul>
 
                                 </div>

@@ -15,13 +15,21 @@ mc_search_films:
     path:     /search/{film}
     defaults: { _controller: MCBundle:MatiesChill:films }
 
-mc_film_all_publish:
-    path:     /webservice
-    defaults: { _controller: MCBundle:Film:filmAll }
+mc_web_film_all:
+    path:     /ressources/films
+    defaults: { _controller: MCBundle:Film:allMovie }
 
-mc_film_all_publishs:
-    path:     /webservice/films
-    defaults: { _controller: MCBundle:Film:filmAll }
+mc_web_film_get:
+    path:     /ressources/film/get/{id}
+    defaults: { _controller: MCBundle:Film:getMovie }
+    
+mc_web_film_delete:
+    path:     /ressources/film/delete/{id}
+    defaults: { _controller: MCBundle:Film:removeMovie }
+
+mc_web_film_add:
+    path:     /ressources/film/add/{id}
+    defaults: { _controller: MCBundle:Film:addMovie }
     
 # app/config/routing.yml
 fos_user:

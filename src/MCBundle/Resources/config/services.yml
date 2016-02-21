@@ -1,3 +1,12 @@
+parameters:
+    allo_throw_exceptions: true
+    allocine_secret_key: "29d185d98c984a359e6e6f26a0474269"
+    allo_utf8_decode: true
+    allo_auto_correct_apostrophes: true
+    allo_partner: 100043982026
+    allo_default_url_api: api.allocine.fr
+    allo_default_url_images: images.allocine.fr
+    
 services:        
 #    mc.example:
 #        class: MCBundle\Example
@@ -9,7 +18,7 @@ services:
     
     mc_allo_helper:
         class: MCBundle\Service\AlloHelper
-#        arguments: 
+        arguments: [ '%allo_throw_exceptions%','%allocine_secret_key%','%allo_utf8_decode%']
 #          - %allo_throw_exceptions%
 #          - %allocine_secret_key%
 #          - %allo_utf8_decode%

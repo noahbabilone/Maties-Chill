@@ -255,9 +255,26 @@ class Film
      */
     public function getDuration()
     {
+        
         return $this->duration;
     }
 
+     /**
+     * Get String
+     *
+     * @return integer
+     */
+    public function getDuree()
+    {   
+        if($this->duration >60)
+        {
+            $heure =($this->duration / 60);
+            $minute =($this->duration % 60==0)?'00':$this->duration % 60;
+            return $heure. 'h'.$minute.'min';
+            
+        }
+        return $this->duration.'min';
+    }
     /**
      * Set ageLimit
      *
