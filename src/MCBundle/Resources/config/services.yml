@@ -18,7 +18,7 @@ services:
     
     mc_allo_helper:
         class: MCBundle\Service\AlloHelper
-        arguments: [ '%allo_throw_exceptions%','%allocine_secret_key%','%allo_utf8_decode%']
+#        arguments: [ '%allo_throw_exceptions%','%allocine_secret_key%','%allo_utf8_decode%']
 #          - %allo_throw_exceptions%
 #          - %allocine_secret_key%
 #          - %allo_utf8_decode%
