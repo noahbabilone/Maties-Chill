@@ -16,4 +16,6 @@
 !var/SymfonyRequirements.php
 /vendor/
 /web/bundles/
+/app/logs/prod.log
+app/logs/dev.log
 .idea
