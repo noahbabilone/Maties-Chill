@@ -87,10 +87,10 @@
 
                 {% else %}
                     <li><a href="{{ path('fos_user_security_login') }}" title="Connexion">
-                           <i class="glyphicon glyphicon-user"></i>  Connexion</a></li>
+                            <i class="glyphicon glyphicon-user"></i> Connexion</a></li>
                     <li><a href="{{ path('fos_user_registration_register') }}"
                            title="S'inscrire">
-                             <i class="glyphicon glyphicon-lock"></i> Inscription</a></li>
+                            <i class="glyphicon glyphicon-lock"></i> Inscription</a></li>
                 {% endif %}
 
 
@@ -122,9 +122,13 @@
 {% block javascripts %}
     {% javascripts
     'bundles/mc/js/jquery-1.12.0.min.js'
-    'bundles/mc/bootstrap/js/bootstrap.min.js' %}
+    'bundles/mc/bootstrap/js/bootstrap.min.js'
+    'bundles/mc/js/app.js'
+    'bundles/fosjsrouting/js/router.js' %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
+    <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+
 {% endblock %}
 </body>
 </html>

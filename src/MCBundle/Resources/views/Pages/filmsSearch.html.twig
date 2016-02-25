@@ -11,31 +11,68 @@
         </div>
         <div class="col-sm-12">
             <div class="row">
-                {% if movie is defined %}
-
-                    {% for index, film in movie %}
+                {% if movies is defined and movies%}
+                    {% set films= movies.feed %}
+                    {#{{ dump(movies) }}#}
+                    <div class="col-sm-12">
+                        Films trouvés: {{ films.totalResults }}
+                    </div>
+                    {% for  film in films.movie %}
                         <div class="col-sm-4">
-                            <div class="">
-                                <div class="caption clearfix">
-                                    <img src="{{ film.posterURL }}" width="120" height="174" class="thumbnail pull-left margin-right"
-                                         alt="{{ film.title }}" >
-                                    <ul class="list-unstyled " >
-                                        <li><b>Titre: </b>{{ film.title }}</li>
-                                        <li><b>Date de sortie: </b>{{ film.release.releaseDate }}</li>
-                                        {#<li><b>Directeur Casting:</b> {{ film.castingShort.directors }}</li>#}
-                                        <li><b>Acteurs: </b>{{ film.castingShort.actors }}</li>
-                                        <li><b>Note presse: </b>{{ film.statistics.pressRating }}</li>
-                                        <li><b>Note spetacteur: </b>{{ film.statistics.userRating }}</li>
-                                    </ul>
+                            <div class="caption clearfix">
+                                {% if film.poster.href is defined and film.poster.href %}
 
-                                </div>
+                                    <img src="{{ film.poster.href }}" width="120" height="174"
+                                         class="thumbnail pull-left margin-right"
+                                         alt="{{ film.originalTitle }}">
+                                {% else %}
+                                    <img src="../../../uploads/images/400x300.png"  width="120" height="174"
+                                         class="thumbnail pull-left margin-right"
+                                         alt="{{ film.originalTitle }}">
+                                {% endif %}
+
+                                <ul class="list-unstyled ">
+                                    {% if film.originalTitle is defined and film.originalTitle %}
+                                        <li><b>Titre: </b>
+                                            <a href="{{ path('mc_film_get_allocine',{'code': film.code}) }}">{{ film.originalTitle }}</a>
+                                        </li>
+                                    {% endif %}
+
+                                    {% if film.release.releaseDate  is defined and film.release.releaseDate %}
+                                        <li><b>Date de sortie: </b>{{ film.release.releaseDate | date("d F Y") }}</li>
+                                    {% endif %}
+                                    {% if film.castingShort.directors is defined and film.castingShort.directors %}
+                                        <li><b>Directeur Casting:</b> {{ film.castingShort.directors }}</li>
+                                    {% endif %}
+                                    {% if film.castingShort.actors is defined and film.castingShort.actors %}
+                                        <li><b>Acteurs: </b>{{ film.castingShort.actors }}</li>
+                                    {% endif %}
+                                    {% if film.statistics.pressRating is defined and film.statistics.pressRating %}
+                                        <li><b>Note presse: </b>{{ film.statistics.pressRating }}</li>
+                                    {% endif %}
+                                    {% if film.statistics.userRating is defined and film.statistics.userRating %}
+                                        <li><b>Note spetacteur: </b>{{ film.statistics.userRating }}</li>
+                                    {% endif %}
+                                    {% if film.link.href is defined and film.link.href %}
+                                        <li><a href="{{ film.link.href }}">Liens vers allocine</a></li>
+                                    {% endif %}
+                                </ul>
+
+
                             </div>
                         </div>
-                    {% else %}
-                        <div class="col-md-3 hero-feature">
-                            Pas de résultat pour le film {{ motsCles }}
-                        </div>
                     {% endfor %}
+
+
+
+                    {##}
+
+
+                {% else %}
+                    <div class="col-md-3 hero-feature">
+                        Pas de résultat pour le film {{ motsCles }}
+                    </div>
+
                 {% endif %}
             </div>
         </div>

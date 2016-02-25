@@ -17,11 +17,10 @@ class SearchFilmType extends AbstractType
         $builder
             ->add('title', 'text', array(
                     'label' => false,
-                    'required' => false,
+                    'required' => true,
                     'attr' => array(
                         'class' => 'form-control search-query pull-right',
                         'placeholder' => 'Rechercher',
-                        'empty_data' => null
                     )
                 )
             );

@@ -11,6 +11,10 @@ services:
 #    mc.example:
 #        class: MCBundle\Example
 #        arguments: [@service_id, "plain_value", %parameter%]
+    mc_allocine:
+        class: MCBundle\Service\Allocine  
+    
+    
     mc_allo_data:
         class: MCBundle\Service\AlloData        
     mc_allo_image:

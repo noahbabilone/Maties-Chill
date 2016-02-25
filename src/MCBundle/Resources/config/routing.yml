@@ -7,13 +7,18 @@ mc_sessions:
 mc_films:
     path:     /films
     defaults: { _controller: MCBundle:MatiesChill:film }
+    
 mc_search_film:
     path:     /search
-    defaults: { _controller: MCBundle:MatiesChill:searchFilm }
-    
-mc_search_films:
-    path:     /search/{film}
-    defaults: { _controller: MCBundle:MatiesChill:films }
+    defaults: { _controller: MCBundle:MatiesChill:searchField }
+  
+mc_film_search_allocine:
+    path:     /search/allocine/{keyword}
+    defaults: { _controller: MCBundle:MatiesChill:searchAllocineFilm }  
+  
+mc_film_get_allocine:
+    path:     /film/allocine/{code}
+    defaults: { _controller: MCBundle:MatiesChill:getFilmAllocine }
 #WebService
 mc_web_film_all:
     path:     /ressources/films

@@ -5,9 +5,12 @@ user:
 mc:
     resource: "@MCBundle/Resources/config/routing.yml"
     prefix:   /
-
+    
+#FOS User Bundle
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
     
- 
+ # app/config/routing.yml
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
     
