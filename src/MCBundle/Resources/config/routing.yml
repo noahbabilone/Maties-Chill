@@ -39,5 +39,5 @@ mc_web_film_add:
  #Rest Api
 api:
     type:  rest
+    prefix: /rest-api/
     resource: MCBundle\Controller\MCRestController
- 

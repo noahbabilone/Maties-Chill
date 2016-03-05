@@ -6,13 +6,16 @@ parameters:
     allo_partner: 100043982026
     allo_default_url_api: api.allocine.fr
     allo_default_url_images: images.allocine.fr
-    
+    partner_key: 100043982026
+    secret_key: 29d185d98c984a359e6e6f26a0474269
 services:        
 #    mc.example:
 #        class: MCBundle\Example
 #        arguments: [@service_id, "plain_value", %parameter%]
     mc_allocine:
         class: MCBundle\Service\Allocine  
+        arguments: [ '%allocine_partner_key%','%allocine_secret_key%']
+
     
     
     mc_allo_data:
