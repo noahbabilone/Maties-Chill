@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Session
  *
  * @ORM\Table(name="session")
- * @ORM\Entity(repositoryClass="MCBundle\Repository\SeanceRepository")
+ * @ORM\Entity(repositoryClass="MCBundle\Repository\SessionRepository")
  */
 class Session
 {
@@ -24,23 +24,27 @@ class Session
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date", type="datetime")
+     * @ORM\Column(name="date", type="datetime",nullable=true)
      */
     private $date;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="typeView", type="string", length=255)
+     * @ORM\Column(name="typeView", type="string", length=255,nullable=true)
      */
     private $typeView;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="description", type="string", length=255)
+     * @ORM\Column(name="description", type="string", length=255,nullable=true)
      */
     private $description;
+
+    /**
+     * @var string
+     * @ORM\Column(name="contribution", type="string", length=255,nullable=true)
+     */
+    private $contribution;
 
     /**
      * @var int
@@ -58,29 +62,39 @@ class Session
 
     /**
      * @ORM\ManyToOne(targetEntity="MCBundle\Entity\Address",  cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
      */
     private $address;
 
     /**
-     * @ORM\ManyToOne(targetEntity="MCBundle\Entity\Material",  cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="MCBundle\Entity\Material",  cascade={"persist"})
      */
     private $material;
 
     /**
-     * @ORM\ManyToOne(targetEntity="MCBundle\Entity\Modality",  cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="MCBundle\Entity\Modality",  cascade={"persist"})      
+     * @ORM\JoinColumn(nullable=false)
      */
     private $modality;
     /**
      * @ORM\ManyToOne(targetEntity="MCBundle\Entity\Film",  cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
      */
     private $film;
 
     /**
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User",  cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
      */
     private $user;
 
-
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->material = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
@@ -162,6 +176,29 @@ class Session
     }
 
     /**
+     * Set contribution
+     *
+     * @param string $contribution
+     * @return Session
+     */
+    public function setContribution($contribution)
+    {
+        $this->contribution = $contribution;
+
+        return $this;
+    }
+
+    /**
+     * Get contribution
+     *
+     * @return string 
+     */
+    public function getContribution()
+    {
+        return $this->contribution;
+    }
+
+    /**
      * Set price
      *
      * @param integer $price
@@ -213,7 +250,7 @@ class Session
      * @param \MCBundle\Entity\Address $address
      * @return Session
      */
-    public function setAddress(\MCBundle\Entity\Address $address = null)
+    public function setAddress(\MCBundle\Entity\Address $address)
     {
         $this->address = $address;
 
@@ -231,22 +268,32 @@ class Session
     }
 
     /**
-     * Set material
+     * Add material
      *
      * @param \MCBundle\Entity\Material $material
      * @return Session
      */
-    public function setMaterial(\MCBundle\Entity\Material $material = null)
+    public function addMaterial(\MCBundle\Entity\Material $material)
     {
-        $this->material = $material;
+        $this->material[] = $material;
 
         return $this;
     }
 
     /**
+     * Remove material
+     *
+     * @param \MCBundle\Entity\Material $material
+     */
+    public function removeMaterial(\MCBundle\Entity\Material $material)
+    {
+        $this->material->removeElement($material);
+    }
+
+    /**
      * Get material
      *
-     * @return \MCBundle\Entity\Material 
+     * @return \Doctrine\Common\Collections\Collection 
      */
     public function getMaterial()
     {
@@ -259,7 +306,7 @@ class Session
      * @param \MCBundle\Entity\Modality $modality
      * @return Session
      */
-    public function setModality(\MCBundle\Entity\Modality $modality = null)
+    public function setModality(\MCBundle\Entity\Modality $modality)
     {
         $this->modality = $modality;
 
@@ -282,7 +329,7 @@ class Session
      * @param \MCBundle\Entity\Film $film
      * @return Session
      */
-    public function setFilm(\MCBundle\Entity\Film $film = null)
+    public function setFilm(\MCBundle\Entity\Film $film)
     {
         $this->film = $film;
 
@@ -305,7 +352,7 @@ class Session
      * @param \UserBundle\Entity\User $user
      * @return Session
      */
-    public function setUser(\UserBundle\Entity\User $user = null)
+    public function setUser(\UserBundle\Entity\User $user)
     {
         $this->user = $user;
 

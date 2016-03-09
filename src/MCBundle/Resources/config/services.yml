@@ -15,9 +15,7 @@ services:
     mc_allocine:
         class: MCBundle\Service\Allocine  
         arguments: [ '%allocine_partner_key%','%allocine_secret_key%']
-
-    
-    
+            
     mc_allo_data:
         class: MCBundle\Service\AlloData        
     mc_allo_image:

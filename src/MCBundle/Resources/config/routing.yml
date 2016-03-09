@@ -2,7 +2,7 @@ mc_homepage:
     path:     /
     defaults: { _controller: MCBundle:MatiesChill:index }
 mc_sessions:
-    path:     /sessions
+    path:     /sessions/list
     defaults: { _controller: MCBundle:MatiesChill:session }
 mc_films:
     path:     /films
@@ -19,6 +19,7 @@ mc_film_search_allocine:
 mc_film_get_allocine:
     path:     /film/allocine/{code}
     defaults: { _controller: MCBundle:MatiesChill:getFilmAllocine }
+    
 #WebService
 mc_web_film_all:
     path:     /ressources/films
@@ -35,9 +36,23 @@ mc_web_film_delete:
 mc_web_film_add:
     path:     /ressources/film/add/{id}
     defaults: { _controller: MCBundle:Film:addMovie }
+
+# Session
+mc_session_add:
+    path:     /session-add/
+    defaults: { _controller: MCBundle:MatiesChill:addSession }
  
  #Rest Api
-api:
+api-film:
     type:  rest
-    prefix: /rest-api/
-    resource: MCBundle\Controller\MCRestController
+    prefix: /api/
+    resource: MCBundle\Controller\Rest\MCRestFilmController
+    
+api-session:
+    type:  rest
+    prefix: /api/
+    resource: MCBundle\Controller\Rest\MCRestSessionController
+api-user:
+    type:  rest
+    prefix: /api/
+    resource: MCBundle\Controller\Rest\MCRestUserController

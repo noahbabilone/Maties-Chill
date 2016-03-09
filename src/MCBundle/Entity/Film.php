@@ -55,6 +55,13 @@ class Film
      * @ORM\Column(name="actors", type="string", length=255,nullable=true)
      */
     private $actors;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nationality", type="string", length=255,nullable=true)
+     */
+    private $nationality;
 
     /**
      * @var int
@@ -434,5 +441,28 @@ class Film
     public function getLink()
     {
         return $this->link;
+    }
+
+    /**
+     * Set nationality
+     *
+     * @param string $nationality
+     * @return Film
+     */
+    public function setNationality($nationality)
+    {
+        $this->nationality = $nationality;
+
+        return $this;
+    }
+
+    /**
+     * Get nationality
+     *
+     * @return string 
+     */
+    public function getNationality()
+    {
+        return $this->nationality;
     }
 }

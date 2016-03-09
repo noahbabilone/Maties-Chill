@@ -24,7 +24,7 @@ class Address
     /**
      * @var string
      *
-     * @ORM\Column(name="title", type="string", length=255)
+     * @ORM\Column(name="title", type="string", length=255,nullable=true)
      */
     private $title;
 
@@ -80,7 +80,7 @@ class Address
     /**
      * @var string
      *
-     * @ORM\Column(name="postCode", type="string", length=255)
+     * @ORM\Column(name="postCode", type="integer", length=5)
      */
     private $postCode;
 

@@ -29,13 +29,12 @@ class Modality
     private $title;
 
     /**
-     * @var string
+     * @var bool
      *
-     * @ORM\Column(name="contribution", type="string", length=255)
+     * @ORM\Column(name="contribution", type="boolean")
      */
     private $contribution;
-
-
+    
 
     /**
      * Get id
@@ -73,7 +72,7 @@ class Modality
     /**
      * Set contribution
      *
-     * @param string $contribution
+     * @param boolean $contribution
      * @return Modality
      */
     public function setContribution($contribution)
@@ -86,7 +85,7 @@ class Modality
     /**
      * Get contribution
      *
-     * @return string 
+     * @return boolean 
      */
     public function getContribution()
     {
