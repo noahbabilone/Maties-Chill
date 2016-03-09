@@ -19,3 +19,5 @@
 /app/logs/prod.log
 app/logs/dev.log
 .idea
+*.DS_Store
+
