@@ -1,0 +1,54 @@
+<?php
+
+namespace MCBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Message
+ *
+ * @ORM\Table(name="message")
+ * @ORM\Entity(repositoryClass="MCBundle\Repository\MessageRepository")
+ */
+class Message
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date", type="datetime")
+     */
+    private $date;
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="readMessage", type="boolean")
+     */
+    private $readMessage;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="MCBundle\Entity\Session",  cascade={"persist"})
+     */
+    private $session;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User",  cascade={"persist"})
+     */
+    private $sender;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User",  cascade={"persist"})
+     */
+    private $receiver;
+
+
+   
+}

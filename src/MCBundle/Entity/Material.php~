@@ -1,0 +1,40 @@
+<?php
+
+namespace MCBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Material
+ *
+ * @ORM\Table(name="material")
+ * @ORM\Entity(repositoryClass="MCBundle\Repository\MaterialRepository")
+ */
+class Material
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="string", length=255)
+     */
+    private $description;
+    /**
+     * @ORM\ManyToOne(targetEntity="MCBundle\Entity\TypeMaterial",  cascade={"persist"})
+     */
+    private $typeMaterial;
+    /**
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User",  cascade={"persist"})
+     */
+    private $user;
+
+
+}

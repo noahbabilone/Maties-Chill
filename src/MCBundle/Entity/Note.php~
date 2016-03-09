@@ -1,0 +1,59 @@
+<?php
+
+namespace MCBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use UserBundle\Entity\User;
+
+/**
+ * Note
+ *
+ * @ORM\Table(name="note")
+ * @ORM\Entity(repositoryClass="MCBundle\Repository\NoteRepository")
+ */
+class Note
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="note", type="integer")
+     */
+    private $note;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="appreciation", type="string", length=255)
+     */
+    private $appreciation;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="MCBundle\Entity\TypeNote",  cascade={"persist"})
+     */
+    private $typeNote;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="MCBundle\Entity\Session",  cascade={"persist"})
+     */
+    private $session;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User",  cascade={"persist"})
+     */
+    private $user;
+    /**
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User",  cascade={"persist"})
+     */
+    private $assign;
+
+
+}

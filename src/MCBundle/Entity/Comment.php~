@@ -1,0 +1,42 @@
+<?php
+
+namespace MCBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use UserBundle\Entity\User;
+
+/**
+ * Comment
+ *
+ * @ORM\Table(name="Comment")
+ * @ORM\Entity(repositoryClass="MCBundle\Repository\CommentRepository")
+ */
+class Comment
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date", type="datetime")
+     */
+    private $date;
+    
+     /**
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User",  cascade={"persist"})
+     */
+    private $user;
+
+     /**
+     * @ORM\ManyToOne(targetEntity="MCBundle\Entity\Session",  cascade={"persist"})
+     */
+    private $session;
+    
+}

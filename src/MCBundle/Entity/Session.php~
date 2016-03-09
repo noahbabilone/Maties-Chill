@@ -1,0 +1,91 @@
+<?php
+
+namespace MCBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Session
+ *
+ * @ORM\Table(name="session")
+ * @ORM\Entity(repositoryClass="MCBundle\Repository\SeanceRepository")
+ */
+class Session
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date", type="datetime",nullable=true)
+     */
+    private $date;
+
+    /**
+     * @var string
+     * @ORM\Column(name="typeView", type="string", length=255,nullable=true)
+     */
+    private $typeView;
+
+    /**
+     * @var string
+     * @ORM\Column(name="description", type="string", length=255,nullable=true)
+     */
+    private $description;
+
+    /**
+     * @var string
+     * @ORM\Column(name="contribution", type="string", length=255,nullable=true)
+     */
+    private $contribution;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="price", type="integer")
+     */
+    private $price;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="maxPlace", type="integer")
+     */
+    private $maxPlace;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="MCBundle\Entity\Address",  cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $address;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="MCBundle\Entity\Material",  cascade={"persist"})
+     */
+    private $material;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="MCBundle\Entity\Modality",  cascade={"persist"})      
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $modality;
+    /**
+     * @ORM\ManyToOne(targetEntity="MCBundle\Entity\Film",  cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $film;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User",  cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
+}
