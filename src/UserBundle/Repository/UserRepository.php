@@ -12,4 +12,16 @@ use Doctrine\ORM\EntityRepository;
  */
 class UserRepository extends EntityRepository
 {
+    public function checkSession($username, $password)
+    {
+        $query = $this->createQueryBuilder('a');
+        $query->where('a.username = :username AND a.password=:password')
+            ->setParameter('username', $username)
+            ->setParameter('password', $password)
+            ->setMaxResults(1);
+        
+        return $query
+            ->getQuery()
+            ->getResult();
+    }
 }

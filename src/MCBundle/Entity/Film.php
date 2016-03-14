@@ -2,7 +2,9 @@
 
 namespace MCBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use MCBundle\Entity\Genre;
 
 /**
  * Film
@@ -33,7 +35,12 @@ class Film
      *
      * @ORM\Column(name="title", type="string", length=255,nullable=true)
      */
-    private $title;
+    private $title;/**
+     * @var string
+     *
+     * @ORM\Column(name="originalTitle", type="string", length=255,nullable=true)
+     */
+    private $originalTitle;
 
     /**
      * @var \DateTime
@@ -55,7 +62,7 @@ class Film
      * @ORM\Column(name="actors", type="string", length=255,nullable=true)
      */
     private $actors;
-    
+
     /**
      * @var string
      *
@@ -66,9 +73,9 @@ class Film
     /**
      * @var int
      *
-     * @ORM\Column(name="duration", type="integer",nullable=true)
+     * @ORM\Column(name="runtime", type="integer",nullable=true)
      */
-    private $duration;
+    private $runtime;
 
     /**
      * @var int
@@ -97,25 +104,46 @@ class Film
      */
     private $link;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="trailer", type="string", nullable=true)
+     */
+    private $trailer;
+
 
     /**
      * @var string
      *
-     * @ORM\Column(name="image", type="string", nullable=true)
+     * @ORM\Column(name="poster", type="string", nullable=true)
      */
-    private $image;
+    private $poster;
     /**
      * @var text
      *
-     * @ORM\Column(name="description", type="text", nullable=true)
+     * @ORM\Column(name="synopsisShort", type="text", nullable=true)
      */
-    private $description;
+    private $synopsisShort;
+    
+    /**
+     * @var text
+     *
+     * @ORM\Column(name="synopsis", type="text", nullable=true)
+     */
+    private $synopsis;
 
     /**
-     * @ORM\ManyToOne(targetEntity="MCBundle\Entity\Category",  cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="MCBundle\Entity\Genre",  cascade={"persist"})
      */
-    private $category;
+    private $genre;
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->genre = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -130,12 +158,12 @@ class Film
     /**
      * Set ISAN
      *
-     * @param string $ISAN
+     * @param string $iSAN
      * @return Film
      */
-    public function setISAN($ISAN)
+    public function setISAN($iSAN)
     {
-        $this->ISAN = $ISAN;
+        $this->ISAN = $iSAN;
 
         return $this;
     }
@@ -181,8 +209,12 @@ class Film
      */
     public function setReleaseDate($releaseDate)
     {
-        $this->releaseDate = $releaseDate;
 
+        if (is_a($releaseDate, 'DateTime')) {
+            $this->releaseDate = $releaseDate;
+        } else {
+            $this->releaseDate = new \DateTime((string)$releaseDate);
+        }
         return $this;
     }
 
@@ -243,45 +275,51 @@ class Film
     }
 
     /**
-     * Set duration
+     * Set nationality
      *
-     * @param integer $duration
+     * @param string $nationality
      * @return Film
      */
-    public function setDuration($duration)
+    public function setNationality($nationality)
     {
-        $this->duration = $duration;
+        $this->nationality = $nationality;
 
         return $this;
     }
 
     /**
-     * Get duration
+     * Get nationality
      *
-     * @return integer
+     * @return string
      */
-    public function getDuration()
+    public function getNationality()
     {
-        
-        return $this->duration;
+        return $this->nationality;
     }
 
-     /**
-     * Get String
+    /**
+     * Set runtime
+     *
+     * @param integer $runtime
+     * @return Film
+     */
+    public function setRuntime($runtime)
+    {
+        $this->runtime = $runtime;
+
+        return $this;
+    }
+
+    /**
+     * Get runtime
      *
      * @return integer
      */
-    public function getDuree()
-    {   
-        if($this->duration >60)
-        {
-            $heure =($this->duration / 60);
-            $minute =($this->duration % 60==0)?'00':$this->duration % 60;
-            return $heure. 'h'.$minute.'min';
-            
-        }
-        return $this->duration.'min';
+    public function getRuntime()
+    {
+        return $this->runtime;
     }
+
     /**
      * Set ageLimit
      *
@@ -306,75 +344,6 @@ class Film
     }
 
     /**
-     * Set image
-     *
-     * @param string $image
-     * @return Film
-     */
-    public function setImage($image)
-    {
-        $this->image = $image;
-
-        return $this;
-    }
-
-    /**
-     * Get image
-     *
-     * @return string
-     */
-    public function getImage()
-    {
-        return $this->image;
-    }
-
-    /**
-     * Set category
-     *
-     * @param \MCBundle\Entity\Category $category
-     * @return Film
-     */
-    public function setCategory(Category $category = null)
-    {
-        $this->category = $category;
-
-        return $this;
-    }
-
-    /**
-     * Get category
-     *
-     * @return \MCBundle\Entity\Category
-     */
-    public function getCategory()
-    {
-        return $this->category;
-    }
-
-    /**
-     * Set description
-     *
-     * @param string $description
-     * @return Film
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * Get description
-     *
-     * @return string
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
      * Set pressRating
      *
      * @param float $pressRating
@@ -390,7 +359,7 @@ class Film
     /**
      * Get pressRating
      *
-     * @return float 
+     * @return float
      */
     public function getPressRating()
     {
@@ -413,7 +382,7 @@ class Film
     /**
      * Get userRating
      *
-     * @return float 
+     * @return float
      */
     public function getUserRating()
     {
@@ -436,33 +405,161 @@ class Film
     /**
      * Get link
      *
-     * @return string 
+     * @return string
      */
     public function getLink()
     {
         return $this->link;
     }
 
+   
+
     /**
-     * Set nationality
+     * Set synopsis
      *
-     * @param string $nationality
+     * @param string $synopsis
      * @return Film
      */
-    public function setNationality($nationality)
+    public function setSynopsis($synopsis)
     {
-        $this->nationality = $nationality;
+        $this->synopsis = $synopsis;
 
         return $this;
     }
 
     /**
-     * Get nationality
+     * Get synopsis
+     *
+     * @return string
+     */
+    public function getSynopsis()
+    {
+        return $this->synopsis;
+    }
+
+    /**
+     * Set trailer
+     *
+     * @param string $trailer
+     * @return Film
+     */
+    public function setTrailer($trailer)
+    {
+        $this->trailer = $trailer;
+
+        return $this;
+    }
+
+    /**
+     * Get trailer
+     *
+     * @return string
+     */
+    public function getTrailer()
+    {
+        return $this->trailer;
+    }
+
+    /**
+     * Add genre
+     *
+     * @param Genre $genre
+     * @return Film
+     */
+    public function addGenre(Genre $genre)
+    {
+        $this->genre[] = $genre;
+
+        return $this;
+    }
+
+    /**
+     * Remove genre
+     *
+     * @param Genre $genre
+     */
+    public function removeGenre(Genre $genre)
+    {
+        $this->genre->removeElement($genre);
+    }
+
+    /**
+     * Get genre
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getGenre()
+    {
+        return $this->genre;
+    }
+
+
+
+    /**
+     * Set synopsisShort
+     *
+     * @param string $synopsisShort
+     * @return Film
+     */
+    public function setSynopsisShort($synopsisShort)
+    {
+        $this->synopsisShort = $synopsisShort;
+        return $this;
+    }
+
+    /**
+     * Get synopsisShort
      *
      * @return string 
      */
-    public function getNationality()
+    public function getSynopsisShort()
     {
-        return $this->nationality;
+        return $this->synopsisShort;
+    }
+
+    /**
+     * Set poster
+     *
+     * @param string $poster
+     * @return Film
+     */
+    public function setPoster($poster)
+    {
+        $this->poster = $poster;
+
+        return $this;
+    }
+
+    /**
+     * Get poster
+     *
+     * @return string 
+     */
+    public function getPoster()
+    {
+        return $this->poster;
+    }
+
+    /**
+     * Set originalTitle
+     *
+     * @param string $originalTitle
+     * @return Film
+     */
+    public function setOriginalTitle($originalTitle)
+    {
+        $this->originalTitle = $originalTitle;
+
+        return $this;
+    }
+
+    /**
+     * Get originalTitle
+     *
+     * @return string 
+     */
+    public function getOriginalTitle()
+    {
+        return $this->originalTitle;
     }
 }

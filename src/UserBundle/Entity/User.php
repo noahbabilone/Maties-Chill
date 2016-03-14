@@ -22,8 +22,7 @@ class User extends BaseUser
      */
     protected $id;
 
-    //protected $birthdate;
-    
+    //protected $birthDate;
     //protected $address
 
     /**

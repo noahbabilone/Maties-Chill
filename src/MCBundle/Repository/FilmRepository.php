@@ -12,4 +12,79 @@ use Doctrine\ORM\EntityRepository;
  */
 class FilmRepository extends EntityRepository
 {
+    public function getByGenre($genre)
+    {
+        $query = $this->createQueryBuilder('a');
+        $query
+            ->innerJoin('a.genre', 'g')
+            ->addSelect('g') 
+            ->where('g.id = :genre')
+            ->setParameter('genre', $genre);
+        $query->orderBy('a.id', 'DESC');
+        return $query
+            ->getQuery()
+            ->getResult();
+
+    }
+
+    public function getLastFilm()
+    {
+        $query = $this->createQueryBuilder('a');
+        $query->orderBy('a.id', 'DESC');
+        return $query
+            ->getQuery()
+            ->getResult();
+
+    } 
+    public function lastFilm($limit = null)
+    {
+        $query = $this->createQueryBuilder('a');
+        $query->orderBy('a.id', 'DESC');
+        if($limit !== null){
+           $query->setMaxResults($limit);
+        }
+        return $query
+            ->getQuery()
+            ->getResult();
+
+    }   
+    
+    public function newFilm($limit = null)
+    {
+        $query = $this->createQueryBuilder('a');
+        $query->orderBy('a.releaseDate', 'DESC');
+        if($limit !== null){
+           $query->setMaxResults($limit);
+        }
+        return $query
+            ->getQuery()
+            ->getResult();
+
+    }
+    public function topFilm($limit = null)
+    {
+        $query = $this->createQueryBuilder('a');
+        $query->orderBy('a.userRating', 'DESC');
+        if($limit !== null){
+           $query->setMaxResults($limit);
+        }
+        return $query
+            ->getQuery()
+            ->getResult();
+
+    }
+
+    public function search(Film $film)
+    {
+        $query = $this->createQueryBuilder('a');
+        $query
+            ->where('a.title LIKE :title')
+            ->setParameter('title', '%' . $film->getTitle() . '%')
+            ->orderBy('a.id', 'DESC');
+
+        return $query
+            ->getQuery()
+            ->getResult();
+        //return $this->find($query);
+    }
 }

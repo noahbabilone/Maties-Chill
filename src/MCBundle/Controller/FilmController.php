@@ -3,69 +3,150 @@
 namespace MCBundle\Controller;
 
 use MCBundle\Entity\Film;
-use Symfony\Component\HttpFoundation\JsonResponse;
+
+use MCBundle\Entity\Genre;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\Response;
+
+//use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 
 class FilmController extends Controller
 {
     public function indexAction()
     {
-        return $this->render('MCBundle:Default:index.html.twig');
+        $em = $this->getDoctrine()->getManager();
+        $lastFilms = $em->getRepository('MCBundle:Film')->lastFilm(4);
+        $newFilms = $em->getRepository('MCBundle:Film')->newFilm(4);
+        $topFilms = $em->getRepository('MCBundle:Film')->topFilm(4);
+
+        return $this->render(
+            'MCBundle:Pages:filmsIndex.html.twig',
+            array(
+                "lastFilms" => $lastFilms,
+                "newFilms" => $newFilms,
+                "topFilms" => $topFilms,
+            )
+        );
+
     }
 
-    public function allMovieAction()
+    public function getFilmAction($action = null, Request $request)
     {
+
         $em = $this->getDoctrine()->getManager();
-        $result = $em->getRepository('MCBundle:Film')->findAll();
-        $dataFilm= array();
-        foreach ($result as $film) {
-            $dataFilm[] = $this->parserMovie($film);
+        $limitPage = 8;
+        $numberPage = 1;
+
+        if ($action == null || $action == "all") {
+            $result = $em->getRepository('MCBundle:Film')->findAll();
+            $title = "Tous les films";
+        } else if ($action == "last_add") {
+            $result = $em->getRepository('MCBundle:Film')->lastFilm();
+            $title = "Tous les films récemment ajoutés";
+
+        } else if ($action == "new_film") {
+            $result = $em->getRepository('MCBundle:Film')->newFilm();
+            $title = "Toutes les nouveautés";
+
+        } else if ($action == "top_film") {
+            $result = $em->getRepository('MCBundle:Film')->topFilm();
+            $title = "Top films";
+        } else {
+            $result = array();
+            $title = "Aucun film trouvé";
+
         }
 
-        return new JSONResponse($dataFilm);
-        //        return $dataFilm;
+        $films = $this->get('knp_paginator')->paginate(
+            $result,
+            $request->query->get('page', $numberPage),
+            $limitPage
+        );
+        return $this->render(
+            'MCBundle:Pages:films.html.twig',
+            array(
+                "films" => $films,
+                "title" => $title,
+            )
+        );
+    }
+
+    /**
+     * @param $slug
+     * @return Response
+     */
+    public function viewFilmAction($slug)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $film = $em->getRepository('MCBundle:Film')->find($slug);
+        return $this->render('MCBundle:Pages:viewFilm.html.twig', array(
+            "film" => $film,
+        ));
 
     }
 
-    public function addMovieAction(Request $request)
+
+    public function addFilmAction()
     {
+        $em = $this->getDoctrine()->getManager();
         $film = new Film();
-        $form = $this->createForm(new AdsEditType(), $film);
 
-        if ($form->handleRequest($request)->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+        $allocine = $this->get("mc_allocine");
+        $result = $allocine->get(47111);
+        $data = json_decode($result);
+        if (!empty($data)) {
+            $movie = $data->movie;
+            $film->setISAN($movie->code);
+            $film->setTitle($movie->title);
+            $film->setOriginalTitle($movie->originalTitle);
 
+            $film->setReleaseDate($movie->release->releaseDate);
+            $film->setDirectors($movie->castingShort->directors);
+            $film->setActors($movie->castingShort->actors);
+            $nationality = "";
+            foreach ($movie->nationality as $data) {
+                $nationality .= $this->get("mc_allocine")->getObject($data);
+            }
+            $film->setNationality($nationality);
+            $film->setRuntime($movie->runtime);
+            $film->setAgeLimit(10);
+            $film->setPressRating($movie->statistics->pressRating);
+            $film->setUserRating($movie->statistics->userRating);
+            if (!empty($movie->link)) {
+                $film->setLink($movie->link[0]->href);
+            }
+
+            $film->setTrailer($movie->trailerEmbed);
+            $film->setPoster($movie->poster->href);
+            $film->setSynopsis($movie->synopsis);
+            $film->setSynopsisShort($movie->synopsisShort);
+            foreach ($movie->genre as $data) {
+                $genre = $this->get("mc_allocine")->getObject($data);
+                $objGenre = $em->getRepository('MCBundle:Genre')->findOneByTitle($genre);
+                if (!$objGenre) {
+                    $objGenre = new Genre();
+                    $objGenre->setTitle($genre);
+                    $em->persist($objGenre);
+                    $em->flush();
+                    $objGenre = $em->getRepository('MCBundle:Genre')->findOneByTitle($genre);
+                }
+                $film->addGenre($objGenre);
+            }
+            dump($movie);
+            dump($film);
 
         }
-        return new JsonResponse('Add ******');
+        $em->persist($film);
+        $em->flush();
+        return new Response("Add");
 
     }
 
-    public function removeMovieAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $film = $em->getRepository('MCBundle:Film')->find($id);
-        if (null === $film) {
-            throw new NotFoundHttpException("L'annonce d'id " . $id . " n'existe pas.");
-        }
-//            $em->remove($film);
-//            $em->flush();
-        return new JsonResponse('Supprimé ' . $id);
 
-    }
-
-    public function getMovieAction($id)
+    public function removeFilmAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
-        $film = $em->getRepository('MCBundle:Film')->find($id);
-        if (null === $film) {
-            throw new NotFoundHttpException("L'annonce d'id " . $id . " n'existe pas.");
-        }
-        $dataFilm = $this->parserMovie($film);
-        return new JSONResponse($dataFilm);
 
     }
 
@@ -88,6 +169,35 @@ class FilmController extends Controller
             $data['category'] = $film->getCategory()->getTitle();
         }
         return $data;
+    }
+
+
+    public function searchAllocineFilmAction($keyword)
+    {
+        $allocine = $this->get("mc_allocine");
+        $result = $allocine->search($keyword);
+
+        return $this->render(
+            'MCBundle:Pages:filmsSearch.html.twig',
+            array(
+                "motsCles" => $keyword,
+                "movies" => json_decode($result)
+            )
+        );
+    }
+
+    /**
+     * @param $code
+     * @return Response
+     */
+    public function getFilmAllocineAction($code)
+    {
+        $allocine = $this->get("mc_allocine");
+        $result = $allocine->get($code);
+
+        return $this->render('MCBundle:Pages:viewAllocineFilm.html.twig', array(
+            "result" => json_decode($result),
+        ));
     }
 
 

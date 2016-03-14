@@ -4,44 +4,165 @@
     Films - {{ parent() }}
 {% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+    'bundles/mc/rating/css/star-rating.css'
+    'bundles/mc/rating/css/theme-krajee-svg.css'
+    'assets/slick/slick/slick.css'
+    'assets/slick/slick/slick-theme.css'
+    'bundles/mc/css/card.css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+
+{% endblock %}
+
 {% block body_mc %}
     <div class="row">
-        <div class="col-sm-12">
-            <h3>Nos Films</h3>
+        {#<div class="col-sm-12">#}
+        {#<h3>Nos Films</h3>#}
+        {#</div>#}
+        <div class="col-sm-2">
+            {% include("MCBundle:Includes:menuFilm.html.twig") %}
         </div>
-        <div class="col-sm-12">
+
+        <div class="col-sm-9" id="films">
             <div class="row">
+
                 {% if films is defined %}
-
+                    <div class="col-sm-12">
+                        <h4 class="page-header">{{ title }}</h4>
+                    </div>
                     {% for film in films %}
-                        <div class="col-sm-4">
-                            <div class="">
-                                <div class="caption clearfix">
-                                    <img src="{{ film.image }}" width="110" height="164"
-                                         class="thumbnail pull-left margin-right"
-                                         alt="{{ film.title }}">
-                                    <ul class="list-unstyled ">
-                                        <li><b>Titre: </b>{{ film.title }}</li>
-                                        <li><b>Date de sortie: </b>{{ film.releaseDate | date("d F Y") }}</li>
-                                        {#<li><b>Directeur Casting:</b> {{ film.castingShort.directors }}</li>#}
-                                        <li><b>Producteur: </b>{{ film.directors }}</li>
-                                        <li><b>Acteurs: </b>{{ film.actors }}</li>
-                                        {#<li><b>Âge Requis: </b>{{ film.ageLimit }} ans</li>#}
-                                        <li><b>Durées: </b>{{ film.duree }} </li>
-                                        <li><b>Note presse: </b>{{ film.pressRating }}</li>
-                                        <li><b>Note spetacteur: </b>{{ film.userRating }}</li>
-                                    </ul>
+                        <div class="col-sm-3">
+                            <article class="card">
+                                <header class="card__thumb">
+                                    <a href="{{ path("mc_film_view", {"slug": film.id}) }}">
+                                        {% if film.poster is defined and film.poster %}
 
+                                            <img src="{{ film.poster }}" width="210" height="235"
+                                                 class=" pull-left margin-right"
+                                                 alt="{{ film.title }}">
+                                        {% else %}
+                                            <img src="../../uploads/images/400x300.png" width="210" height="235"
+                                                 class=" pull-left margin-right"
+                                                 alt="{{ film.title }}">
+                                        {% endif %}                                    </a>
+                                </header>
+                                <div class="card__body">
+                                    <div class="card__category"><a
+                                                href="{{ path("mc_film_view", {"slug": film.id}) }}">Voir
+                                            séances</a></div>
+                                    <h5 class="card__title"><a href="#">{{ film.title | capitalize }}</a></h5>
+                                    <ul class="card__description list-unstyled">
+
+
+                                        {% if film.directors is defined and film.directors %}
+                                            <li><b>De: </b>{{ film.directors }}</li>
+                                        {% endif %}
+
+                                        {% if film.actors is defined and film.actors %}
+                                            <li><b>Avec: </b>{{ film.actors }}</li>
+                                        {% endif %}
+                                        {% if film.runtime is defined and film.runtime %}
+                                            <li><b>Durée: </b>
+                                                {{ film.runtime | date("g") }}h{{ film.runtime | date("i") }}min
+                                            </li>
+                                        {% endif %}
+                                        {% if film.releaseDate is defined and film.releaseDate %}
+                                            <li><b>Année: </b>{{ film.releaseDate | date("Y") }} </li>
+                                        {% endif %}
+                                        {% if film.genre is defined and film.genre %}
+                                            <li><b>Genre(s): </b>
+                                                {% for genre in film.genre %}
+                                                    {{ genre.title }}
+                                                    {% if loop.index < film.genre |length %}/{% endif %}
+                                                {% endfor %}
+                                            </li>
+                                        {% endif %}
+
+                                    </ul>
                                 </div>
-                            </div>
+                                <footer class="card__footer text-right">
+                                        <span class=""><a href="{{ path("mc_film_view", {"slug": film.id}) }}"
+                                                          class="text-info">Suites&raquo;</a></span>
+                                </footer>
+                            </article>
                         </div>
                     {% else %}
-                        <div class="col-md-3 hero-feature">
-                            Pas de résultat pour le film {{ motsCles }}
+                        <div class="col-md-12 hero-feature">
+                            <a href="{{ path("mc_film_home") }}">Retour à la page d'accuiel des films &raquo;</a>
                         </div>
                     {% endfor %}
+                    <div class="col-sm-12 text-right">
+                        {% if films %}
+                            {{ knp_pagination_render(films) }}
+                        {% endif %}
+                    </div>
                 {% endif %}
+                
+                {#<div class="col-sm-3">
+                    <article class="card">
+                        <header class="card__thumb">
+                            <a href="#">
+                                <img src="http://lorempicsum.com/futurama/370/235/2">
+                            </a>
+                        </header>
+                        <div class="card__date">
+                            <span class="card__date__day">12</span>
+                            <span class="card__date__month">Mai</span>
+                        </div>
+                        <div class="card__body">
+                            <div class="card__category"><a href="#">Photos</a></div>
+                            <h4 class="card__title"><a href="#">Bender Should Not Be Allowed on TV</a></h4>
+
+                            <div class="card__subtitle">A Head in the Polls</div>
+                            <p class="card__description">
+                                With a warning label this big, you know they gotta be fun! This is the worst part.
+                                The calm before the battle. No! The cat shelter's on to me. Yes, I saw. You were
+                                doing well, until everyone died. Daylight and everything.
+                            </p>
+                        </div>
+                        <footer class="card__footer">
+                            <span class="glyphicon glyphicon-time"></span> 6 min
+                            <span class="glyphicon glyphicon-comment"></span><a href="#"> 39 comments</a>
+                        </footer>
+                    </article>
+                </div>#}
+
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+    'bundles/mc/rating/js/star-rating.js'
+    'bundles/mc/rating/js/star-rating_locale_fr.js'
+    'assets/slick/slick/slick.min.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    {#<script type="text/javascript">
+        $(document).on('ready', function () {
+            $('.kv-svg').rating({
+                displayOnly: true, step: 0.5,
+                theme: 'krajee-svg',
+                filledStar: '<span class="krajee-icon krajee-icon-star"></span>',
+                emptyStar: '<span class="krajee-icon krajee-icon-star"></span>'
+            });
+
+            $('.slider').slick({
+                dots: true,
+                infinite: true,
+                speed: 300,
+                slidesToShow: 4,
+                slidesToScroll: 1,
+                lazyLoad: 'ondemand',
+
+            });
+        });
+    </script>#}
+
 {% endblock %}
