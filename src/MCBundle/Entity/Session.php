@@ -86,14 +86,22 @@ class Session
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User",  cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $user;
+    private $creator;
+    
+    /**
+     * @ORM\ManyToMany(targetEntity="UserBundle\Entity\User",  cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $participant;
 
+    
     /**
      * Constructor
      */
     public function __construct()
     {
         $this->material = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->participant = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -347,25 +355,58 @@ class Session
     }
 
     /**
-     * Set user
+     * Set creator
      *
-     * @param \UserBundle\Entity\User $user
+     * @param \UserBundle\Entity\User $creator
      * @return Session
      */
-    public function setUser(\UserBundle\Entity\User $user)
+    public function setCreator(\UserBundle\Entity\User $creator)
     {
-        $this->user = $user;
+        $this->creator = $creator;
 
         return $this;
     }
 
     /**
-     * Get user
+     * Get creator
      *
      * @return \UserBundle\Entity\User 
      */
-    public function getUser()
+    public function getCreator()
     {
-        return $this->user;
+        return $this->creator;
+    }
+
+    /**
+     * Add participant
+     *
+     * @param \UserBundle\Entity\User $participant
+     * @return Session
+     */
+    public function addParticipant(\UserBundle\Entity\User $participant)
+    {
+        $this->participant[] = $participant;
+
+        return $this;
+    }
+
+    /**
+     * Remove participant
+     *
+     * @param \UserBundle\Entity\User $participant
+     */
+    public function removeParticipant(\UserBundle\Entity\User $participant)
+    {
+        $this->participant->removeElement($participant);
+    }
+
+    /**
+     * Get participant
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getParticipant()
+    {
+        return $this->participant;
     }
 }

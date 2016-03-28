@@ -68,7 +68,7 @@ class Address
      *
      * @ORM\Column(name="address2", type="string", length=255, nullable=true)
      */
-    private $adress2;
+    private $address2;
 
     /**
      * @var string
@@ -97,6 +97,7 @@ class Address
      * @ORM\Column(name="other", type="string", length=255, nullable=true)
      */
     private $other;
+
 
 
 
@@ -249,26 +250,26 @@ class Address
     }
 
     /**
-     * Set adress2
+     * Set address2
      *
-     * @param string $adress2
+     * @param string $address2
      * @return Address
      */
-    public function setAdress2($adress2)
+    public function setAddress2($address2)
     {
-        $this->adress2 = $adress2;
+        $this->address2 = $address2;
 
         return $this;
     }
 
     /**
-     * Get adress2
+     * Get address2
      *
      * @return string 
      */
-    public function getAdress2()
+    public function getAddress2()
     {
-        return $this->adress2;
+        return $this->address2;
     }
 
     /**
@@ -297,7 +298,7 @@ class Address
     /**
      * Set postCode
      *
-     * @param string $postCode
+     * @param integer $postCode
      * @return Address
      */
     public function setPostCode($postCode)
@@ -310,7 +311,7 @@ class Address
     /**
      * Get postCode
      *
-     * @return string 
+     * @return integer 
      */
     public function getPostCode()
     {

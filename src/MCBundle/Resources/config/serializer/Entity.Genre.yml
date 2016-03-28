@@ -1,0 +1,1 @@
+MCBundle\Entity\Genre:    exclusion_policy: ALL    properties:        id:            expose: true        title:            expose: true                
