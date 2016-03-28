@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Session
  *
  * @ORM\Table(name="session")
- * @ORM\Entity(repositoryClass="MCBundle\Repository\SeanceRepository")
+ * @ORM\Entity(repositoryClass="MCBundle\Repository\SessionRepository")
  */
 class Session
 {
@@ -86,6 +86,13 @@ class Session
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User",  cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $user;
+    private $creator;
+    
+    /**
+     * @ORM\ManyToMany(targetEntity="UserBundle\Entity\User",  cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $participant;
 
+    
 }

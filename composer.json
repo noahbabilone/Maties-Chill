@@ -26,7 +26,8 @@
         "jms/serializer-bundle": "@stable",
         "friendsofsymfony/rest-bundle": "@stable",
         "friendsofsymfony/jsrouting-bundle": "^1.6",
-        "knplabs/knp-paginator-bundle": "^2.5"
+        "knplabs/knp-paginator-bundle": "^2.5",
+        "nelmio/api-doc-bundle": "^2.12"
     },
     "require-dev": {
         "sensio/generator-bundle": "~3.0",

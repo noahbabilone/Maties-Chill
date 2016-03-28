@@ -24,7 +24,7 @@ class SessionController extends Controller
     {
         $limitPage = 8;
         $numberPage = 1;
-        
+
         $em = $this->getDoctrine()->getManager();
         $result = $em->getRepository('MCBundle:Session')->findAll();
 
@@ -60,8 +60,8 @@ class SessionController extends Controller
             )
         );
     }
-    
-     public function addSessionAction()
+
+    public function addSessionAction()
     {
 
         $em = $this->getDoctrine()->getManager();
@@ -78,26 +78,49 @@ class SessionController extends Controller
 
         $material = $em->getRepository('MCBundle:Material')->find(3);
         $session->addMaterial($material);
-
         $material = $em->getRepository('MCBundle:Material')->find(1);
         $session->addMaterial($material);
-
         $material = $em->getRepository('MCBundle:Material')->find(2);
         $session->addMaterial($material);
 
         $modality = $em->getRepository('MCBundle:Modality')->find(2);
         $session->setModality($modality);
-
         $film = $em->getRepository('MCBundle:Film')->find(2);
         $session->setFilm($film);
-
         $user = $em->getRepository('UserBundle:User')->find(1);
-        $session->setUser($user);
+        $session->setCreator($user);
 
 //        $em->persist($session);
 //        $em->flush();
-
         return new Response("Add");
     }
+
+ public
+    function testAddSessionAction()
+    {
+        $data = array();
+        $data["user"] = "1";
+        $data["date"] = "2012-12-08";
+        $data["typeView"] = "VOSF";
+        $data["description"] = "description test";
+        $data["contribution"] = "Coca";
+        $data["price"] = "12";
+        $data["maxPlace"] = "20";
+
+        $data['idAddress'] = "1";
+        
+        $tabMaterial= array("1","2");
+        
+        $data['material']=$tabMaterial;
+        $address['film'] = "1";
+
+        $dataJson = json_encode($data);
+        $user = $this->addUserAction($dataJson);
+        return $user;
+    }
+    
+    
+    
+    
 
 }
