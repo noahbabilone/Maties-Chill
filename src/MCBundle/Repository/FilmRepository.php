@@ -86,5 +86,18 @@ class FilmRepository extends EntityRepository
             ->getQuery()
             ->getResult();
         //return $this->find($query);
+    } 
+    public function searchDB($keyword)
+    {
+        $query = $this->createQueryBuilder('a');
+        $query
+            ->where('a.title LIKE :title')
+            ->setParameter('title', '%' . $keyword. '%')
+            ->orderBy('a.id', 'DESC');
+
+        return $query
+            ->getQuery()
+            ->getResult();
+        //return $this->find($query);
     }
 }

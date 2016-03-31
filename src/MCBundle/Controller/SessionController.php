@@ -106,7 +106,6 @@ class SessionController extends Controller
         $data["contribution"] = "Coca";
         $data["price"] = "12";
         $data["maxPlace"] = "20";
-
         $data['idAddress'] = "1";
         
         $tabMaterial= array("1","2");

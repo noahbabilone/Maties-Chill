@@ -91,56 +91,17 @@ class FilmController extends Controller
     public function addFilmAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $film = new Film();
-
         $allocine = $this->get("mc_allocine");
         $result = $allocine->get(47111);
         $data = json_decode($result);
-        if (!empty($data)) {
-            $movie = $data->movie;
-            $film->setISAN($movie->code);
-            $film->setTitle($movie->title);
-            $film->setOriginalTitle($movie->originalTitle);
-
-            $film->setReleaseDate($movie->release->releaseDate);
-            $film->setDirectors($movie->castingShort->directors);
-            $film->setActors($movie->castingShort->actors);
-            $nationality = "";
-            foreach ($movie->nationality as $data) {
-                $nationality .= $this->get("mc_allocine")->getObject($data);
-            }
-            $film->setNationality($nationality);
-            $film->setRuntime($movie->runtime);
-            $film->setAgeLimit(10);
-            $film->setPressRating($movie->statistics->pressRating);
-            $film->setUserRating($movie->statistics->userRating);
-            if (!empty($movie->link)) {
-                $film->setLink($movie->link[0]->href);
-            }
-
-            $film->setTrailer($movie->trailerEmbed);
-            $film->setPoster($movie->poster->href);
-            $film->setSynopsis($movie->synopsis);
-            $film->setSynopsisShort($movie->synopsisShort);
-            foreach ($movie->genre as $data) {
-                $genre = $this->get("mc_allocine")->getObject($data);
-                $objGenre = $em->getRepository('MCBundle:Genre')->findOneByTitle($genre);
-                if (!$objGenre) {
-                    $objGenre = new Genre();
-                    $objGenre->setTitle($genre);
-                    $em->persist($objGenre);
-                    $em->flush();
-                    $objGenre = $em->getRepository('MCBundle:Genre')->findOneByTitle($genre);
-                }
-                $film->addGenre($objGenre);
-            }
-            dump($movie);
+        $film = $this->parserMovie($data->movie);
+        if ($film->getISAN()) {
             dump($film);
-
+            $em->persist($film);
+            $em->flush();
+            return new Response("Add");
         }
-        $em->persist($film);
-        $em->flush();
-        return new Response("Add");
+        return new Response("Error Add Film");
 
     }
 
@@ -150,25 +111,73 @@ class FilmController extends Controller
 
     }
 
-    public function parserMovie($film)
+    /**
+     * @return Film
+     */
+    public function parserMovie($movie)
     {
-        $data = array();
-        if ($film) {
-            $data['id'] = $film->getID();
-            $data['ISAN'] = $film->getISAN();
-            $data['title'] = $film->getTitle();
-            $data['releaseDate'] = $film->getReleaseDate();
-            $data['directors'] = $film->getDirectors();
-            $data['actors'] = $film->getActors();
-            $data['duration'] = $film->getDuration();
-            $data['ageLimit'] = $film->getAgeLimit();
-            $data['pressRating'] = $film->getPressRating();
-            $data['userRating'] = $film->getUserRating();
-            $data['link'] = $film->getLink();
-            $data['description'] = $film->getDescription();
-            $data['category'] = $film->getCategory()->getTitle();
+        $film = new Film();
+        if (!empty($movie)) {
+        $em = $this->getDoctrine()->getManager();
+            $film->setISAN($movie->code);
+                $film->setTitle($movie->title);
+            if (array_key_exists('originalTitle', $movie))
+                $film->setOriginalTitle($movie->originalTitle);
+
+            if (array_key_exists('release', $movie))
+                $film->setReleaseDate($movie->release->releaseDate);
+
+            if (array_key_exists('castingShort', $movie))
+                $film->setDirectors($movie->castingShort->directors);
+
+            if (array_key_exists('castingShort', $movie))
+                $film->setActors($movie->castingShort->actors);
+            if (array_key_exists('nationality', $movie)) {
+                $nationality = "";
+                foreach ($movie->nationality as $data) {
+                    $nationality .= $this->get("mc_allocine")->getObject($data);
+                }
+                $film->setNationality($nationality);
+            }
+            if (array_key_exists('runtime', $movie))
+                $film->setRuntime($movie->runtime);
+            $film->setAgeLimit(10);
+
+            if (array_key_exists('statistics', $movie))
+                $film->setPressRating($movie->statistics->pressRating);
+            if (array_key_exists('statistics', $movie))
+                $film->setUserRating($movie->statistics->userRating);
+
+            if (array_key_exists('link', $movie)) {
+                if (!empty($movie->link)) {
+                    $film->setLink($movie->link[0]->href);
+                }
+            }
+            if (array_key_exists('trailerEmbed', $movie))
+                $film->setTrailer($movie->trailerEmbed);
+            if (array_key_exists('poster', $movie))
+                $film->setPoster($movie->poster->href);
+            if (array_key_exists('synopsis', $movie))
+                $film->setSynopsis($movie->synopsis);
+            if (array_key_exists('synopsisShort', $movie))
+                $film->setSynopsisShort($movie->synopsisShort);
+            if (array_key_exists('genre', $movie)) {
+                foreach ($movie->genre as $data) {
+                    $genre = $this->get("mc_allocine")->getObject($data);
+                    $objGenre = $em->getRepository('MCBundle:Genre')->findOneByTitle($genre);
+                    if (!$objGenre) {
+                        $objGenre = new Genre();
+                        $objGenre->setTitle($genre);
+                        $em->persist($objGenre);
+                        $em->flush();
+                        $objGenre = $em->getRepository('MCBundle:Genre')->findOneByTitle($genre);
+                    }
+                    $film->addGenre($objGenre);
+                }
+            }
+
         }
-        return $data;
+        return $film;
     }
 
 
@@ -200,5 +209,24 @@ class FilmController extends Controller
         ));
     }
 
-
+    public function parserMovieTab($film)
+    {
+        $data = array();
+        if ($film) {
+            $data['id'] = $film->getID();
+            $data['ISAN'] = $film->getISAN();
+            $data['title'] = $film->getTitle();
+            $data['releaseDate'] = $film->getReleaseDate();
+            $data['directors'] = $film->getDirectors();
+            $data['actors'] = $film->getActors();
+            $data['duration'] = $film->getDuration();
+            $data['ageLimit'] = $film->getAgeLimit();
+            $data['pressRating'] = $film->getPressRating();
+            $data['userRating'] = $film->getUserRating();
+            $data['link'] = $film->getLink();
+            $data['description'] = $film->getDescription();
+            $data['category'] = $film->getCategory()->getTitle();
+        }
+        return $data;
+    }
 }
