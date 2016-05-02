@@ -1,0 +1,107 @@
+{% extends "UserBundle::layout.html.twig" %}
+
+{% block title %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body_mc %}
+
+    <div class="col-sm-9 main">
+        <h2 class="page-header">Dashboard</h2>
+        <div class="row">
+            <div class="col-sm-10">
+                {#{{ render(controller("Zone51AdsBundle:Ads:searchAds")) }}#}
+                {#{% include 'Zone51AdsBundle:Ads:search.html.twig' %}#}
+            </div>
+            <div class="col-sm-12">
+                {# total items count #}
+                <div class="count">
+                    <h5> Nombre d'annonces:
+                        {% if sessions %} {{ sessions.getTotalItemCount }} {% else %} 0 {% endif %}
+                    </h5>
+                </div>
+                <div class="alert alert-success hide response-ajax">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                    <p class="text-response-ajax"></p>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        {% if sessions is defined %}
+                            <tr class="">
+                                {# sorting of properties based on query components #}
+                                <th>ID</th>
+                                <th>Titre</th>
+                                <th>Créateur</th>
+                                <th>Prix</th>
+                                <th>Date</th>
+                                <th>Nbr Place(s)</th>
+                                <th class="col-md-2">Actions</th>
+                            </tr>
+
+                            {% for session in sessions %}
+                                <tr {% if loop.index is odd %}class="color"{% endif %} id="tr-session-{{ session.id }}">
+                                    <td>{{ session.id }}</td>
+                                    <td>{{ session.film.title }}</td>
+                                    <td>{{ session.creator.username | capitalize }}</td>
+                                    <td>{{ session.price }}</td>
+                                    <td>{{ session.date| date("d M") }} à
+                                        {{ session.date| date("H") }}h{{ session.date| date("i") }}</td>
+                                    <td>{{ session.maxPlace }}</td>
+                                    <td>
+                                        <a href="#"
+                                           class="btn btn-default btn-xs">
+                                            <i class="glyphicon glyphicon-eye-open text-success"></i>
+                                        </a>
+                                        <a href="#"
+                                           class="btn btn-default btn-xs">
+                                            <i class="glyphicon glyphicon-cog text-primary"></i>
+                                        </a>
+                                        <a id="" href="#"
+                                           class="btn btn-default btn-xs btn-delete-session" 
+                                           data-toggle="modal" 
+                                                data-session="session-{{ session.id }}"
+                                                data-session-line="tr-session-{{ session.id }}">
+                                            <i class="glyphicon glyphicon-trash text-danger "
+                                               data-target="#myModal"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="8" class="active"><h3 class="text-center ">Aucune annonce correspondante à
+                                        vos recherche</h3></td>
+                            </tr>
+                        {% endif %}
+                    </table>
+                </div>
+                <div class="navigation">
+                    {% if sessions %}
+                        {{ knp_pagination_render(sessions) }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" tabindex="-1" id="myModal" role="dialog">
+        <div class="modal-dialog" role="document">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Suppression de la séance ID°<span id="id-seance"></span></h4>
+                </div>
+                <div class="modal-body">
+                    <p>Vous voulez vraiment supprimer cette sénce !!</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger ok-delete-session" data-dismiss="modal">Oui</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Non</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

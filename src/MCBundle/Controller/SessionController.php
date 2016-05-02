@@ -22,7 +22,7 @@ class SessionController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $limitPage = 8;
+        $limitPage = 16;
         $numberPage = 1;
 
         $em = $this->getDoctrine()->getManager();

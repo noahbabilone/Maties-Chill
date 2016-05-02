@@ -4,6 +4,20 @@
     Séances - {{ parent() }}
 {% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+    'bundles/mc/rating/css/star-rating.css'
+    'bundles/mc/rating/css/theme-krajee-svg.css'
+    'assets/slick/slick/slick.css'
+    'assets/slick/slick/slick-theme.css'
+    'bundles/mc/css/card.css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+
+{% endblock %}
+
 {% block body_mc %}
     <div class="row">
         <div class="col-sm-12">
@@ -12,52 +26,90 @@
 
             <div class="col-sm-2">
                 {% include("MCBundle:Includes:menuSession.html.twig") %}
-                
+
             </div>
             <div class="col-sm-10">
-                <div class="row">
+                <div class="row" id="films">
                     {% for session in sessions %}
-                        <div class="col-sm-6 ">
-                            <div class="media bs-callout bs-callout-primary ">
-                                <div class="media-left">
-                                    <a href="#">
+                        <div class="col-sm-3">
+                            <article class="card">
+                                <header class="card__thumb">
+                                    <a href="{{ path("mc_film_view", {"slug": session.film.id}) }}">
                                         {% if session.film.poster is defined and session.film.poster %}
-                                            <img class="media-object thumbnail"
-                                                 src="{{ session.film.poster }}" height="114" width="84"
-                                                 alt="64x64">
-                                        {% else %}
-                                            <img class="media-object thumbnail"
-                                                 src="http://bootstrap-doc.prauds.fr/image/64x64.jpg"
-                                                 alt="64x64">
-                                        {% endif %}
-                                    </a>
-                                </div>
-                                <div class="media-body">
-                                    <h4 class="media-heading ">{{ session.film.title }} ({{ session.typeView }})</h4>
-                                    <ul class="list-unstyled">
-                                        <li><b>Date:</b> {{ session.date| date("d F Y") }} à
-                                            <b>{{ session.date| date("H") }}h{{ session.date| date("i") }}</b>
 
-                                        </li>
-                                        <li>
-                                            <b>Prix:</b>
-                                            {% if session.price > 0 %}{{ session.price }}€{% else %}Gratuit{% endif %}
-                                        </li>
-                                        <li><b>Ville:</b> {{ session.address.town }}</li>
-                                        <li>
-                                            <b>Place(s): </b>{{ session.maxPlace }}
-                                            <span class="pull-right">
-                                            <a href="#" class="btn btn-success btn-xs"> Participer <i
-                                                        class="glyphicon glyphicon-shopping-cart"></i></a>
-                                            <a href="#" class="btn btn-default btn-xs"> Voir Séance <i
-                                                        class="glyphicon glyphicon-eye-open"></i></a>
-                                                </span>
-                                        </li>
+                                            <img src="{{ session.film.poster }}" width="240" height="235"
+                                                 class=" pull-left margin-right"
+                                                 alt="{{ session.film.title }}">
+                                        {% else %}
+                                            <img src="../../uploads/images/400x300.png" width="240" height="235"
+                                                 class=" pull-left margin-right"
+                                                 alt="{{ session.film.title }}">
+                                        {% endif %}                                    </a>
+                                </header>
+                                {#<div class="card__date">#}
+                                {#&#123;&#35;<span class="card__date__day">12</span>&#35;&#125;#}
+                                {#<span class="card__date__month">#}
+                                {#{% if session.price > 0 %}{{ session.price }}€{% else %}Gratuit{% endif %}#}
+                                {#</span>#}
+                                {#</div>#}
+
+                                <div class="session__price">
+                                    <span class="session__price_val">
+                                    {% if session.price > 0 %}{{ session.price }}€{% else %}Gratuit{% endif %}
+                                        </span>
+                                </div>
+                                <div class="card__body">
+                                    <div class="card__category">
+                                        <i class="fa fa-clock-o"></i>
+                                        {{ session.date| date("d F") }} à
+                                        {{ session.date| date("H") }}h{{ session.date| date("i") }}
+                                    </div>
+                                    <h5 class="card__title"><a href="#">
+                                            {#{{ session.film.title |length > 30 ? session.film.title|slice(0, 30) ~ '...' : session.film.title }}#}
+                                            {{ session.film.title }}
+                                        </a></h5>
+                                    <ul class="card__description list-unstyled">
+
+
+                                        {% if session.creator is defined and session.creator %}
+                                            <li><i class="fa fa-user"></i> {{ session.creator.username | capitalize }}
+                                            </li>
+                                        {% endif %}
+
+                                        {% if session.address.town is defined and session.address.town %}
+                                            <li><i class="fa fa-location-arrow"></i> {{ session.address.town }}
+                                                {% if session.address.postCode is defined and session.address.postCode %}
+                                                    ({{ session.address.postCode }})
+                                                {% endif %}
+                                            </li>
+                                        {% endif %}
+
+                                        {% if session.maxPlace is defined and session.maxPlace %}
+                                            <li><i class="fa fa-user-plus"></i> {{ session.maxPlace }} Place(s)
+                                                restante(s)
+                                            </li>
+                                        {% endif %}
+
                                     </ul>
                                 </div>
-                            </div>
-                        </div>
+                                <footer class="card__footer ">
+                                    {#<span class="glyphicon glyphicon-time"></span> 6 min#}
 
+                                    <span class="fa fa-users"></span>
+                                    <small>{{ random(6) }}</small>
+                                    &nbsp;
+                                    <span class="fa fa-comments"></span>
+                                    <small>{{ random(50) }}</small>
+                                        <span class="pull-right"><a
+                                                    href="{{ path("mc_film_view", {"slug": session.film.id}) }}"
+                                                    class="text-info"><i class="fa fa-shopping-cart"></i>&nbsp;Suite&raquo;
+                                            </a></span>
+                                    {#<span class="pull-right"><a 
+                                                href="{{ path("mc_film_view", {"slug": session.film.id}) }}"
+                                                class="text-info"><i class="fa fa-user-plus"></i></a>&nbsp;</span> #}
+                                </footer>
+                            </article>
+                        </div>
                     {% endfor %}
                     <div class="col-sm-12">
                         <div class="navigation">

@@ -67,7 +67,7 @@ class Film
      * @var string
      *
      * @ORM\Column(name="nationality", type="string", length=255,nullable=true)
-     */
+     */ 
     private $nationality;
 
     /**

@@ -219,13 +219,18 @@ class FilmController extends Controller
             $data['releaseDate'] = $film->getReleaseDate();
             $data['directors'] = $film->getDirectors();
             $data['actors'] = $film->getActors();
-            $data['duration'] = $film->getDuration();
+            $data['runtime'] = $film->getRuntime();
             $data['ageLimit'] = $film->getAgeLimit();
             $data['pressRating'] = $film->getPressRating();
             $data['userRating'] = $film->getUserRating();
             $data['link'] = $film->getLink();
-            $data['description'] = $film->getDescription();
-            $data['category'] = $film->getCategory()->getTitle();
+            $data['synopsis'] = $film->getSynopsis();
+            $genreFilm="";
+            foreach ($film->getGenre() as $genre){
+                 $genreFilm.=$genre->getTitle();
+            }
+            
+            $data['genre'] = $genreFilm;
         }
         return $data;
     }

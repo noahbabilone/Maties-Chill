@@ -11,7 +11,7 @@
         </div>
         <div class="col-sm-12">
             <div class="row">
-                {% if movies is defined and movies%}
+                {% if movies is defined and movies and  movies.feed.movie is defined %}
                     {% set films= movies.feed %}
                     {#{{ dump(movies) }}#}
                     <div class="col-sm-12">
