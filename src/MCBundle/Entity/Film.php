@@ -21,95 +21,95 @@ class Film
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="ISAN", type="string", length=255, unique=true)
      */
-    private $ISAN;
+    protected $ISAN;
 
     /**
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255,nullable=true)
      */
-    private $title;/**
+    protected $title;/**
      * @var string
      *
      * @ORM\Column(name="originalTitle", type="string", length=255,nullable=true)
      */
-    private $originalTitle;
+    protected $originalTitle;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="releaseDate", type="datetime",nullable=true)
      */
-    private $releaseDate;
+    protected $releaseDate;
 
     /**
      * @var string
      *
      * @ORM\Column(name="directors", type="string", length=255,nullable=true)
      */
-    private $directors;
+    protected $directors;
 
     /**
      * @var string
      *
      * @ORM\Column(name="actors", type="string", length=255,nullable=true)
      */
-    private $actors;
+    protected $actors;
 
     /**
      * @var string
      *
      * @ORM\Column(name="nationality", type="string", length=255,nullable=true)
      */ 
-    private $nationality;
+    protected $nationality;
 
     /**
      * @var int
      *
      * @ORM\Column(name="runtime", type="integer",nullable=true)
      */
-    private $runtime;
+    protected $runtime;
 
     /**
      * @var int
      *
      * @ORM\Column(name="ageLimit", type="integer", nullable=true)
      */
-    private $ageLimit;
+    protected $ageLimit;
 
     /**
      * @var float
      *
      * @ORM\Column(name="pressRating", type="float", nullable=true)
      */
-    private $pressRating;
+    protected $pressRating;
 
     /**
      * @var float
      *
      * @ORM\Column(name="userRating", type="float", nullable=true)
      */
-    private $userRating;
+    protected $userRating;
     /**
      * @var string
      *
      * @ORM\Column(name="link", type="string", nullable=true)
      */
-    private $link;
+    protected $link;
 
     /**
      * @var string
      *
      * @ORM\Column(name="trailer", type="string", nullable=true)
      */
-    private $trailer;
+    protected $trailer;
 
 
     /**
@@ -117,25 +117,25 @@ class Film
      *
      * @ORM\Column(name="poster", type="string", nullable=true)
      */
-    private $poster;
+    protected $poster;
     /**
      * @var text
      *
      * @ORM\Column(name="synopsisShort", type="text", nullable=true)
      */
-    private $synopsisShort;
+    protected $synopsisShort;
     
     /**
      * @var text
      *
      * @ORM\Column(name="synopsis", type="text", nullable=true)
      */
-    private $synopsis;
+    protected $synopsis;
 
     /**
      * @ORM\ManyToMany(targetEntity="MCBundle\Entity\Genre",  cascade={"persist"})
      */
-    private $genre;
+    protected $genre;
 
     /**
      * Constructor

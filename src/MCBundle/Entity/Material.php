@@ -19,24 +19,30 @@ class Material
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="description", type="string", length=255)
      */
-    private $description;
+    protected $description; 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="title", type="string", length=255)
+     */
+    protected $title;
     
     /**
      * @ORM\ManyToOne(targetEntity="MCBundle\Entity\TypeMaterial",  cascade={"persist"})
      */
-    private $typeMaterial;
+    protected $typeMaterial;
     
     /**
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User",  cascade={"persist"})
      */
-    private $user;
+    protected $user;
 
 
 
@@ -48,6 +54,28 @@ class Material
     public function getId()
     {
         return $this->id;
+    }
+     /**
+     * Set title
+     *
+     * @param string $title
+     * @return Material
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get title
+     *
+     * @return string 
+     */
+    public function getTitle()
+    {
+        return $this->title;
     }
 
     /**

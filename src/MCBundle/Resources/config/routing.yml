@@ -91,3 +91,9 @@ api-rest:
     type:  rest
     prefix: /api/
     resource: MCBundle\Controller\Rest\MCRestController
+
+#Back office
+backoffice-session:
+    prefix: /backoffice/
+    resource: MCBundle\Controller\BackOffice\SessionBOController
+

@@ -2,9 +2,4 @@ user_dashboard:
     path:     /dashboard
     defaults: { _controller: UserBundle:BackOffice:index }
     
-user_remove_session:
-    path:     /session-remove
-    defaults: { _controller: UserBundle:BackOffice:removeSession } 
-    options:
-        expose: true
   

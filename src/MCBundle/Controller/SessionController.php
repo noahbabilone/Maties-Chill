@@ -8,8 +8,8 @@ use MCBundle\Entity\Genre;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
-//use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 
 class SessionController extends Controller
@@ -95,29 +95,6 @@ class SessionController extends Controller
         return new Response("Add");
     }
 
- public
-    function testAddSessionAction()
-    {
-        $data = array();
-        $data["user"] = "1";
-        $data["date"] = "2012-12-08";
-        $data["typeView"] = "VOSF";
-        $data["description"] = "description test";
-        $data["contribution"] = "Coca";
-        $data["price"] = "12";
-        $data["maxPlace"] = "20";
-        $data['idAddress'] = "1";
-        
-        $tabMaterial= array("1","2");
-        
-        $data['material']=$tabMaterial;
-        $address['film'] = "1";
-
-        $dataJson = json_encode($data);
-        $user = $this->addUserAction($dataJson);
-        return $user;
-    }
-    
     
     
     

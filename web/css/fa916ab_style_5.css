@@ -1,0 +1,253 @@
+
+/* Custom Stylesheet */
+/**
+ * Use this file to override Materialize files so you can update
+ * the core Materialize files in the future
+ *
+ * Made By MaterializeCSS.com
+ */
+
+nav ul a,
+nav .brand-logo {
+  color: #444;
+}
+
+p {
+  line-height: 2rem;
+}
+
+.button-collapse {
+  color: #26a69a;
+}
+
+.parallax-container {
+  min-height: 380px;
+  line-height: 0;
+  height: auto;
+  color: rgba(255,255,255,.9);
+}
+  .parallax-container .section {
+    width: 100%;
+  }
+
+@media only screen and (max-width : 992px) {
+  .parallax-container .section {
+    position: absolute;
+    top: 40%;
+  }
+  #index-banner .section {
+    top: 10%;
+  }
+}
+
+@media only screen and (max-width : 600px) {
+  #index-banner .section {
+    top: 0;
+  }
+}
+
+.icon-block {
+  padding: 0 15px;
+}
+.icon-block .material-icons {
+  font-size: inherit;
+}
+
+footer.page-footer {
+  margin: 0;
+}
+.sb-page-header {
+    position: relative;
+    padding: 30px 15px;
+    text-align: center;
+    color: rgba(255, 255, 255, .8);
+    /*b84d45*/
+    background: #3b7fb8 url("../../bundles/mc/images/bg.png");
+    margin-bottom: 20px;
+    margin-top: -20px;
+    font-size: 20px
+}
+
+.sb-page-header h1 {
+    margin-top: 0;
+    color: #fff
+}
+
+.sb-page-header p {
+    margin-bottom: 0;
+    line-height: 1.4
+}
+
+.sb-page-header .container {
+    position: relative;
+}
+
+@media (min-width: 768px) {
+    .sb-page-header {
+        padding-top: 10px;
+        padding-bottom: 60px;
+        text-align: left;
+        font-size: 24px
+    }
+
+    .sb-page-header h1 {
+        font-size: 60px;
+        line-height: 1
+    }
+}
+
+@media (min-width: 992px) {
+    .sb-page-header h1, .sb-page-header p {
+        margin-right: 380px
+    }
+}
+
+.margin-right{
+margin-right:10px;
+}
+
+/*Submenu*/
+.submenu{
+    width: 170px;
+} 
+.submenu li a{
+    color: #7d7d7d;
+    margin: 0px;
+    padding: 4px;
+}
+
+
+/*Search*/
+
+#custom-search-input {
+    margin: 0;
+    margin-top: 0;
+    padding: 0;
+}
+
+#custom-search-input .search-query {
+    padding-right: 3px;
+    padding-right: 4px \9;
+    padding-left: 3px;
+    padding-left: 4px \9;
+    /* IE7-8 doesn't have border-radius, so don't indent the padding */
+
+    margin-bottom: 0;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+#custom-search-input button {
+    border: 0;
+    background: none;
+    /** belows styles are working good */
+    padding: 2px 5px;
+    margin-top: 2px;
+    position: relative;
+    left: -28px;
+    /* IE7-8 doesn't have border-radius, so don't indent the padding */
+    margin-bottom: 0;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    color: #23a7e0;
+}
+
+.search-query:focus + button {
+    z-index: 1;
+}
+
+.margin-top{
+    margin-top: 20px;
+}
+.table-sessions .td2{
+    padding-left: 22px;
+    /*border: 1px solid black;*/
+}
+
+
+.bs-callout {
+    padding: 5px;
+    margin: 0px 0 5px;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 3px;
+}
+
+.bs-callout h4 {
+    margin-top: 0;
+    margin-bottom: 3px;
+}
+
+.bs-callout p:last-child {
+    margin-bottom: 0;
+}
+
+.bs-callout + .bs-callout {
+    margin-top: -5px;
+}
+
+.bs-callout-default {
+    border-left-color: #777;
+}
+
+.bs-callout-default h4 {
+    color: #777;
+}
+
+.bs-callout-primary {
+    border-left-color: #428bca;
+}
+
+.bs-callout-primary h4 {
+    color: #428bca;
+}
+
+.bs-callout-success {
+    border-left-color: #5cb85c;
+}
+
+.bs-callout-success h4 {
+    color: #5cb85c;
+}
+
+.bs-callout-danger {
+    border-left-color: #d9534f;
+}
+
+.bs-callout-danger h4 {
+    color: #d9534f;
+}
+
+.bs-callout-warning {
+    border-left-color: #f0ad4e;
+}
+
+.bs-callout-warning h4 {
+    color: #f0ad4e;
+}
+
+.bs-callout-info {
+    border-left-color: #5bc0de;
+}
+
+.bs-callout-info h4 {
+    color: #5bc0de;
+}
+
+.titre {
+    font-weight: bold;
+
+}
+.bs-callout .list-inline li{
+    padding-right: 0;
+}
+
+.bs-callout .thumbnail{
+    margin: 0;
+}
+
+#films .page-header{
+    margin: 0px auto 10px;
+}

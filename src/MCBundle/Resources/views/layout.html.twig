@@ -1,10 +1,22 @@
 {% extends "::base.html.twig" %}
 
-{% block title %}
+{% block stylesheets %}
     {{ parent() }}
+    {% stylesheets
+    'bundles/mc/bootstrap/css/bootstrap-theme.css'
+    'https://fonts.googleapis.com/icon?family=Material+Icons'
+    'bundles/mc/css/style.css'
+    'bundles/mc/css/heroic-features.css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
 {% endblock %}
 
+
 {% block body %}
+
+    {% include("MCBundle:Includes:menu.html.twig") %}
+
     <header class="sb-page-header">
     </header>
     <div class="container">
@@ -25,6 +37,10 @@
 
 {% block javascripts %}
     {{ parent() }}
-
+    {% javascripts
+    'https://code.getmdl.io/1.1.3/material.min.js'
+    'bundles/mc/js/app.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock %}
 

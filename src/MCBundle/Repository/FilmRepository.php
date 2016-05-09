@@ -93,7 +93,8 @@ class FilmRepository extends EntityRepository
         $query
             ->where('a.title LIKE :title')
             ->setParameter('title', '%' . $keyword. '%')
-            ->orderBy('a.id', 'DESC');
+          //  ->orderBy('a.id', 'DESC')
+        ;
 
         return $query
             ->getQuery()
