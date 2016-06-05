@@ -3,28 +3,18 @@
   {% block stylesheets %}
       {{ parent() }}
       {% stylesheets
-      'https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css'
       'bundles/mc/themes/global/plugins/simple-line-icons/simple-line-icons.min.css'
       'bundles/mc/themes/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css'
-
-      'bundles/mc/themes/global/plugins/morris/morris.css'
-      'bundles/mc/themes/global/plugins/fullcalendar/fullcalendar.min.css'
-      'bundles/mc/themes/global/plugins/jqvmap/jqvmap/jqvmap.css'
 
       'bundles/mc/themes/global/css/components.min.css'
       'bundles/mc/themes/global/css/plugins.min.css'
 
       'bundles/mc/themes/layouts/layout/css/layout.min.css'
       'bundles/mc/themes/layouts/layout/css/themes/darkblue.min.css'
-      'bundles/mc/themes/layouts/layout/css/custom.min.css'
       'bundles/mc/css/admin.css'
-
-
       filter='cssrewrite' %}
       <link rel="stylesheet" href="{{ asset_url }}"/>
       {% endstylesheets %}
-      {#"assets/css/pnotify.custom.min.css"#}
-
   {% endblock %}
 {% block body %}
 
@@ -241,10 +231,10 @@
                     <li class="heading">
                         <h3 class="uppercase">Autres</h3>
                     </li>
-                    <li class="nav-item start {% if app.request.requestUri == path('other') %}  active  {% endif %}">
-                        <a href="{{ path('add_session') }}" class="nav-link">
+                    <li class="nav-item start {% if app.request.requestUri == path('nelmio_api_doc_index') %}  active  {% endif %}">
+                        <a href="{{ path('nelmio_api_doc_index') }}" class="nav-link">
                             <i class="icon-drawer"></i>
-                            <span class="title">Autres</span>
+                            <span class="title">API Doc</span>
                             <span class="selected"></span>
                             <span class="arrow"></span>
                         </a>
@@ -551,14 +541,8 @@
         {#"bundles/mc/themes/layouts/global/angular/angular.min.js"#}
 
         {% javascripts
-
-        "https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"
-        "bundles/mc/themes/layouts/global/scripts/quick-sidebar.min.js"
         "bundles/mc/themes/global/plugins/js.cookie.min.js"
         "bundles/mc/themes/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
-        "bundles/mc/themes/global/plugins/jquery.blockui.min.js"
-
-
         "bundles/mc/themes/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js"
         "bundles/mc/themes/global/plugins/jquery.blockui.min.js"
         "bundles/mc/themes/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js"
@@ -566,8 +550,6 @@
         "bundles/mc/themes/global/scripts/app.min.js"
 
         "bundles/mc/themes/layouts/layout/scripts/layout.min.js"
-        "bundles/mc/themes/layouts/layout/scripts/demo.min.js"
-        "bundles/mc/themes/layouts/global/scripts/quick-sidebar.min.js"
         "assets/js/bootstrap-notify.min.js" %}
         <script src="{{ asset_url }}"></script>
         {% endjavascripts %}

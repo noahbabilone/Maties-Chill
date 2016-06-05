@@ -1,1 +1,0 @@
-$(function () {    console.log("ready!");    $('#btn-search').click(function (e) {        var keyword = $.trim($('#search_film_title').val());        console.log(keyword);        if (keyword) {            window.location.href=Routing.generate('mc_film_search_allocine', { keyword: keyword });        }        e.preventDefault();    });});

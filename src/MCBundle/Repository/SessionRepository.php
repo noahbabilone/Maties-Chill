@@ -12,5 +12,13 @@ use Doctrine\ORM\EntityRepository;
  */
 class SessionRepository extends EntityRepository
 {
-    
+     public function getDescSessions()
+    {
+        $query = $this->createQueryBuilder('a');
+        $query->orderBy('a.id', 'DESC');
+        return $query
+            ->getQuery()
+            ->getResult();
+
+    } 
 }

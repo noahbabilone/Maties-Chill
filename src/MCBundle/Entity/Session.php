@@ -49,9 +49,9 @@ class Session
     /**
      * @var int
      *
-     * @ORM\Column(name="price", type="integer")
+     * @ORM\Column(name="price", type="integer",nullable=true)
      */
-    private $price;
+    private $price = 0;
 
     /**
      * @var int
@@ -72,7 +72,7 @@ class Session
     private $material;
 
     /**
-     * @ORM\ManyToOne(targetEntity="MCBundle\Entity\Modality",  cascade={"persist"})      
+     * @ORM\ManyToOne(targetEntity="MCBundle\Entity\Modality",  cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $modality;
@@ -87,14 +87,16 @@ class Session
      * @ORM\JoinColumn(nullable=false)
      */
     private $creator;
-    
+
     /**
      * @ORM\ManyToMany(targetEntity="UserBundle\Entity\User",  cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $participant;
 
-    
+    private $filmId;
+
+
     /**
      * Constructor
      */
@@ -107,12 +109,26 @@ class Session
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
         return $this->id;
     }
+
+    public function setFilmId($film)
+    {
+        $this->filmId = $film;
+
+        return $this;
+    }
+
+    public function getFilmId()
+    {
+        return $this->filmId;
+
+    }
+
 
     /**
      * Set date
@@ -122,15 +138,18 @@ class Session
      */
     public function setDate($date)
     {
-        $this->date = $date;
-
+        if (is_a($date, 'DateTime')) {
+            $this->date = $date;
+        } else {
+            $this->date = new \DateTime((string)$date);
+        }
         return $this;
     }
 
     /**
      * Get date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDate()
     {
@@ -153,7 +172,7 @@ class Session
     /**
      * Get typeView
      *
-     * @return string 
+     * @return string
      */
     public function getTypeView()
     {
@@ -176,7 +195,7 @@ class Session
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -199,7 +218,7 @@ class Session
     /**
      * Get contribution
      *
-     * @return string 
+     * @return string
      */
     public function getContribution()
     {
@@ -222,7 +241,7 @@ class Session
     /**
      * Get price
      *
-     * @return integer 
+     * @return integer
      */
     public function getPrice()
     {
@@ -245,7 +264,7 @@ class Session
     /**
      * Get maxPlace
      *
-     * @return integer 
+     * @return integer
      */
     public function getMaxPlace()
     {
@@ -268,7 +287,7 @@ class Session
     /**
      * Get address
      *
-     * @return \MCBundle\Entity\Address 
+     * @return \MCBundle\Entity\Address
      */
     public function getAddress()
     {
@@ -301,7 +320,7 @@ class Session
     /**
      * Get material
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getMaterial()
     {
@@ -324,7 +343,7 @@ class Session
     /**
      * Get modality
      *
-     * @return \MCBundle\Entity\Modality 
+     * @return \MCBundle\Entity\Modality
      */
     public function getModality()
     {
@@ -347,7 +366,7 @@ class Session
     /**
      * Get film
      *
-     * @return \MCBundle\Entity\Film 
+     * @return \MCBundle\Entity\Film
      */
     public function getFilm()
     {
@@ -370,7 +389,7 @@ class Session
     /**
      * Get creator
      *
-     * @return \UserBundle\Entity\User 
+     * @return \UserBundle\Entity\User
      */
     public function getCreator()
     {
@@ -403,7 +422,7 @@ class Session
     /**
      * Get participant
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getParticipant()
     {

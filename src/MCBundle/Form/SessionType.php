@@ -15,11 +15,11 @@ class SessionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('date', 'hidden', array(
+            ->add('date', 'text', array(
                     'label' => 'Date séance',
                     'required' => true,
                     'attr' => array(
-//                        'class' => 'form-control',
+                        'class' => 'form-control input_date_session',
                         /* 'placeholder' => 'Fonction',
                          'autocomplete' => 'off'*/
                     ),
@@ -93,7 +93,16 @@ class SessionType extends AbstractType
                     ),
                 )
             )
-            ->add('film', 'hidden')
+            ->add('filmId', 'text', array(
+                    'label' => 'Film',
+                    'required' => true,
+                    'attr' => array(
+                        'class' => 'form-control input_film',
+                        /* 'placeholder' => 'Fonction',
+                         'autocomplete' => 'off'*/
+                    ),
+                )
+            )
             ->add('material', 'entity', array(
                     'label' => 'Materiel',
 
@@ -104,40 +113,19 @@ class SessionType extends AbstractType
                         'class' => 'form-control',
                         'autocomplete' => 'off'),
                 )
+            )  
+            ->add('modality', 'entity', array(
+                    'label' => 'Modalité',
+                    'required' => true,
+                    'class' => 'MCBundle:Modality',
+                    'property' => 'title',
+                    'multiple' => false,
+                    'attr' => array(
+                        'class' => 'form-control modality',
+                        'autocomplete' => 'off'),
+                )
             )
-//->add('modality',  'entity', array(
-//                    'empty_value' => 'Materiel',
-//                    'empty_data' => null,
-//                    'class' => 'MCBundle:Modality',
-//                    'property' => 'title',
-//                    'multiple' => false,
-//                    'attr' => array('autocomplete' => 'off'),
-//                )
-//            )->add('film',  'entity', array(
-//                    'empty_value' => 'Film',
-//                    'empty_data' => null,
-//                    'class' => 'MCBundle:Film',
-//                    'property' => 'title',
-//                    'multiple' => false,
-//                    'attr' => array(
-//                        'autocomplete' => 'off'
-//                    ),
-//                )
-//            )->add('creator',  'entity', array(
-//                    'empty_value' => 'Film',
-//                    'empty_data' => null,
-//                    'class' => 'UserBundle:User',
-//                    'property' => 'title',
-//                    'multiple' => false,
-//                    'attr' => array(
-//                        'autocomplete' => 'off'
-//                    ),
-//                )
-//            )
-//            ->add('material')
-//            ->add('modality')
-//            ->add('film')
-//            ->add('creator')
+
 //            ->add('participant')
         ;
     }

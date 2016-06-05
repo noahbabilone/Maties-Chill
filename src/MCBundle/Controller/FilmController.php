@@ -88,28 +88,27 @@ class FilmController extends Controller
     }
 
 
-    public function addFilmAction()
+    /**
+     * @param $code
+     * @return Response
+     */
+    public function addFilmDB($code)
     {
         $em = $this->getDoctrine()->getManager();
         $allocine = $this->get("mc_allocine");
-        $result = $allocine->get(47111);
+        $result = $allocine->get($code);
         $data = json_decode($result);
         $film = $this->parserMovie($data->movie);
         if ($film->getISAN()) {
-            dump($film);
             $em->persist($film);
             $em->flush();
-            return new Response("Add");
+            return true;
         }
-        return new Response("Error Add Film");
+        return false;
 
     }
 
 
-    public function removeFilmAction($id)
-    {
-
-    }
 
     /**
      * @return Film
@@ -143,9 +142,9 @@ class FilmController extends Controller
                 $film->setRuntime($movie->runtime);
             $film->setAgeLimit(10);
 
-            if (array_key_exists('statistics', $movie))
+            if (array_key_exists('statistics', $movie) && array_key_exists('pressRating', $movie->statistics))
                 $film->setPressRating($movie->statistics->pressRating);
-            if (array_key_exists('statistics', $movie))
+            if (array_key_exists('statistics', $movie) && array_key_exists('userRating', $movie->statistics))
                 $film->setUserRating($movie->statistics->userRating);
 
             if (array_key_exists('link', $movie)) {

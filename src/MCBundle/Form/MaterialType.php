@@ -15,7 +15,27 @@ class MaterialType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('description')
+            ->add('title', 'text', array(
+                    'label' => 'Titre',
+                    'required' => false,
+                    'attr' => array(
+                        'class' => 'form-control',
+                        'placeholder' => 'Contribution',
+                        'autocomplete' => 'off'
+                    ),
+                )
+            )
+             ->add('description', 'textarea', array(
+                    'label' => 'Description',
+                    'required' => false,
+                    'attr' => array(
+                        'class' => 'form-control',
+                        'placeholder' => 'Description ',
+                        'autocomplete' => 'off'
+                    ),
+
+                )
+            )
             ->add('typeMaterial', 'entity', array(
                     'class' => 'MCBundle:TypeMaterial',
                     'property' => 'title',
