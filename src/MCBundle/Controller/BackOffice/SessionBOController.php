@@ -91,11 +91,11 @@ class SessionBOController extends Controller
             $em = $this->getDoctrine()->getManager();
             $film = $em->getRepository('MCBundle:Film')->findOneBy(array('ISAN' => $session->getFilmId()));
             if (!$film) {
-                $em = $this->getDoctrine()->getManager();
+               // $em = $this->getDoctrine()->getManager();
                 $cine = $this->get("mc_allocine");
                 $result = $cine->get($session->getFilmId());
                 $data = json_decode($result);
-                dump($data);
+               // dump($data);
 
                 $film = $this->parserMovie($data->movie);
                 if ($film->getISAN()) {

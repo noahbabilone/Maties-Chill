@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class SessionRepository extends EntityRepository
 {
-     public function getDescSessions()
+    public function getDescSessions()
     {
         $query = $this->createQueryBuilder('a');
         $query->orderBy('a.id', 'DESC');
@@ -20,5 +20,18 @@ class SessionRepository extends EntityRepository
             ->getQuery()
             ->getResult();
 
-    } 
+    }
+
+    public function sessionByFilm($id)
+    {
+        $query = $this->createQueryBuilder('s');
+        $query
+            ->innerJoin('s.film', 'f')
+            ->where('f.id = :id')
+            ->setParameter('id', $id);
+        $query->orderBy('s.id', 'DESC');
+        return $query
+            ->getQuery()
+            ->getResult();
+    }
 }

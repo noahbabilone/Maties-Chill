@@ -1,41 +1,41 @@
-mc_homepage:
-    path:     /
-    defaults: { _controller: MCBundle:MatiesChill:index }
+#mc_homepage:
+#    path:     /
+#    defaults: { _controller: MCBundle:MatiesChill:index }
 
 # Session
-mc_session_add:
-    path:     /sessions/add
-    defaults: { _controller: MCBundle:Session:addSession }
- 
-mc_session_home:
-    path:     /sessions
-    defaults: { _controller: MCBundle:Session:index }
+#mc_session_add:
+#    path:     /sessions/add
+#    defaults: { _controller: MCBundle:Session:addSession }
+# 
+#mc_session_home:
+#    path:     /ancient/sessions
+#    defaults: { _controller: MCBundle:Session:index }
 
-#Films
-mc_film_home:
-    path:     /films
-    defaults: { _controller: MCBundle:Film:index }
+##Films
+#mc_film_home:
+#    path:     /films
+#    defaults: { _controller: MCBundle:Film:index }
+#    
+#mc_film_action:
+#    path:     /films/{action}
+#    defaults: { _controller: MCBundle:Film:getFilm }
     
-mc_film_action:
-    path:     /films/{action}
-    defaults: { _controller: MCBundle:Film:getFilm }
-    
-mc_film_view:
-    path:     /film/view/{slug}.html
-    defaults: { _controller: MCBundle:Film:viewFilm }
-mc_film_search:
-    path:     /film/search/{keyword}
-    defaults: { _controller: MCBundle:Film:searchFilm }
-    
-mc_film_add:
-    path:     /film/add.html
-    defaults: { _controller: MCBundle:Film:addFilm }
-mc_film_edit:
-    path:     /film/edit
-    defaults: { _controller: MCBundle:Film:addFilm }
-mc_film_remove:
-    path:     /film/{id}/remove.html
-    defaults: { _controller: MCBundle:Film:removeFilmField }
+#mc_film_view:
+#    path:     /film/view/{slug}.html
+#    defaults: { _controller: MCBundle:Film:viewFilm }
+#mc_film_search:
+#    path:     /film/search/{keyword}
+#    defaults: { _controller: MCBundle:Film:searchFilm }
+#    
+#mc_film_add:
+#    path:     /film/add.html
+#    defaults: { _controller: MCBundle:Film:addFilm }
+#mc_film_edit:
+#    path:     /film/edit
+#    defaults: { _controller: MCBundle:Film:addFilm }
+#mc_film_remove:
+#    path:     /film/{id}/remove.html
+#    defaults: { _controller: MCBundle:Film:removeFilmField }
 
 #  Allocine
 mc_film_search_allocine:
@@ -93,7 +93,23 @@ api-rest:
     resource: MCBundle\Controller\Rest\MCRestController
 
 #Back office
-backoffice-session:
-    prefix: /backoffice/
-    resource: MCBundle\Controller\BackOffice\SessionBOController
 
+mc_themes:
+    resource: MCBundle\Controller\MCController
+    type:     annotation
+    prefix:   /
+    
+mc_session:
+    resource: MCBundle\Controller\SessionController
+    type:     annotation
+    prefix:   /
+    
+mc_film:
+    resource: MCBundle\Controller\FilmController
+    type:     annotation
+    prefix:   /
+
+mc_backoffice:
+    resource: MCBundle\Controller\BackOffice\SessionBOController
+    type:     annotation
+    prefix:   /backoffice

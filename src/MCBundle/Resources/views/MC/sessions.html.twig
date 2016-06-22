@@ -1,0 +1,192 @@
+{% extends "MCBundle::main.html.twig" %}
+
+{% block title %}
+    Films - {{ parent() }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+    'bundles/mc/themes/global/plugins/cubeportfolio/css/cubeportfolio.css'
+    'bundles/mc/themes/global/css/components.min.css'
+    'bundles/mc/themes/pages/css/portfolio.min.css'
+    'bundles/mc/css/card.css'
+    filter='cssrewrite' %}
+    {#
+   
+    
+    '#}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+
+{% endblock %}
+
+{% block body_mc %}
+    <div class="page-container page-mc">
+        <div class="page-content">
+            <!-- BEGIN PAGE HEADER-->
+            <!-- BEGIN THEME PANEL -->
+            <!-- END THEME PANEL -->
+            <!-- BEGIN PAGE BAR -->
+            <div class="page-bar">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <ul class="page-breadcrumb">
+                            <li>
+                                <a href="{{ path('home_page') }}">Accueil</a>
+                                <i class="fa fa-circle"></i>
+                            </li>
+                            <li>
+                                <a href="{{ path('session_home') }}">S&eacuteances</a>
+                                <i class="fa fa-circle"></i>
+                            </li>
+                            <li>
+                                <span>Toutes</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- END PAGE BAR -->
+            <!-- BEGIN PAGE TITLE-->
+            <div class="row">
+
+                <div class="col-sm-2">
+                    {% include("MCBundle:Includes:submenu.html.twig") %}
+                </div>
+                <div class="col-sm-10">
+                    <div class="row">
+
+                        {#portlet light bordered#}
+                        <div class="col-sm-12">
+                            <h3 class="page-title page-header"> S&eacuteances
+                                <small>Toutes</small>
+                            </h3>
+                        </div>
+
+                        <!-- END PAGE TITLE-->
+                        <!-- END PAGE HEADER-->
+                        <div class="col-sm-12">
+                            {% if sessions is defined and sessions %}
+
+                                <div class="portfolio-content">
+                                    <div id="js-grid-juicy-projects" class="cbp">
+                                        {% for session in sessions %}
+
+                                            <div class="cbp-item">
+                                                <article class="card">
+                                                    <header class="card__thumb">
+                                                        <a href="{{ path("film_view", {"slug": session.film.id}) }}">
+                                                            {% if session.film.poster is defined and session.film.poster %}
+
+                                                                <img src="{{ session.film.poster }}"
+                                                                     class=" pull-left margin-right"
+                                                                     alt="{{ session.film.title }}">
+                                                            {% else %}
+                                                                <img src="../../uploads/images/400x300.png"
+                                                                     class=" pull-left margin-right"
+                                                                     alt="{{ session.film.title }}">
+                                                            {% endif %}                                    </a>
+                                                    </header>
+                                                    {#<div class="card__date">#}
+                                                    {#&#123;&#35;<span class="card__date__day">12</span>&#35;&#125;#}
+                                                    {#<span class="card__date__month">#}
+                                                    {#{% if session.price > 0 %}{{ session.price }}€{% else %}Gratuit{% endif %}#}
+                                                    {#</span>#}
+                                                    {#</div>#}
+
+                                                    <div class="session__price">
+                                    <span class="session__price_val">
+                                    {% if session.price > 0 %}{{ session.price }}€{% else %}Gratuit{% endif %}
+                                        </span>
+                                                    </div>
+                                                    <div class="card__body">
+                                                        <div class="card__category">
+                                                            <i class="fa fa-clock-o"></i>
+                                                            {{ session.date| date("d F") }} à
+                                                            {{ session.date| date("H") }}h{{ session.date| date("i") }}
+                                                        </div>
+                                                        <h5 class="card__title"><a href="#">
+                                                                {#{{ session.film.title |length > 30 ? session.film.title|slice(0, 30) ~ '...' : session.film.title }}#}
+                                                                {{ session.film.title }}
+                                                            </a></h5>
+                                                        <ul class="card__description list-unstyled">
+
+
+                                                            {% if session.creator is defined and session.creator %}
+                                                                <li>
+                                                                    <i class="fa fa-user"></i> {{ session.creator.username | capitalize }}
+                                                                </li>
+                                                            {% endif %}
+
+                                                            {% if session.address.town is defined and session.address.town %}
+                                                                <li>
+                                                                    <i class="fa fa-location-arrow"></i> {{ session.address.town }}
+                                                                    {% if session.address.postCode is defined and session.address.postCode %}
+                                                                        ({{ session.address.postCode }})
+                                                                    {% endif %}
+                                                                </li>
+                                                            {% endif %}
+
+                                                            {% if session.maxPlace is defined and session.maxPlace %}
+                                                                <li>
+                                                                    <i class="fa fa-user-plus"></i> {{ session.maxPlace }}
+                                                                    Place(s)
+                                                                    restante(s)
+                                                                </li>
+                                                            {% endif %}
+
+                                                        </ul>
+                                                    </div>
+                                                    <footer class="card__footer ">
+                                                        {#<span class="glyphicon glyphicon-time"></span> 6 min#}
+
+                                                        <span class="fa fa-users"></span>
+                                                        <small>{{ random(6) }}</small>
+                                                        &nbsp;
+                                                        <span class="fa fa-comments"></span>
+                                                        <small>{{ random(50) }}</small>
+                                        <span class="pull-right"><a
+                                                    href="{{ path("session_view", {"slug": session.film.id}) }}"
+                                                    class="text-info"><i class="fa fa-shopping-cart"></i>&nbsp;Suite&raquo;
+                                            </a></span>
+                                                        {#<span class="pull-right"><a 
+                                                                    href="{{ path("film_view", {"slug": session.film.id}) }}"
+                                                                    class="text-info"><i class="fa fa-user-plus"></i></a>&nbsp;</span> #}
+                                                    </footer>
+                                                </article>
+
+                                            </div>
+
+                                        {% endfor %}
+                                            <div class="cbp-item">
+                                            {% if sessions %}
+                                                {{ knp_pagination_render(sessions) }}
+                                            {% endif %}
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                            {% endif %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+    {% block javascripts %}
+        {{ parent() }}
+        {% javascripts
+        'bundles/mc/themes/global/plugins/cubeportfolio/js/jquery.cubeportfolio.min.js'
+        'bundles/mc/themes/pages/scripts/portfolio-1.min.js' %}
+        {#  #}
+        <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+    {% endblock %}

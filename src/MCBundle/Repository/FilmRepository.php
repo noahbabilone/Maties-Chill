@@ -12,12 +12,16 @@ use Doctrine\ORM\EntityRepository;
  */
 class FilmRepository extends EntityRepository
 {
+    /**
+     * @param $genre
+     * @return array
+     */
     public function getByGenre($genre)
     {
         $query = $this->createQueryBuilder('a');
         $query
             ->innerJoin('a.genre', 'g')
-            ->addSelect('g') 
+            ->addSelect('g')
             ->where('g.id = :genre')
             ->setParameter('genre', $genre);
         $query->orderBy('a.id', 'DESC');
@@ -27,6 +31,9 @@ class FilmRepository extends EntityRepository
 
     }
 
+    /**
+     * @return array
+     */
     public function getLastFilm()
     {
         $query = $this->createQueryBuilder('a');
@@ -35,38 +42,52 @@ class FilmRepository extends EntityRepository
             ->getQuery()
             ->getResult();
 
-    } 
+    }
+
+    /**
+     * @param null $limit
+     * @return array
+     */
     public function lastFilm($limit = null)
     {
         $query = $this->createQueryBuilder('a');
         $query->orderBy('a.id', 'DESC');
-        if($limit !== null){
-           $query->setMaxResults($limit);
+        if ($limit !== null) {
+            $query->setMaxResults($limit);
         }
         return $query
             ->getQuery()
             ->getResult();
 
-    }   
-    
+    }
+
+    /**
+     * @param null $limit
+     * @return array
+     */
     public function newFilm($limit = null)
     {
         $query = $this->createQueryBuilder('a');
         $query->orderBy('a.releaseDate', 'DESC');
-        if($limit !== null){
-           $query->setMaxResults($limit);
+        if ($limit !== null) {
+            $query->setMaxResults($limit);
         }
         return $query
             ->getQuery()
             ->getResult();
 
     }
+
+    /**
+     * @param null $limit
+     * @return array
+     */
     public function topFilm($limit = null)
     {
         $query = $this->createQueryBuilder('a');
         $query->orderBy('a.userRating', 'DESC');
-        if($limit !== null){
-           $query->setMaxResults($limit);
+        if ($limit !== null) {
+            $query->setMaxResults($limit);
         }
         return $query
             ->getQuery()
@@ -74,6 +95,10 @@ class FilmRepository extends EntityRepository
 
     }
 
+    /**
+     * @param Film $film
+     * @return array
+     */
     public function search(Film $film)
     {
         $query = $this->createQueryBuilder('a');
@@ -85,20 +110,24 @@ class FilmRepository extends EntityRepository
         return $query
             ->getQuery()
             ->getResult();
-        //return $this->find($query);
-    } 
+    }
+
+    /**
+     * @param $keyword
+     * @return array
+     */
     public function searchDB($keyword)
     {
         $query = $this->createQueryBuilder('a');
         $query
             ->where('a.title LIKE :title')
-            ->setParameter('title', '%' . $keyword. '%')
-          //  ->orderBy('a.id', 'DESC')
+            ->setParameter('title', '%' . $keyword . '%')//  ->orderBy('a.id', 'DESC')
         ;
-
         return $query
             ->getQuery()
             ->getResult();
-        //return $this->find($query);
     }
+
+
+
 }

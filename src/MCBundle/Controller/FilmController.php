@@ -8,13 +8,19 @@ use MCBundle\Entity\Genre;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 //use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 
 class FilmController extends Controller
 {
-    public function indexAction()
+    /**
+     * @Route("/films", name="film_home")
+     * Get all sessions
+     * @return Response
+     */
+    public function filmsIndexAction()
     {
         $em = $this->getDoctrine()->getManager();
         $lastFilms = $em->getRepository('MCBundle:Film')->lastFilm(4);
@@ -22,7 +28,7 @@ class FilmController extends Controller
         $topFilms = $em->getRepository('MCBundle:Film')->topFilm(4);
 
         return $this->render(
-            'MCBundle:Pages:filmsIndex.html.twig',
+            'MCBundle:MC:filmsIndex.html.twig',
             array(
                 "lastFilms" => $lastFilms,
                 "newFilms" => $newFilms,
@@ -31,6 +37,80 @@ class FilmController extends Controller
         );
 
     }
+    
+    /**
+     * @Route("/films/view/{slug}", name="film_view")
+     * @param $slug
+     * @return Response
+     */
+    public function viewFilmAction($slug)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $film = $em->getRepository('MCBundle:Film')->find($slug);
+        $sessions = $em->getRepository('MCBundle:Session')->sessionByFilm($film->getId());
+        
+        return $this->render('MCBundle:MC:viewFilm.html.twig', array(
+            "film" => $film,
+            "sessions" => $sessions,
+        ));
+
+    }
+    
+    
+     /**
+     * @Route("/films/{action}", name="film_action")
+     * Get all sessions
+     * @param null $action
+     * @param Request $request
+     * @return Response
+     */
+    public function getFilmsAction($action = null, Request $request)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+        $limitPage = 8;
+        $numberPage = 1;
+
+        if ($action == null || $action == "all") {
+            $result = $em->getRepository('MCBundle:Film')->findAll();
+            $title = "Tous les films";
+            $breadcrumb = "Tous";
+        } else if ($action == "last_add") {
+            $result = $em->getRepository('MCBundle:Film')->lastFilm();
+            $title = "Récents";
+            $breadcrumb = "Récents";
+
+        } else if ($action == "new_film") {
+            $result = $em->getRepository('MCBundle:Film')->newFilm();
+            $title = "Nouveautés";
+            $breadcrumb = "Nouveautés";
+
+        } else if ($action == "top_film") {
+            $result = $em->getRepository('MCBundle:Film')->topFilm();
+            $title = "Top films";
+            $breadcrumb = "Top-film";
+        } else {
+            $result = array();
+            $title = "Aucun film trouvé";
+            $breadcrumb = "Aucun";
+        }
+
+        $films = $this->get('knp_paginator')->paginate(
+            $result,
+            $request->query->get('page', $numberPage),
+            $limitPage
+        );
+        return $this->render(
+            'MCBundle:MC:films.html.twig',
+            array(
+                "films" => $films,
+                "titlePage" => $title,
+                "breadcrumb" => $breadcrumb,
+            )
+        );
+    }
+    
+    
 
     public function getFilmAction($action = null, Request $request)
     {
@@ -72,20 +152,7 @@ class FilmController extends Controller
             )
         );
     }
-
-    /**
-     * @param $slug
-     * @return Response
-     */
-    public function viewFilmAction($slug)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $film = $em->getRepository('MCBundle:Film')->find($slug);
-        return $this->render('MCBundle:Pages:viewFilm.html.twig', array(
-            "film" => $film,
-        ));
-
-    }
+    
 
 
     /**
@@ -109,7 +176,6 @@ class FilmController extends Controller
     }
 
 
-
     /**
      * @return Film
      */
@@ -117,9 +183,9 @@ class FilmController extends Controller
     {
         $film = new Film();
         if (!empty($movie)) {
-        $em = $this->getDoctrine()->getManager();
+            $em = $this->getDoctrine()->getManager();
             $film->setISAN($movie->code);
-                $film->setTitle($movie->title);
+            $film->setTitle($movie->title);
             if (array_key_exists('originalTitle', $movie))
                 $film->setOriginalTitle($movie->originalTitle);
 
@@ -224,11 +290,11 @@ class FilmController extends Controller
             $data['userRating'] = $film->getUserRating();
             $data['link'] = $film->getLink();
             $data['synopsis'] = $film->getSynopsis();
-            $genreFilm="";
-            foreach ($film->getGenre() as $genre){
-                 $genreFilm.=$genre->getTitle();
+            $genreFilm = "";
+            foreach ($film->getGenre() as $genre) {
+                $genreFilm .= $genre->getTitle();
             }
-            
+
             $data['genre'] = $genreFilm;
         }
         return $data;

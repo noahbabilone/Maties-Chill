@@ -3,8 +3,15 @@
 namespace MCBundle\Controller;
 
 use MCBundle\Entity\Film;
-
+use MCBundle\Entity\Session;
+use MCBundle\Entity\Address;
+use MCBundle\Entity\Material;
 use MCBundle\Entity\Genre;
+
+use MCBundle\Form\SessionType;
+use MCBundle\Form\MaterialType;
+use MCBundle\Form\AddressType;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,8 +21,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class SessionController extends Controller
 {
-
     /**
+     * @Route("/seances", name="session_home")
      * Get all sessions
      * @param Request $request
      * @return Response
@@ -34,12 +41,30 @@ class SessionController extends Controller
             $limitPage
         );
         return $this->render(
-            'MCBundle:Pages:sessions.html.twig',
+            'MCBundle:MC:sessions.html.twig',
             array(
                 "sessions" => $sessions
             )
         );
     }
+
+
+    /**
+     * @Route("/seances/view/{slug}", name="session_view")
+     * @param $slug
+     * @return Response
+     */
+    public function viewSessionsAction($slug)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $session = $em->getRepository('MCBundle:Session')->find($slug);
+
+        return $this->render('MCBundle:MC:viewSession.html.twig', array(
+            "session" => $session,
+        ));
+
+    }
+
 
     /**
      * Get all sessions for each Id Film
@@ -49,7 +74,7 @@ class SessionController extends Controller
     public function sessionByFilmAction($idFilm)
     {
         $em = $this->getDoctrine()->getManager();
-        $sessions = $em->getRepository('MCBundle:Session')->findByFilm($idFilm);
+        $sessions = $em->getRepository('MCBundle:Session')->fin($idFilm);
         $film = $em->getRepository('MCBundle:Film')->find($idFilm);
 
         return $this->render(
@@ -61,7 +86,58 @@ class SessionController extends Controller
         );
     }
 
-    public function addSessionAction()
+
+    /**
+     * Get all sessions
+     * @param Request $request
+     * @Route("/sessions/add", name="session_add")
+     * @return Response
+     */
+    public function addSessionAction(Request $request)
+    {
+        $session = new Session();
+        $form = $this->createForm(new SessionType(), $session);
+        $formMaterial = $this->createForm(new MaterialType(), new Material());
+        $formAddress = $this->createForm(new AddressType(), new Address());
+
+        if ($form->handleRequest($request)->isValid() && $session->getFilmId()) {
+            $em = $this->getDoctrine()->getManager();
+            $film = $em->getRepository('MCBundle:Film')->findOneBy(array('ISAN' => $session->getFilmId()));
+            if (!$film) {
+                // $em = $this->getDoctrine()->getManager();
+                $cine = $this->get("mc_allocine");
+                $result = $cine->get($session->getFilmId());
+                $data = json_decode($result);
+                // dump($data);
+
+                $film = $this->parserMovie($data->movie);
+                if ($film->getISAN()) {
+                    $em->persist($film);
+                    $em->flush();
+                    $film = $em->getRepository('MCBundle:Film')->find($film->getId());
+                }
+
+            }
+            $session->setFilm($film);
+            $creator = $user = $this->get('security.context')->getToken()->getUser();
+            $session->setCreator($creator);
+            $em->persist($session);
+            $em->flush();
+
+            $request->getSession()->set('add-session', true);
+            return $this->redirectToRoute('list_sessions', array(), 301);
+
+        }
+
+        return $this->render('MCBundle:MC:add-sessions.html.twig', array(
+            'form' => $form->createView(),
+            'formMaterial' => $formMaterial->createView(),
+            'formAddress' => $formAddress->createView(),
+        ));
+    }
+
+
+    public function addSession()
     {
 
         $em = $this->getDoctrine()->getManager();
@@ -95,8 +171,5 @@ class SessionController extends Controller
         return new Response("Add");
     }
 
-    
-    
-    
 
 }
