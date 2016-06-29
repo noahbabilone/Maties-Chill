@@ -157,29 +157,69 @@
                             <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
                                data-close-others="true">
                                 {#<img alt="" class="img-circle" src="../assets/layouts/layout/img/avatar3_small.jpg"/>#}
-                                <span class="username username-hide-on-mobile">{{ app.request.session.get("username") }} </span>
+                                <span class="username username-hide-on-mobile"><i class="fa fa-tv fw"></i></span>
                                 <i class="fa fa-angle-down"></i>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-default">
                                 <li>
                                     <a href="{{ path('fos_user_profile_show') }}">
-                                        <i class="icon-user"></i> Mes Informations </a>
+                                        <i class="icon-screen-desktop"></i>Mes Séances
+                                        {% if app.session.get('nbSession') %}
+                                            <span class="badge badge-info nbSession"> {{ app.session.get('nbSession') }} </span>
+                                        {% endif %}
+                                    </a>
                                 </li>
                                 <li>
                                     <a href="{{ path('fos_user_profile_edit') }}">
-                                        <i class="icon-pencil"></i> Mot de passe </a>
+                                        <i class="icon-basket"></i>Participation(s)
+                                        {% if app.session.get('nbPaticipation') %}
+                                            <span class="badge badge-success nbPaticipation"> {{ app.session.get('nbPaticipation') }} </span>
+                                        {% endif %}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('fos_user_change_password') }}">
+                                        <i class="icon-users"></i>Participant(s)
+                                        {% if app.session.get('nbParticipant') %}
+                                            <span class="badge badge-success nbParticipant"> {{ app.session.get('nbParticipant') }}</span>
+                                        {% endif %}
+                                    </a>
+                                </li>
+                            </ul>
+
+                        </li>
+
+
+                        <li class="dropdown dropdown-user">
+                            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
+                               data-close-others="true">
+                                {#<img alt="" class="img-circle"#}
+                                {#src="https://www.b1g1.com/assets/admin/images/no_image_user.png"/>#}
+                                {#<img alt="" class="img-circle" src="https://thetransformedmale.files.wordpress.com/2011/06/bruce-wayne-armani.jpg"/>#}
+
+                                <span class="username username-hide-on-mobile">{{ app.user.username | capitalize }} </span>
+                                <i class="fa fa-angle-down"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-default">
+                                <li>
+                                    <a href="{{ path('fos_user_profile_show') }}">
+                                        <i class="icon-user"></i>Profile </a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('fos_user_profile_edit') }}">
+                                        <i class="icon-pencil"></i>Modifier Profile </a>
                                 </li>
                                 <li>
                                     <a href="{{ path('fos_user_change_password') }}">
                                         <i class="icon-key"></i>Mot de passe
-                                        <span class="badge badge-danger"> 3 </span>
                                     </a>
                                 </li>
+
                                 {% if is_granted('ROLE_ADMIN') %}
 
                                     <li>
                                         <a href="{{ path('dashboard') }}">
-                                            <i class="icon-rocket"></i> Admin
+                                            <i class="icon-rocket"></i>Admin
                                             <span class="badge badge-success"> 7 </span>
                                         </a>
                                     </li>
@@ -197,15 +237,19 @@
                         </li>
                         <li class="dropdown dropdown-quick-sidebar-toggler">
                             <a href="{{ path('fos_user_security_logout') }}" class="dropdown-toggle">
-                                <i class="icon-logout"></i>
+                                <i class="icon-logout"></i></span>
                             </a>
                         </li>
                     {% else %}
-                        <li><a href="{{ path('fos_user_security_login') }}" title="Connexion">
-                                <i class="icon-login "></i> Connexion</a></li>
+                        <li class=""><a href="{{ path('fos_user_security_login') }}" title="Connexion">
+                                <i class="icon-login "></i> Connexion </a></li>
                         <li><a href="{{ path('fos_user_registration_register') }}"
                                title="S'inscrire">
-                                <i class="icon-plus"></i> Inscription</a></li>
+                                <i class="icon-plus"></i>
+                                <span class="username username-hide-on-mobile">Inscription</span>
+                            </a>
+
+                        </li>
 
                     {% endif %}
 
@@ -267,7 +311,11 @@
         "bundles/mc/themes/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js"
 
         "bundles/mc/themes/global/scripts/app.min.js"
-        "bundles/mc/themes/layouts/layout/scripts/layout.min.js" %}
+        "bundles/mc/themes/layouts/layout/scripts/layout.min.js"
+        "assets/js/bootstrap-notify.min.js"
+        "bundles/mc/js/app.js"
+        
+        %}
         <script src="{{ asset_url }}"></script>
         {% endjavascripts %}
         {#

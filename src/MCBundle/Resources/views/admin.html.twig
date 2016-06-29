@@ -18,14 +18,10 @@
   {% endblock %}
 {% block body %}
 
-    <!-- BEGIN HEADER -->
-    <!-- BEGIN HEADER -->
     <div class="page-header navbar navbar-fixed-top">
-        <!-- BEGIN HEADER INNER -->
         <div class="page-header-inner ">
-            <!-- BEGIN LOGO -->
             <div class="page-logo">
-                <a href="index.html" class="text-center">
+                <a href="{{ path('home_page') }}" class="text-center">
                     <h4 class="caption-subject bold" style="margin-top:15px;">
                         <span class="font-yellow-casablanca">Maties</span><span
                                 class="font-white uppercase">Chill</span>
@@ -37,70 +33,78 @@
                     <span></span>
                 </div>
             </div>
-            <!-- END LOGO -->
-            <!-- BEGIN RESPONSIVE MENU TOGGLER -->
             <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse"
                data-target=".navbar-collapse">
                 <span></span>
             </a>
-            <!-- END RESPONSIVE MENU TOGGLER -->
-            <!-- BEGIN TOP NAVIGATION MENU -->
             <div class="top-menu">
                 <ul class="nav navbar-nav pull-right">
+                    {% if app.user %}
 
-                    <!-- END TODO DROPDOWN -->
-                    <!-- BEGIN USER LOGIN DROPDOWN -->
-                    <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
-                    <li class="dropdown dropdown-user">
-                        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
-                           data-close-others="true">
-                            {#<img alt="" class="img-circle" src="../assets/layouts/layout/img/avatar3_small.jpg"/>#}
-                            <span class="username username-hide-on-mobile">{{ app.request.session.get("username") }} </span>
-                            <i class="fa fa-angle-down"></i>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-default">
-                            <li>
-                                <a href="page_user_profile_1.html">
-                                    <i class="icon-user"></i>Profil </a>
-                            </li>
-                            <li>
-                                <a href="app_calendar.html">
-                                    <i class="icon-calendar"></i>Calendrier </a>
-                            </li>
-                            <li>
-                                <a href="app_inbox.html">
-                                    <i class="icon-envelope-open"></i>Messages
-                                    <span class="badge badge-danger"> 3 </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="app_todo.html">
-                                    <i class="icon-rocket"></i> Tâches
-                                    <span class="badge badge-success"> 7 </span>
-                                </a>
-                            </li>
-                            <li class="divider"></li>
+                        <li class="dropdown dropdown-user">
+                            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
+                               data-close-others="true">
+                                {#<img alt="" class="img-circle" src="../assets/layouts/layout/img/avatar3_small.jpg"/>#}
+                                <span class="username username-hide-on-mobile">{{ app.user.username | capitalize }} </span>
+                                <i class="fa fa-angle-down"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-default">
+                                <li>
+                                    <a href="{{ path('fos_user_profile_show') }}">
+                                        <i class="icon-user"></i> Mes Informations </a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('fos_user_profile_edit') }}">
+                                        <i class="icon-pencil"></i> Modifier </a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('fos_user_change_password') }}">
+                                        <i class="icon-key"></i>Mot de passe
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('fos_user_change_password') }}">
+                                        <i class="icon-key"></i>Mes séances
+                                        <span class="badge badge-danger"> 3 </span>
+                                    </a>
+                                </li>
+                                {% if is_granted('ROLE_ADMIN') %}
 
-                            <li>
-                                <a href="{{ path('fos_user_security_logout') }}">
-                                    <i class="icon-key"></i> Déconnexion </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <!-- END USER LOGIN DROPDOWN -->
-                    <!-- BEGIN QUICK SIDEBAR TOGGLER -->
-                    <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
-                    <li class="dropdown dropdown-quick-sidebar-toggler">
-                        <a href="{{ path('fos_user_security_logout') }}" class="dropdown-toggle">
-                            <i class="icon-logout"></i>
-                        </a>
-                    </li>
-                    <!-- END QUICK SIDEBAR TOGGLER -->
+                                    <li>
+                                        <a href="{{ path('dashboard') }}">
+                                            <i class="icon-rocket"></i> Admin
+                                            <span class="badge badge-success"> 7 </span>
+                                        </a>
+                                    </li>
+                                {% endif %}
+
+                                <li class="divider"></li>
+
+                                <li>
+                                    <a href="{{ path('fos_user_security_logout') }}">
+                                        <i class="icon-logout"></i> Déconnexion </a>
+                                </li>
+
+
+                            </ul>
+                        </li>
+                        <li class="dropdown dropdown-quick-sidebar-toggler">
+                            <a href="{{ path('fos_user_security_logout') }}" class="dropdown-toggle">
+                                <i class="icon-logout"></i>
+                            </a>
+                        </li>
+                    {% else %}
+                        <li><a href="{{ path('fos_user_security_login') }}" title="Connexion">
+                                <i class="icon-login "></i> Connexion</a></li>
+                        <li><a href="{{ path('fos_user_registration_register') }}"
+                               title="S'inscrire">
+                                <i class="icon-plus"></i> Inscription</a></li>
+
+                    {% endif %}
+
                 </ul>
             </div>
-            <!-- END TOP NAVIGATION MENU -->
         </div>
-        <!-- END HEADER INNER -->
     </div>
     <!-- END HEADER -->
     <!-- BEGIN HEADER & CONTENT DIVIDER -->

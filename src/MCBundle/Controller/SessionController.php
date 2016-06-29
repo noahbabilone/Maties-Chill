@@ -17,6 +17,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use FOS\UserBundle\Model\User;
 
 
 class SessionController extends Controller
@@ -41,7 +43,7 @@ class SessionController extends Controller
             $limitPage
         );
         return $this->render(
-            'MCBundle:MC:sessions.html.twig',
+            'MCBundle:Pages:sessions.html.twig',
             array(
                 "sessions" => $sessions
             )
@@ -59,13 +61,12 @@ class SessionController extends Controller
         $em = $this->getDoctrine()->getManager();
         $session = $em->getRepository('MCBundle:Session')->find($slug);
 
-        return $this->render('MCBundle:MC:viewSession.html.twig', array(
+        return $this->render('MCBundle:Pages:viewSession.html.twig', array(
             "session" => $session,
         ));
 
     }
-
-
+    
     /**
      * Get all sessions for each Id Film
      * @param $idFilm
@@ -84,6 +85,30 @@ class SessionController extends Controller
                 "film" => $film,
             )
         );
+    }
+
+    /**
+     * @param Request $request
+     * @Route("/session/remove", name="session_remove",  options = {"expose"=true})
+     * @return response
+     * @throws NotFoundHttpException
+     */
+    public function removeSessionAction(Request $request)
+    {
+
+        if ($request->isXmlHttpRequest()) {
+            $em = $this->getDoctrine()->getManager();
+            $id = $request->get('id');
+            $session = $em->getRepository('MCBundle:Session')->find($id);
+            if (null === $session) {
+                throw new NotFoundHttpException("La séance (ID: " . $id . ") n'existe pas.");
+            }
+            $message = "La séance " . "(<b>" .$session->getFilm()->getTitle(). " -  ".$session->getTypeView() ."</b>)  a été supprimée.";
+            //$em->remove($session);
+            //$em->flush();
+            return new Response(json_encode(array('result' => 'success', 'message' => $message)));
+        }
+        return new response (json_encode(array('result' => 'error', "message" => "Error: isXmlHttpRequest")));
     }
 
 
@@ -119,21 +144,146 @@ class SessionController extends Controller
 
             }
             $session->setFilm($film);
-            $creator = $user = $this->get('security.context')->getToken()->getUser();
+            //$creator = $user = $this->get('security.context')->getToken()->getUser();
+            $creator = $user = $this->getUser();
             $session->setCreator($creator);
+
             $em->persist($session);
             $em->flush();
 
             $request->getSession()->set('add-session', true);
-            return $this->redirectToRoute('list_sessions', array(), 301);
+            return $this->redirectToRoute('session_view', array('slug' => $session->getId()), 301);
 
         }
 
-        return $this->render('MCBundle:MC:add-sessions.html.twig', array(
+        return $this->render('MCBundle:Pages:add-sessions.html.twig', array(
             'form' => $form->createView(),
             'formMaterial' => $formMaterial->createView(),
             'formAddress' => $formAddress->createView(),
         ));
+    }
+
+
+    public function parserMovie($movie)
+    {
+        $film = new Film();
+        if (!empty($movie)) {
+            $em = $this->getDoctrine()->getManager();
+            $film->setISAN($movie->code);
+            $film->setTitle($movie->title);
+            if (array_key_exists('originalTitle', $movie))
+                $film->setOriginalTitle($movie->originalTitle);
+
+            if (array_key_exists('release', $movie))
+                $film->setReleaseDate($movie->release->releaseDate);
+
+            if (array_key_exists('castingShort', $movie))
+                $film->setDirectors($movie->castingShort->directors);
+
+            if (array_key_exists('castingShort', $movie))
+                $film->setActors($movie->castingShort->actors);
+            if (array_key_exists('nationality', $movie)) {
+                $nationality = "";
+                foreach ($movie->nationality as $data) {
+                    $nationality .= $this->get("mc_allocine")->getObject($data);
+                }
+                $film->setNationality($nationality);
+            }
+            if (array_key_exists('runtime', $movie))
+                $film->setRuntime($movie->runtime);
+            $film->setAgeLimit(10);
+
+            if (array_key_exists('statistics', $movie) && array_key_exists('pressRating', $movie->statistics))
+                $film->setPressRating($movie->statistics->pressRating);
+            if (array_key_exists('statistics', $movie) && array_key_exists('userRating', $movie->statistics))
+                $film->setUserRating($movie->statistics->userRating);
+
+            if (array_key_exists('link', $movie)) {
+                if (!empty($movie->link)) {
+                    $film->setLink($movie->link[0]->href);
+                }
+            }
+            if (array_key_exists('trailerEmbed', $movie))
+                $film->setTrailer($movie->trailerEmbed);
+            if (array_key_exists('poster', $movie) && array_key_exists('href', $movie->poster))
+                $film->setPoster($movie->poster->href);
+            if (array_key_exists('synopsis', $movie))
+                $film->setSynopsis($movie->synopsis);
+            if (array_key_exists('synopsisShort', $movie))
+                $film->setSynopsisShort($movie->synopsisShort);
+            if (array_key_exists('genre', $movie)) {
+                foreach ($movie->genre as $data) {
+                    $genre = $this->get("mc_allocine")->getObject($data);
+                    $objGenre = $em->getRepository('MCBundle:Genre')->findOneByTitle($genre);
+                    if (!$objGenre) {
+                        $objGenre = new Genre();
+                        $objGenre->setTitle($genre);
+                        $em->persist($objGenre);
+                        $em->flush();
+                        $objGenre = $em->getRepository('MCBundle:Genre')->findOneByTitle($genre);
+                    }
+                    $film->addGenre($objGenre);
+                }
+            }
+
+        }
+        return $film;
+    }
+
+
+    /**
+     * @param Request $request
+     * @Route("/search_Film", name="search_film_ajax",  options = {"expose"=true})
+     * @return response
+     * @throws NotFoundHttpException
+     */
+    public function searchFilmAjaxAction(Request $request)
+    {
+
+        if ($request->isXmlHttpRequest()) {
+            $em = $this->getDoctrine()->getManager();
+            $keyword = $request->get('search');
+            $films = $em->getRepository('MCBundle:Film')->searchDB($keyword);
+            $data = array();
+            foreach ($films as $film) {
+                $data[] = array("title" => $film->getTitle(), "code" => $film->getISAN());
+            }
+
+            $allocine = $this->get("mc_allocine");
+            $result = $allocine->search($keyword, $page = 1, $count = 10);
+            $movies = json_decode($result);
+
+            //dump($movies);
+            //die;
+            if (count($movies) > 0) {
+                if (array_key_exists('feed', $movies) && array_key_exists('movie', $movies->feed)) {
+
+                    foreach ($movies->feed->movie as $movie) {
+                        $title = null;
+                        if (array_key_exists('title', $movie))
+                            $title = $movie->title;
+
+                        if ($title == null && array_key_exists('originalTitle', $movie))
+                            $title = $movie->originalTitle;
+
+                        if (array_key_exists('poster', $movie) && array_key_exists('href', $movie->poster)) {
+                            $poster = $movie->poster->href;
+                        }
+
+                        if ($title !== null) {
+                            $search["code"] = $movie->code;
+                            $search["title"] = $title;
+                            if (isset($poster) && !empty($poster)) {
+                                $search["poster"] = $poster;
+                            }
+                            $data[] = $search;
+                        }
+                    }
+                }
+            }
+            return new Response(json_encode(array('response' => 'success', 'result' => $data)));
+        }
+        return new response (json_encode(array('response' => 'error', "result" => "Error: isXmlHttpRequest")));
     }
 
 

@@ -1,227 +1,169 @@
-{% extends "::base.html.twig" %}
+{% extends "MCBundle::main.html.twig" %}
 
 {% block title %}
-    {{ parent() }}
+    Films - {{ parent() }}
 {% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
     {% stylesheets
-    'bundles/mc/css/modern-business.css'
+    'bundles/mc/themes/pages/css/about.css'
     filter='cssrewrite' %}
     <link rel="stylesheet" href="{{ asset_url }}"/>
     {% endstylesheets %}
-    <link rel="stylesheet" href="{{ asset("assets/css/style.css") }}">
+
 {% endblock %}
 
-{% block body %}
-    {% include("MCBundle:Includes:menu.html.twig") %}
+{% block body_mc %}
 
-    <!-- Header Carousel -->
-    <header id="myCarousel" class="carousel slide">
-        <!-- Indicators -->
-        <ol class="carousel-indicators">
-            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-            <li data-target="#myCarousel" data-slide-to="1"></li>
-            <li data-target="#myCarousel" data-slide-to="2"></li>
-        </ol>
-
-        <!-- Wrapper for slides -->
-        <div class="carousel-inner">
-            <div class="item active">
-                <div class="fill"
-                     style="background-image:url('{{ asset("bundles/mc/images/background/avengers.jpg") }}');"></div>
-                <div class="carousel-caption">
-                    <h1 class="">Partager vos séances ciné</h1>
-
-                    <p class="lead">The atmosphere in Chania has a touch of Florence and Venice.</p>
+    <div class="page-container" style="margin-top: -50px;">
+        <div class="page-content">
+            <div class="row margin-bottom-60 about-header" style="margin-top: 50px !important;">
+                <div class="col-md-12">
+                    <h1>Mathies Chill</h1>
+                    <h2>Vivez une nouvelle expériece ciné avec Maties&Chill </h2>
+                    <button type="button" class="btn btn-danger">Commencez</button>
                 </div>
             </div>
-            <div class="item">
-                <div class="fill"
-                     style="background-image:url('{{ asset("bundles/mc/images/background/starwars.jpg") }}');"></div>
-                <div class="carousel-caption">
-                    <h1 class="">Vivez une nouvelle expérience avec Maties&Chill </h1>
 
-                    <p class="lead">The atmosphere in Chania has a touch of Florence and Venice.</p>
+            <div class="clearfix"></div>
+
+            <div class="row margin-bottom-60" style="">
+                <div class="col-lg-3 col-md-6">
+                    <div class="portlet light">
+                        <div class="card-icon">
+                            <i class="icon-camcorder font-red-sunglo theme-font"></i>
+                        </div>
+                        <div class="card-title">
+                            <span> Partager vos séance ciné </span>
+                        </div>
+                        <div class="card-desc">
+                                    <span> The best way to find yourself is
+                                        <br> to lose yourself in the service of others </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="portlet light">
+                        <div class="card-icon">
+                            <i class="icon-users font-green-haze theme-font"></i>
+                        </div>
+                        <div class="card-title">
+                            <span> Awards Winner </span>
+                        </div>
+                        <div class="card-desc">
+                                    <span> The best way to find yourself is
+                                        <br> to lose yourself in the service of others </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="portlet light">
+                        <div class="card-icon">
+                            <i class="icon-basket font-purple-wisteria theme-font"></i>
+                        </div>
+                        <div class="card-title">
+                            <span> eCommerce Components </span>
+                        </div>
+                        <div class="card-desc">
+                                    <span> The best way to find yourself is
+                                        <br> to lose yourself in the service of others </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="portlet light">
+                        <div class="card-icon">
+                            <i class="icon-heart font-blue theme-font"></i>
+                        </div>
+                        <div class="card-title">
+                            <span> Adaptive Components </span>
+                        </div>
+                        <div class="card-desc">
+                                    <span> The best way to find yourself is
+                                        <br> to lose yourself in the service of others </span>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="item">
-                <div class="fill"
-                     style="background-image:url('{{ asset("bundles/mc/images/background/ongbak.jpg") }}');"></div>
-                <div class="carousel-caption">
-                    <h1 class="">Ciné pas loin de chez vous </h1>
 
-                    <p class="lead">The atmosphere in Chania has a touch of Florence and Venice.</p>
+
+            <div class="row margin-bottom-40 stories-header" data-auto-height="true">
+                <div class="col-md-12">
+                    <h1>Members Success Stories</h1>
+                    <h2>Life is either a great adventure or nothing</h2>
+                </div>
+                <div class="row margin-bottom-20 stories-cont">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="portlet light">
+                            <div class="photo">
+                                <img src="http://www.keenthemes.com/preview/metronic/theme/assets/pages/media/users/teambg8.jpg"
+                                     alt="" class="img-responsive"/></div>
+                            <div class="title">
+                                <span> Yannick </span>
+                            </div>
+                            <div class="desc">
+                                <span> We are at our very best, and we are happiest, when we are fully engaged in work we enjoy on the journey toward the goal we've established for ourselves. </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="portlet light">
+                            <div class="photo">
+                                <img src="http://www.keenthemes.com/preview/metronic/theme/assets/pages/media/users/teambg8.jpg"
+                                     alt="" class="img-responsive"/></div>
+                            <div class="title">
+                                <span> SAID </span>
+                            </div>
+                            <div class="desc">
+                                <span> Do what you love to do and give it your very best. Whether it's business or baseball, or the theater, or any field. If you don't love what you're doing and you can't give it your best, get out of it. </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="portlet light">
+                            <div class="photo">
+                                <img src="http://www.keenthemes.com/preview/metronic/theme/assets/pages/media/users/teambg8.jpg"
+                                     alt="" class="img-responsive"/></div>
+                            <div class="title">
+                                <span> Djino </span>
+                            </div>
+                            <div class="desc">
+                                <span> To be nobody but yourself in a world which is doing its best, to make you everybody else means to fight the hardest battle which any human being can fight; and never stop fighting. </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="portlet light">
+                            <div class="photo">
+                                <img src="http://www.keenthemes.com/preview/metronic/theme/assets/pages/media/users/teambg8.jpg"
+                                     alt="" class="img-responsive"/></div>
+                            <div class="title">
+                                <span> Marc  </span>
+                            </div>
+                            <div class="desc">
+                                <span> You have to accept whatever comes and the only important thing is that you meet it with courage and with the best that you have to give. Never give up, never surrender. Go all out or gain nothing. </span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            <!-- END CONTENT BODY -->
+            {#</div>#}
+            <!-- END CONTENT -->
+            <!-- BEGIN QUICK SIDEBAR -->
+
         </div>
-
-        <!-- Controls -->
-        <a class="left carousel-control" href="#myCarousel" data-slide="prev">
-            <span class="icon-prev"></span>
-        </a>
-        <a class="right carousel-control" href="#myCarousel" data-slide="next">
-            <span class="icon-next"></span>
-        </a>
-    </header>
-    <!-- Page Content -->
-    <div class="container">
-
-        <!-- Marketing Icons Section -->
-        <div class="row">
-            <div class="col-lg-12">
-                <h2 class="page-header">
-                    Nos services
-                </h2>
-            </div>
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4><i class="fa fa-fw fa-check"></i> Annonces</h4>
-                    </div>
-                    <div class="panel-body">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque, optio corporis quae nulla
-                            aspernatur in alias at numquam rerum ea excepturi expedita tenetur assumenda voluptatibus
-                            eveniet incidunt dicta nostrum quod?</p>
-                        <a href="#" class="btn btn-default">Learn More</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4><i class="fa fa-fw fa-gift"></i> Promotions</h4>
-                    </div>
-                    <div class="panel-body">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque, optio corporis quae nulla
-                            aspernatur in alias at numquam rerum ea excepturi expedita tenetur assumenda voluptatibus
-                            eveniet incidunt dicta nostrum quod?</p>
-                        <a href="#" class="btn btn-default">Learn More</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4><i class="fa fa-fw fa-compass"></i> Partenaires</h4>
-                    </div>
-                    <div class="panel-body">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque, optio corporis quae nulla
-                            aspernatur in alias at numquam rerum ea excepturi expedita tenetur assumenda voluptatibus
-                            eveniet incidunt dicta nostrum quod?</p>
-                        <a href="#" class="btn btn-default">Learn More</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- /.row -->
-
-        <!-- Portfolio Section -->
-        {#<div class="row">
-            <div class="col-lg-12">
-                <h2 class="page-header">Nos Services</h2>
-            </div>
-            <div class="col-md-4 col-sm-6">
-                <a href="portfolio-item.html">
-                    <img class="img-responsive img-portfolio img-hover" src="http://placehold.it/700x450" alt="">
-                </a>
-            </div>
-            <div class="col-md-4 col-sm-6">
-                <a href="portfolio-item.html">
-                    <img class="img-responsive img-portfolio img-hover" src="http://placehold.it/700x450" alt="">
-                </a>
-            </div>
-            <div class="col-md-4 col-sm-6">
-                <a href="portfolio-item.html">
-                    <img class="img-responsive img-portfolio img-hover" src="http://placehold.it/700x450" alt="">
-                </a>
-            </div>
-            <div class="col-md-4 col-sm-6">
-                <a href="portfolio-item.html">
-                    <img class="img-responsive img-portfolio img-hover" src="http://placehold.it/700x450" alt="">
-                </a>
-            </div>
-            <div class="col-md-4 col-sm-6">
-                <a href="portfolio-item.html">
-                    <img class="img-responsive img-portfolio img-hover" src="http://placehold.it/700x450" alt="">
-                </a>
-            </div>
-            <div class="col-md-4 col-sm-6">
-                <a href="portfolio-item.html">
-                    <img class="img-responsive img-portfolio img-hover" src="http://placehold.it/700x450" alt="">
-                </a>
-            </div>
-        </div>#}
-
-        <!-- Features Section -->
-        <div class="row">
-            <div class="col-lg-12">
-                <h2 class="page-header">Modern Business Features</h2>
-            </div>
-            <div class="col-md-6">
-                <p>The Modern Business template by Start Bootstrap includes:</p>
-                <ul>
-                    <li><strong>Bootstrap v3.2.0</strong>
-                    </li>
-                    <li>jQuery v1.11.0</li>
-                    <li>Font Awesome v4.1.0</li>
-                    <li>Working PHP contact form with validation</li>
-                    <li>Unstyled page elements for easy customization</li>
-                    <li>17 HTML pages</li>
-                </ul>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis, omnis doloremque non cum id
-                    reprehenderit, quisquam totam aspernatur tempora minima unde aliquid ea culpa sunt. Reiciendis quia
-                    dolorum ducimus unde.</p>
-            </div>
-            <div class="col-md-6">
-                <img class="img-responsive" src="http://placehold.it/700x450" alt="">
-            </div>
-        </div>
-
-        {#<hr>#}
-
-        <!-- Call to Action Section -->
-        <div class="row">
-            <div class="col-lg-12">
-                <h1 class="page-header">About Us
-                    <small>It's Nice to Meet You!</small>
-                </h1>
-                <div class="col-lg-12 text-center">
-                    <h2 class="tagline">Forever free, open source, and easy to use.</h2>
-
-                    <p class="lead">Start Bootstrap is a library of free to download Bootstrap 3 themes and templates.
-                        Our
-                        themes are open source for any use, even commercial. Download what you like and get started!
-                    </p>
-                    {#<hr class="small">#}
-                </div>
-            </div>
-        </div>
-
-        {#<hr>#}
-
-        <!-- Footer -->
-        <footer>
-            <div class="row">
-                <div class="col-lg-12">
-                    <hr>
-                    <p>Copyright &copy; <a href="">Estiam Groupe-4 </a>. 2016</p>
-                </div>
-            </div>
-        </footer>
-
     </div>
-{% endblock %}
+    </div>
 
+{% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
-
-    <script>
-        $('.carousel').carousel({
-            interval: 5000 //changes the speed
-        })
-    </script>
-
+    {% javascripts %}
+    {#  #}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock %}

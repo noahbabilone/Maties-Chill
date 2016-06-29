@@ -124,30 +124,6 @@ class SessionBOController extends Controller
     }
 
 
-    /**
-     * @param Request $request
-     * @Route("/session/remove", name="back_office_remove_session",  options = {"expose"=true})
-     * @return response
-     * @throws NotFoundHttpException
-     */
-    public function removeSessionAction(Request $request)
-    {
-
-        if ($request->isXmlHttpRequest()) {
-            $em = $this->getDoctrine()->getManager();
-            $id = $request->get('id');
-            $session = $em->getRepository('MCBundle:Session')->find($id);
-            if (null === $session) {
-                throw new NotFoundHttpException("La séance (ID: " . $id . ") n'existe pas.");
-            }
-            $message = 'La séance ' . '(ID: <b>' . $session->getId() . '</b>) ' . $session->getFilm()->getTitle() . ' a été supprimée.';
-            //$em->remove($session);
-            //$em->flush();
-            return new Response(json_encode(array('result' => 'success', 'message' => $message)));
-        }
-        return new response (json_encode(array('result' => 'error', "message" => "Error: isXmlHttpRequest")));
-    }
-
 
     /**
      * Get all sessions
@@ -193,48 +169,6 @@ class SessionBOController extends Controller
      * */
 
 
-    /**
-     * @param Request $request
-     * @Route("/search_Film", name="search_film_ajax",  options = {"expose"=true})
-     * @return response
-     * @throws NotFoundHttpException
-     */
-    public function searchFilmAjaxAction(Request $request)
-    {
-
-        if ($request->isXmlHttpRequest()) {
-            $em = $this->getDoctrine()->getManager();
-            $keyword = $request->get('search');
-            $films = $em->getRepository('MCBundle:Film')->searchDB($keyword);
-            $data = array();
-            foreach ($films as $film) {
-                $data[] = array("title" => $film->getTitle(), "code" => $film->getISAN());
-            }
-
-            $allocine = $this->get("mc_allocine");
-            $result = $allocine->search($keyword, $page = 1, $count = 10);
-            $movies = json_decode($result);
-            if (count($movies) > 0) {
-                if (array_key_exists('feed', $movies) && array_key_exists('movie', $movies->feed)) {
-
-                    foreach ($movies->feed->movie as $movie) {
-                        $title = null;
-                        if (array_key_exists('title', $movie))
-                            $title = $movie->title;
-
-                        if ($title == null && array_key_exists('originalTitle', $movie))
-                            $title = $movie->originalTitle;
-
-                        if ($title !== null) {
-                            $data[] = array("title" => $title, "code" => $movie->code);
-                        }
-                    }
-                }
-            }
-            return new Response(json_encode(array('response' => 'success', 'result' => $data)));
-        }
-        return new response (json_encode(array('response' => 'error', "result" => "Error: isXmlHttpRequest")));
-    }
 
 
     public function parserMovie($movie)

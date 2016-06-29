@@ -1,55 +1,112 @@
 {% trans_default_domain 'FOSUserBundle' %}
-<div class="row col-sm-offset-1">
-    <div class="col-sm-5">
-        <h2>Inscription</h2>
 
-        {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register form-horizontal'}}) }}
-        <div class="form-group">
-            <div class="col-sm-10">
-                {{ form_label(form.username, 'form.username'|trans , {'label_attr': {'class':'control-label'}}) }}
-
-            </div>
+<div class="page-content">
+    <div class="page-bar">
+        <div class="row">
             <div class="col-sm-12">
-                {{ form_widget(form.username,{ 'attr': {'class': "form-control", 'placeholder': 'form.username'|trans, 'autocomplete':'off' } }) }}
-            </div>
-            <div class="col-sm-10">
-                {{ form_label(form.email, 'form.email'|trans , {'label_attr': {'class':'control-label'}}) }}
-            </div>
-            
-            <div class="col-sm-12">
-                {{ form_widget(form.email,{ 'attr': {'class': "form-control",  'placeholder': 'form.email'|trans , 'autocomplete':'off'} }) }}
-            </div>
-            
-            <div class="col-sm-10">
-                {{ form_label(form.plainPassword.first, 'form.password' |trans  , {'label_attr': {'class':'control-label'}}) }}
-
-            </div>
-            <div class="col-sm-12">
-                {{ form_widget(form.plainPassword.first,{ 'attr': {'class': "form-control",'placeholder': 'form.password'|trans  , 'autocomplete':'off'} }) }}
-            </div>
-            
-            <div class="col-sm-10">
-                {{ form_label(form.plainPassword.second, 'form.password_confirmation' |trans  , {'label_attr': {'class':'control-label'}}) }}
-            </div>
-            <div class="col-sm-12">
-                {{ form_widget(form.plainPassword.second,{ 'attr': {'class': "form-control",'placeholder': 'form.password_confirmation'|trans, 'autocomplete':'off' } }) }}
-            </div>
- 
-
-        </div>
-        <div class="form-group">
-            <div class="col-sm-10">
-                <input type="submit" id="_submit" name="_submit" class="btn btn-default"
-                       value="{{ 'registration.submit'|trans }}"/>
+                <ul class="page-breadcrumb">
+                    <li>
+                        <a href="{{ path('home_page') }}">Accueil</a>
+                        <i class="fa fa-circle"></i>
+                    </li>
+                    <li><span>Inscription</span></li>
+                </ul>
             </div>
         </div>
-        {{ form_end(form) }}
     </div>
-    <div class="col-sm-6 col-sm-offset-1">
-        <h3>Vous êtes déjà inscrit ?</h3>
 
-        <p>
-            <a href="{{ path ('fos_user_security_login') }}" class="btn btn-primary btn-sm"> Connexion</a>
-        </p>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <h2 class="page-title page-header">Connexion</h2>
+        </div>
+
+
+        <div class="col-sm-6">
+            <div class="portlet light bordered" style="min-height: 400px;">
+                <div class="portlet-title">
+                    <div class="caption font-red-sunglo">
+                        <i class="icon-plus font-red-sunglo"></i>
+                        <span class="caption-subject bold uppercase"> Inscription</span>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <div class="row">
+                        {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register form-horizontal'}}) }}
+                        <div class="form-group">
+
+                            <div class="col-sm-12 hide" id="message-error">
+                                <div class="alert alert-danger text" role="alert">
+                                    <p class="message-error"></p>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-10">
+                                {{ form_label(form.username, 'form.username'|trans , {'label_attr': {'class':'control-label'}}) }}
+
+                            </div>
+                            <div class="col-sm-12">
+                                {{ form_widget(form.username,{ 'attr': {'class': "form-control", 'placeholder': 'form.username'|trans, 'autocomplete':'off' } }) }}
+                            </div>
+                            <div class="col-sm-10">
+                                {{ form_label(form.email, 'form.email'|trans , {'label_attr': {'class':'control-label'}}) }}
+                            </div>
+
+                            <div class="col-sm-12">
+                                {{ form_widget(form.email,{ 'attr': {'class': "form-control",  'placeholder': 'form.email'|trans , 'autocomplete':'off'} }) }}
+                            </div>
+
+                            <div class="col-sm-10">
+                                {{ form_label(form.plainPassword.first, 'form.password' |trans  , {'label_attr': {'class':'control-label'}}) }}
+
+                            </div>
+                            <div class="col-sm-12">
+                                {{ form_widget(form.plainPassword.first,{ 'attr': {'class': "form-control",'placeholder': 'form.password'|trans  , 'autocomplete':'off'} }) }}
+                            </div>
+
+                            <div class="col-sm-10">
+                                {{ form_label(form.plainPassword.second, 'form.password_confirmation' |trans  , {'label_attr': {'class':'control-label'}}) }}
+                            </div>
+                            <div class="col-sm-12">
+                                {{ form_widget(form.plainPassword.second,{ 'attr': {'class': "form-control",'placeholder': 'form.password_confirmation'|trans, 'autocomplete':'off' } }) }}
+                            </div>
+
+
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-10">
+                                <input type="submit" id="_submit" name="_submit" class="btn btn-default"
+                                       value="{{ 'registration.submit'|trans }}"/>
+                            </div>
+                        </div>
+                        {{ form_end(form) }}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="portlet light bordered" style="min-height: 400px; padding-top: 70px;">
+                {#<div class="portlet-title">#}
+                {#<div class="caption font-red-sunglo">#}
+                {#<i class="icon-lock font-red-sunglo"></i>#}
+                {#<span class="caption-subject bold uppercase"> Connexion</span>#}
+                {#</div>#}
+                {#</div>#}
+                <div class="portlet-body text-center">
+
+                    <div class="card-icon">
+                        <i class="icon-user font-yellow-casablanca  theme-font"></i>
+                    </div>
+                    <h2 class="font-grey-silver">Vous êtes déjà inscrit ?</h2>
+
+                    <div class="col-sm-4 col-sm-offset-4">
+                        <a href="{{ path ('fos_user_security_login') }}" class="btn yellow-casablanca btn-block"><i
+                                    class="fa fa-lock"></i> Connexion</a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

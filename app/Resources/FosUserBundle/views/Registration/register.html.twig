@@ -1,5 +1,43 @@
 {% extends "FOSUserBundle::layout.html.twig" %}
 
 {% block fos_user_content %}
-{% include "FOSUserBundle:Registration:register_content.html.twig" %}
+    <div class="row" style="margin-top: 10px">
+        
+    </div>
+    {% include "FOSUserBundle:Registration:register_content.html.twig" %}
 {% endblock fos_user_content %}
+
+
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script>
+        $(function () {
+
+            var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+
+            $("#_submit").click(function (e) {
+                console.log($('#fos_user_registration_form_email').val());
+
+                if (!$('#fos_user_registration_form_plainPassword_first').val() || !$('#fos_user_registration_form_plainPassword_second').val() || !$('#fos_user_registration_form_email').val() || !$('#fos_user_registration_form_username').val()
+                ) {
+                    $('#message-error').removeClass('hide');
+                    $('.message-error').html('Veuillez remplir tous les champs');
+
+                } else if (!regex.test($('#fos_user_registration_form_email').val())) {
+                    $('#message-error').removeClass('hide');
+                    $('.message-error').html('Email Invalide');
+                } else if ($('#fos_user_registration_form_plainPassword_first').val() != $('#fos_user_registration_form_plainPassword_second').val()) {
+                    $('#message-error').removeClass('hide');
+                    $('.message-error').html('Veuillez confirmer le mot de passe');
+                }
+
+                e.preventDefault();
+            });
+        });
+
+    </script>
+{% endblock javascripts %}

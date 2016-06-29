@@ -1,6 +1,6 @@
 user:
     resource: "@UserBundle/Resources/config/routing.yml"
-    prefix:   /account
+    prefix:   /profile
 
 mc:
     resource: "@MCBundle/Resources/config/routing.yml"

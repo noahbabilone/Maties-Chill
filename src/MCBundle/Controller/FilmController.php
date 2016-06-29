@@ -28,7 +28,7 @@ class FilmController extends Controller
         $topFilms = $em->getRepository('MCBundle:Film')->topFilm(4);
 
         return $this->render(
-            'MCBundle:MC:filmsIndex.html.twig',
+            'MCBundle:Pages:filmsIndex.html.twig',
             array(
                 "lastFilms" => $lastFilms,
                 "newFilms" => $newFilms,
@@ -49,7 +49,7 @@ class FilmController extends Controller
         $film = $em->getRepository('MCBundle:Film')->find($slug);
         $sessions = $em->getRepository('MCBundle:Session')->sessionByFilm($film->getId());
         
-        return $this->render('MCBundle:MC:viewFilm.html.twig', array(
+        return $this->render('MCBundle:Pages:viewFilm.html.twig', array(
             "film" => $film,
             "sessions" => $sessions,
         ));
@@ -101,7 +101,7 @@ class FilmController extends Controller
             $limitPage
         );
         return $this->render(
-            'MCBundle:MC:films.html.twig',
+            'MCBundle:Pages:films.html.twig',
             array(
                 "films" => $films,
                 "titlePage" => $title,

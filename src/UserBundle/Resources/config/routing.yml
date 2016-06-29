@@ -1,5 +1,4 @@
-user_dashboard:
-    path:     /dashboard
-    defaults: { _controller: UserBundle:BackOffice:index }
-    
+user:
+    resource: "@UserBundle/Controller/"
+    type:     annotation
   

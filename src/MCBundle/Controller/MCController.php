@@ -3,7 +3,7 @@
 namespace MCBundle\Controller;
 
 use MCBundle\Entity\Film;
-use MCBundle\Entity\Genre;
+use MCBundle\Entity\Session;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,13 +21,24 @@ class MCController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('MCBundle:MC:index.html.twig');
+        $user = $this->getUser();
+        if ($user) {
+            $userSession=$this->get('session');
+            $em = $this->getDoctrine()->getManager();
+            $sessions = $em->getRepository('MCBundle:Session')->findByCreator($user->getId());
+            
+            $userSession->set('nbSession', COUNT($sessions)); 
+            $nbParticipant= 0;
+            foreach ($sessions as $session){
+                $nbParticipant+= COUNT($session->getParticipant());
+            }
+            
+            $userSession->set('nbParticipant', $nbParticipant); 
+         
+        }
+        return $this->render('MCBundle:Pages:index.html.twig');
     }
 
-
-
-
-   
 
     public function addSessionAction()
     {
@@ -62,30 +73,6 @@ class MCController extends Controller
 //        $em->flush();
         return new Response("Add");
     }
-    
-    
-      
-//    public function searchAllocineFilmAction($keyword, Request $request)
-//    {
-//        $allocine = $this->get("mc_allocine");
-//        $result = $allocine->search($keyword);
-//        $limitPage = 10;
-//        $numberPage = 1;
-//        $result = json_decode($result);
-//        $movies = $this->get('knp_paginator')->paginate(
-//            $result,
-//            $request->query->get('page', $numberPage),
-//            $limitPage
-//        );
-//
-//        return $this->render(
-//            'MCBundle:Pages:filmsSearch.html.twig',
-//            array(
-//                "motsCles" => $keyword,
-//                "movies" => $movies
-//            )
-//        );
-//    }
 
 
     /**

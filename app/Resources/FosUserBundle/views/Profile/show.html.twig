@@ -1,5 +1,38 @@
 {% extends "FOSUserBundle::layout.html.twig" %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+    'bundles/mc/css/jquery.rateyo.css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+
+{% endblock %}
+
 {% block fos_user_content %}
-{% include "FOSUserBundle:Profile:show_content.html.twig" %}
+    {% include "FOSUserBundle:Profile:show_content.html.twig" %}
 {% endblock fos_user_content %}
+
+    {% block javascripts %}
+        {{ parent() }}
+        {% javascripts
+        'bundles/mc/js/jquery.rateyo.min.js'
+        'bundles/mc/js/applications.js'
+        %}
+        {#  #}
+        <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+        <script>
+            $(function () {
+                $("#profileRating").rateYo({
+                    rating: parseFloat($('#profileRating').attr("data-rating")),
+                    readOnly: true,
+                    starWidth: "19px",
+                });
+
+            });
+        </script>
+
+    {% endblock %}
+
