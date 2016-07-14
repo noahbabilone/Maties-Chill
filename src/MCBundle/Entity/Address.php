@@ -29,6 +29,13 @@ class Address
     private $title;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="disable", type="boolean", options={"default":false})
+     */
+    private $disable;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="street", type="string", length=255, nullable=true)
@@ -66,13 +73,6 @@ class Address
     /**
      * @var string
      *
-     * @ORM\Column(name="address2", type="string", length=255, nullable=true)
-     */
-    private $address2;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="phone", type="string", length=255, nullable=true)
      */
     private $phone;
@@ -99,12 +99,15 @@ class Address
     private $other;
 
 
-
+    public function __construct()
+    {
+        $this->disable = false;
+    }
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -127,7 +130,7 @@ class Address
     /**
      * Get title
      *
-     * @return string 
+     * @return string
      */
     public function getTitle()
     {
@@ -150,7 +153,7 @@ class Address
     /**
      * Get street
      *
-     * @return string 
+     * @return string
      */
     public function getStreet()
     {
@@ -173,7 +176,7 @@ class Address
     /**
      * Get frontDoor
      *
-     * @return string 
+     * @return string
      */
     public function getFrontDoor()
     {
@@ -196,7 +199,7 @@ class Address
     /**
      * Get floor
      *
-     * @return string 
+     * @return string
      */
     public function getFloor()
     {
@@ -219,7 +222,7 @@ class Address
     /**
      * Get building
      *
-     * @return string 
+     * @return string
      */
     public function getBuilding()
     {
@@ -242,34 +245,11 @@ class Address
     /**
      * Get address
      *
-     * @return string 
+     * @return string
      */
     public function getAddress()
     {
         return $this->address;
-    }
-
-    /**
-     * Set address2
-     *
-     * @param string $address2
-     * @return Address
-     */
-    public function setAddress2($address2)
-    {
-        $this->address2 = $address2;
-
-        return $this;
-    }
-
-    /**
-     * Get address2
-     *
-     * @return string 
-     */
-    public function getAddress2()
-    {
-        return $this->address2;
     }
 
     /**
@@ -288,7 +268,7 @@ class Address
     /**
      * Get phone
      *
-     * @return string 
+     * @return string
      */
     public function getPhone()
     {
@@ -311,7 +291,7 @@ class Address
     /**
      * Get postCode
      *
-     * @return integer 
+     * @return integer
      */
     public function getPostCode()
     {
@@ -334,7 +314,7 @@ class Address
     /**
      * Get town
      *
-     * @return string 
+     * @return string
      */
     public function getTown()
     {
@@ -357,10 +337,33 @@ class Address
     /**
      * Get other
      *
-     * @return string 
+     * @return string
      */
     public function getOther()
     {
         return $this->other;
+    }
+
+    /**
+     * Set disable
+     *
+     * @param boolean $disable
+     * @return Address
+     */
+    public function setDisable($disable)
+    {
+        $this->disable = $disable;
+
+        return $this;
+    }
+
+    /**
+     * Get disable
+     *
+     * @return boolean
+     */
+    public function getDisable()
+    {
+        return $this->disable;
     }
 }

@@ -27,6 +27,13 @@ class Modality
      * @ORM\Column(name="title", type="string", length=255)
      */
     private $title;
+    
+     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="disable", type="boolean", options={"default":false})
+     */
+    private $disable;
 
     /**
      * @var bool
@@ -35,4 +42,60 @@ class Modality
      */
     private $contribution;
     
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set title
+     *
+     * @param string $title
+     * @return Modality
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get title
+     *
+     * @return string 
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Set contribution
+     *
+     * @param boolean $contribution
+     * @return Modality
+     */
+    public function setContribution($contribution)
+    {
+        $this->contribution = $contribution;
+
+        return $this;
+    }
+
+    /**
+     * Get contribution
+     *
+     * @return boolean 
+     */
+    public function getContribution()
+    {
+        return $this->contribution;
+    }
 }

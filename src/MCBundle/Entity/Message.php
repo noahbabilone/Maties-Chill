@@ -20,6 +20,13 @@ class Message
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+    
+     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="disable", type="boolean", options={"default":false})
+     */
+    private $disable;
 
     /**
      * @var \DateTime
@@ -175,5 +182,28 @@ class Message
     public function getReceiver()
     {
         return $this->receiver;
+    }
+
+    /**
+     * Set disable
+     *
+     * @param boolean $disable
+     * @return Message
+     */
+    public function setDisable($disable)
+    {
+        $this->disable = $disable;
+
+        return $this;
+    }
+
+    /**
+     * Get disable
+     *
+     * @return boolean 
+     */
+    public function getDisable()
+    {
+        return $this->disable;
     }
 }

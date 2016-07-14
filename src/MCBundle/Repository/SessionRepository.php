@@ -34,4 +34,39 @@ class SessionRepository extends EntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function search($search)
+    {
+        $em = $this->getEntityManager();
+        if ($search != null) {
+            $query = $em->createQuery("
+                    SELECT s
+                    FROM MCBundle:Session s
+                    JOIN s.film f
+                    WHERE f.title LIKE :search OR f.synopsis LIKE :search OR f.originalTitle LIKE :search OR f.actors LIKE :search")
+                ->setParameter('search', '%' . $search . '%');
+        } else {
+            $query = $em->createQuery("SELECT s FROM MCBundle:Session s");
+        }
+        return $query;
+    }
+
+    public function findParticipant($creator)
+    {
+
+        $em = $this->getEntityManager();
+        $query = $em->createQuery("
+                    SELECT p
+                    FROM MCBundle:Session s
+                    JOIN s.creator c
+                    JOIN  MCBundle:Participant p
+                    WHERE c.id = :creator AND s.id = p.session")
+            ->setParameter('creator', $creator);
+
+        return $query->getResult();
+//                            JOIN s.creator p
+
+    }
+
+
 }

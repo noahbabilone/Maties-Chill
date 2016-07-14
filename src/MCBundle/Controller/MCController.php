@@ -15,63 +15,60 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class MCController extends Controller
 {
+   
     /**
      * @Route("/", name="home_page")
      * @return Response
      */
-    public function indexAction()
+    public function ssindexAction()
     {
         $user = $this->getUser();
         if ($user) {
-            $userSession=$this->get('session');
+            $userSession = $this->get('session');
             $em = $this->getDoctrine()->getManager();
             $sessions = $em->getRepository('MCBundle:Session')->findByCreator($user->getId());
-            
-            $userSession->set('nbSession', COUNT($sessions)); 
-            $nbParticipant= 0;
-            foreach ($sessions as $session){
-                $nbParticipant+= COUNT($session->getParticipant());
+
+            $userSession->set('nbSession', COUNT($sessions));
+            $nbParticipant = 0;
+            foreach ($sessions as $session) {
+                $nbParticipant += COUNT($session->getParticipant());
             }
-            
-            $userSession->set('nbParticipant', $nbParticipant); 
-         
+
+            $userSession->set('nbParticipant', $nbParticipant);
+
         }
         return $this->render('MCBundle:Pages:index.html.twig');
     }
 
 
-    public function addSessionAction()
+    /**
+     * @Route("/search", name="search_")
+     * Get all sessions
+     * @param Request $request
+     * @return Response
+     */
+    public function searchAction(Request $request)
     {
+        $limitPage = 16;
+        $numberPage = 1;
 
         $em = $this->getDoctrine()->getManager();
-        $session = new Session();
-        $session->setDate(new \DateTime("2016-6-25"));
-        $session->setTypeView("VOSTFR");
-        $session->setDescription("Le DKS dici forte miretur, quod alia quaedam in hoc facultas sit ingeni, neque haec dicendi ratio aut disciplina, ne nos quidem huic uni studio penitus umquam dediti fuimus. Etenim omnes artes, quae ad humanitatem pertinent, habent quoddam commune vinculum, et quasi cognatione quadam inter se continentur. ");
-        $session->setContribution("Chips, soda, coca ou tout ce que vous voulez apporter ");
-        $session->setPrice(6);
-        $session->setMaxPlace(5);
 
-        $address = $em->getRepository('MCBundle:Address')->find(1);
-        $session->setAddress($address);
+        $search = ($request->get('q') != null) ? $request->get('q') : null;
+        $result = $em->getRepository('MCBundle:Session')->search($search);
 
-        $material = $em->getRepository('MCBundle:Material')->find(3);
-        $session->addMaterial($material);
-        $material = $em->getRepository('MCBundle:Material')->find(1);
-        $session->addMaterial($material);
-        $material = $em->getRepository('MCBundle:Material')->find(2);
-        $session->addMaterial($material);
 
-        $modality = $em->getRepository('MCBundle:Modality')->find(2);
-        $session->setModality($modality);
-        $film = $em->getRepository('MCBundle:Film')->find(2);
-        $session->setFilm($film);
-        $user = $em->getRepository('UserBundle:User')->find(1);
-        $session->setCreator($user);
-
-//        $em->persist($session);
-//        $em->flush();
-        return new Response("Add");
+        $sessions = $this->get('knp_paginator')->paginate(
+            $result,
+            $request->query->get('page', $numberPage),
+            $limitPage
+        );
+        return $this->render(
+            'MCBundle:Pages:search.html.twig',
+            array(
+                "sessions" => $sessions
+            )
+        );
     }
 
 
@@ -110,23 +107,6 @@ class MCController extends Controller
                 "movie" => $data
             )
         );
-    }
-
-    public function searchFieldAction(Request $request)
-    {
-        $search = new SearchFilm();
-        $formSearch = $this->createForm(new SearchFilmType(), $search,
-            array(
-                'action' => $this->generateUrl('mc_search_field'),
-                'method' => 'GET'
-
-            ));
-        if ($formSearch->handleRequest($request)->isValid() && !empty($search->getTitle())) {
-            return $this->redirect($this->generateUrl('mc_film_search_allocine', array("keyword" => $search->getTitle())));
-        }
-        return $this->render('MCBundle:Includes:search.html.twig', array(
-            'formSearch' => $formSearch->createView(),
-        ));
     }
 
 }

@@ -3,6 +3,7 @@
 namespace MCBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use UserBundle\Entity\User;
 
 /**
  * Participant
@@ -12,15 +13,26 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Participant
 {
+    
+    
     /**
-     * @ORM\Column(name="user", type="string", length=255)
+     * @var User
      * @ORM\Id
+     *     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * })
      */
     private $user;
 
-    /***
-     * @ORM\ManyToOne(targetEntity="MCBundle\Entity\Session",  cascade={"persist"})
+
+    /**
+     * @var Session
      * @ORM\Id
+     * @ORM\ManyToOne(targetEntity="MCBundle\Entity\Session")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="session_id", referencedColumnName="id")
+     * })
      */
     private $session;
 
@@ -28,16 +40,47 @@ class Participant
      * @ORM\ManyToOne(targetEntity="MCBundle\Entity\StateParticipant",  cascade={"persist"})
      */
     private $stateParticipant;
+    
+     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="disable", type="boolean", options={"default":false})
+     */
+    private $disable;
+
 
 
 
     /**
-     * Set user
+     * Set disable
      *
-     * @param string $user
+     * @param boolean $disable
      * @return Participant
      */
-    public function setUser($user)
+    public function setDisable($disable)
+    {
+        $this->disable = $disable;
+
+        return $this;
+    }
+
+    /**
+     * Get disable
+     *
+     * @return boolean 
+     */
+    public function getDisable()
+    {
+        return $this->disable;
+    }
+
+    /**
+     * Set user
+     *
+     * @param User $user
+     * @return Participant
+     */
+    public function setUser(User $user)
     {
         $this->user = $user;
 
@@ -47,7 +90,7 @@ class Participant
     /**
      * Get user
      *
-     * @return string 
+     * @return User 
      */
     public function getUser()
     {
@@ -55,12 +98,35 @@ class Participant
     }
 
     /**
-     * Set stateParticipant
+     * Set session
      *
-     * @param \MCBundle\Entity\StateParticipant $stateParticipant
+     * @param Session $session
      * @return Participant
      */
-    public function setStateParticipant(\MCBundle\Entity\StateParticipant $stateParticipant = null)
+    public function setSession(Session $session)
+    {
+        $this->session = $session;
+
+        return $this;
+    }
+
+    /**
+     * Get session
+     *
+     * @return Session 
+     */
+    public function getSession()
+    {
+        return $this->session;
+    }
+
+    /**
+     * Set stateParticipant
+     *
+     * @param StateParticipant $stateParticipant
+     * @return Participant
+     */
+    public function setStateParticipant(StateParticipant $stateParticipant = null)
     {
         $this->stateParticipant = $stateParticipant;
 
@@ -70,7 +136,7 @@ class Participant
     /**
      * Get stateParticipant
      *
-     * @return \MCBundle\Entity\StateParticipant 
+     * @return StateParticipant 
      */
     public function getStateParticipant()
     {

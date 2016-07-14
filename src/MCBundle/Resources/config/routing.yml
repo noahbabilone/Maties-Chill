@@ -1,31 +1,6 @@
 
 
 #  Allocine
-mc_film_search_allocine:
-    path:     /search/allocine/{keyword}
-    defaults: { _controller: MCBundle:Film:searchAllocineFilm }  
-  
-mc_film_get_allocine:
-    path:     /film/allocine/{code}
-    defaults: { _controller: MCBundle:Film:getFilmAllocine }
-
-
-mc_web_film_all:
-    path:     /ressources/films
-    defaults: { _controller: MCBundle:Film:allMovie }
-
-mc_web_film_get:
-    path:     /ressources/film/get/{id}
-    defaults: { _controller: MCBundle:Film:getMovie }
-    
-mc_web_film_delete:
-    path:     /ressources/film/delete/{id}
-    defaults: { _controller: MCBundle:Film:removeMovie }
-
-mc_web_film_add:
-    path:     /ressources/film/add/{id}
-    defaults: { _controller: MCBundle:Film:addMovie }
-
 
  #Rest Api
 api-film:
@@ -55,15 +30,20 @@ api-rest:
 mc_themes:
     resource: MCBundle\Controller\MCController
     type:     annotation
-    prefix:   /
+    prefix:   /mc
     
 mc_session:
     resource: MCBundle\Controller\SessionController
     type:     annotation
-    prefix:   /
+    prefix:   /mc
     
 mc_film:
     resource: MCBundle\Controller\FilmController
+    type:     annotation
+    prefix:   /mc
+    
+mc_coming_soon:
+    resource: MCBundle\Controller\ComingSoonController
     type:     annotation
     prefix:   /
 

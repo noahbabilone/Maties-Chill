@@ -29,6 +29,12 @@ class User extends BaseUser
      * @ORM\Column(name="birthday", type="datetime",nullable=true)
      */
     protected $birthday;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="avatar", type="datetime",nullable=true)
+     */
+    protected $avatar;
 
     /**
      * @ORM\ManyToMany(targetEntity="MCBundle\Entity\Address",  cascade={"persist"})
@@ -100,5 +106,28 @@ class User extends BaseUser
     public function getAddress()
     {
         return $this->address;
+    }
+
+    /**
+     * Set avatar
+     *
+     * @param \DateTime $avatar
+     * @return User
+     */
+    public function setAvatar($avatar)
+    {
+        $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    /**
+     * Get avatar
+     *
+     * @return \DateTime 
+     */
+    public function getAvatar()
+    {
+        return $this->avatar;
     }
 }

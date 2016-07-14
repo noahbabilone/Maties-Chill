@@ -27,6 +27,13 @@ class Genre
      * @ORM\Column(name="title", type="string", length=255, unique=true)
      */
     private $title;
+    
+     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="disable", type="boolean", options={"default":false})
+     */
+    private $disable;
 
 
     /**
@@ -60,5 +67,28 @@ class Genre
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * Set disable
+     *
+     * @param boolean $disable
+     * @return Genre
+     */
+    public function setDisable($disable)
+    {
+        $this->disable = $disable;
+
+        return $this;
+    }
+
+    /**
+     * Get disable
+     *
+     * @return boolean 
+     */
+    public function getDisable()
+    {
+        return $this->disable;
     }
 }

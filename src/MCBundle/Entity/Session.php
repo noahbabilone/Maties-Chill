@@ -2,7 +2,10 @@
 
 namespace MCBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use UserBundle\Entity\User;
 
 /**
  * Session
@@ -87,23 +90,36 @@ class Session
      * @ORM\JoinColumn(nullable=false)
      */
     private $creator;
+    
+     /**
+     * @ORM\ManyToMany(targetEntity="UserBundle\Entity\User", cascade={"persist"})
+     * @ORM\JoinTable(name="session_participant",
+     *      joinColumns={@ORM\JoinColumn(name="session_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="participant_id", referencedColumnName="id")}
+     *      )
+     *
+     * */
+    protected $participant;
 
     /**
-     * @ORM\ManyToMany(targetEntity="UserBundle\Entity\User",  cascade={"persist"})
-     * @ORM\JoinColumn(nullable=false)
+     * @var boolean
+     *
+     * @ORM\Column(name="disable", type="boolean", options={"default":false})
      */
-    private $participant;
-
+    private $disable;
+    
     private $filmId;
 
+    
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->material = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->participant = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->material = new ArrayCollection();
+        $this->participant = new ArrayCollection();
+        $this->disable= false;
     }
 
     /**
@@ -320,7 +336,7 @@ class Session
     /**
      * Get material
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getMaterial()
     {
@@ -376,10 +392,10 @@ class Session
     /**
      * Set creator
      *
-     * @param \UserBundle\Entity\User $creator
+     * @param User $creator
      * @return Session
      */
-    public function setCreator(\UserBundle\Entity\User $creator)
+    public function setCreator(User $creator)
     {
         $this->creator = $creator;
 
@@ -389,7 +405,7 @@ class Session
     /**
      * Get creator
      *
-     * @return \UserBundle\Entity\User
+     * @return User
      */
     public function getCreator()
     {
@@ -399,10 +415,10 @@ class Session
     /**
      * Add participant
      *
-     * @param \UserBundle\Entity\User $participant
+     * @param User $participant
      * @return Session
      */
-    public function addParticipant(\UserBundle\Entity\User $participant)
+    public function addParticipant(User $participant)
     {
         $this->participant[] = $participant;
 
@@ -412,9 +428,9 @@ class Session
     /**
      * Remove participant
      *
-     * @param \UserBundle\Entity\User $participant
+     * @param User $participant
      */
-    public function removeParticipant(\UserBundle\Entity\User $participant)
+    public function removeParticipant(User $participant)
     {
         $this->participant->removeElement($participant);
     }
@@ -422,10 +438,33 @@ class Session
     /**
      * Get participant
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getParticipant()
     {
         return $this->participant;
+    }
+
+    /**
+     * Set disable
+     *
+     * @param boolean $disable
+     * @return Session
+     */
+    public function setDisable($disable)
+    {
+        $this->disable = $disable;
+
+        return $this;
+    }
+
+    /**
+     * Get disable
+     *
+     * @return boolean 
+     */
+    public function getDisable()
+    {
+        return $this->disable;
     }
 }

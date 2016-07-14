@@ -20,6 +20,13 @@ class Message
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+    
+     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="disable", type="boolean", options={"default":false})
+     */
+    private $disable;
 
     /**
      * @var \DateTime
@@ -51,4 +58,129 @@ class Message
 
 
    
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     * @return Message
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get date
+     *
+     * @return \DateTime 
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * Set readMessage
+     *
+     * @param boolean $readMessage
+     * @return Message
+     */
+    public function setReadMessage($readMessage)
+    {
+        $this->readMessage = $readMessage;
+
+        return $this;
+    }
+
+    /**
+     * Get readMessage
+     *
+     * @return boolean 
+     */
+    public function getReadMessage()
+    {
+        return $this->readMessage;
+    }
+
+    /**
+     * Set session
+     *
+     * @param \MCBundle\Entity\Session $session
+     * @return Message
+     */
+    public function setSession(\MCBundle\Entity\Session $session = null)
+    {
+        $this->session = $session;
+
+        return $this;
+    }
+
+    /**
+     * Get session
+     *
+     * @return \MCBundle\Entity\Session 
+     */
+    public function getSession()
+    {
+        return $this->session;
+    }
+
+    /**
+     * Set sender
+     *
+     * @param \UserBundle\Entity\User $sender
+     * @return Message
+     */
+    public function setSender(\UserBundle\Entity\User $sender = null)
+    {
+        $this->sender = $sender;
+
+        return $this;
+    }
+
+    /**
+     * Get sender
+     *
+     * @return \UserBundle\Entity\User 
+     */
+    public function getSender()
+    {
+        return $this->sender;
+    }
+
+    /**
+     * Set receiver
+     *
+     * @param \UserBundle\Entity\User $receiver
+     * @return Message
+     */
+    public function setReceiver(\UserBundle\Entity\User $receiver = null)
+    {
+        $this->receiver = $receiver;
+
+        return $this;
+    }
+
+    /**
+     * Get receiver
+     *
+     * @return \UserBundle\Entity\User 
+     */
+    public function getReceiver()
+    {
+        return $this->receiver;
+    }
 }

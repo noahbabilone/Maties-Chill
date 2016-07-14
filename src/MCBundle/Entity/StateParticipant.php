@@ -27,6 +27,13 @@ class StateParticipant
      * @ORM\Column(name="title", type="string", length=255)
      */
     private $title;
+    
+     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="disable", type="boolean", options={"default":false})
+     */
+    private $disable;
 
 
     /**

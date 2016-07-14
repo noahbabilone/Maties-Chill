@@ -20,6 +20,12 @@ class Material
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="disable", type="boolean", options={"default":false})
+     */
+    private $disable;
 
     /**
      * @var string
@@ -145,5 +151,28 @@ class Material
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set disable
+     *
+     * @param boolean $disable
+     * @return Material
+     */
+    public function setDisable($disable)
+    {
+        $this->disable = $disable;
+
+        return $this;
+    }
+
+    /**
+     * Get disable
+     *
+     * @return boolean 
+     */
+    public function getDisable()
+    {
+        return $this->disable;
     }
 }

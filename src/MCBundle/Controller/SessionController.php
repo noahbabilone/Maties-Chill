@@ -24,7 +24,7 @@ use FOS\UserBundle\Model\User;
 class SessionController extends Controller
 {
     /**
-     * @Route("/seances", name="session_home")
+     * @Route("/seances", name="session_all")
      * Get all sessions
      * @param Request $request
      * @return Response
@@ -48,7 +48,8 @@ class SessionController extends Controller
                 "sessions" => $sessions
             )
         );
-    }
+    } 
+
 
 
     /**
@@ -79,7 +80,7 @@ class SessionController extends Controller
         $film = $em->getRepository('MCBundle:Film')->find($idFilm);
 
         return $this->render(
-            'MCBundle:Pages:films.html.twig',
+            'MCBundle:Pages:films.html.twig',   
             array(
                 "sessions" => $sessions,
                 "film" => $film,

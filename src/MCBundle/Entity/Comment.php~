@@ -8,7 +8,7 @@ use UserBundle\Entity\User;
 /**
  * Comment
  *
- * @ORM\Table(name="Comment")
+ * @ORM\Table(name="comment")
  * @ORM\Entity(repositoryClass="MCBundle\Repository\CommentRepository")
  */
 class Comment
@@ -30,6 +30,13 @@ class Comment
     private $date;
     
      /**
+     * @var boolean
+     *
+     * @ORM\Column(name="disable", type="boolean", options={"default":false})
+     */
+    private $disable;
+    
+     /**
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User",  cascade={"persist"})
      */
     private $user;
@@ -39,4 +46,83 @@ class Comment
      */
     private $session;
     
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     * @return Comment
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get date
+     *
+     * @return \DateTime 
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \UserBundle\Entity\User $user
+     * @return Comment
+     */
+    public function setUser(\UserBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \UserBundle\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set session
+     *
+     * @param \MCBundle\Entity\Session $session
+     * @return Comment
+     */
+    public function setSession(\MCBundle\Entity\Session $session = null)
+    {
+        $this->session = $session;
+
+        return $this;
+    }
+
+    /**
+     * Get session
+     *
+     * @return \MCBundle\Entity\Session 
+     */
+    public function getSession()
+    {
+        return $this->session;
+    }
 }

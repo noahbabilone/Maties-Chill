@@ -42,7 +42,7 @@ twig:
         locale: "%locale%"
 assetic:
     debug:          '%kernel.debug%'
-    use_controller: '%kernel.debug%'
+#    use_controller: '%kernel.debug%'
     use_controller: true
     bundles:        [ 'MCBundle','UserBundle','NelmioApiDocBundle','FOSUserBundle']
     filters:

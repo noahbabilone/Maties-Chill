@@ -30,6 +30,13 @@ class Comment
     private $date;
     
      /**
+     * @var boolean
+     *
+     * @ORM\Column(name="disable", type="boolean", options={"default":false})
+     */
+    private $disable;
+    
+     /**
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User",  cascade={"persist"})
      */
     private $user;
@@ -117,5 +124,28 @@ class Comment
     public function getSession()
     {
         return $this->session;
+    }
+
+    /**
+     * Set disable
+     *
+     * @param boolean $disable
+     * @return Comment
+     */
+    public function setDisable($disable)
+    {
+        $this->disable = $disable;
+
+        return $this;
+    }
+
+    /**
+     * Get disable
+     *
+     * @return boolean 
+     */
+    public function getDisable()
+    {
+        return $this->disable;
     }
 }

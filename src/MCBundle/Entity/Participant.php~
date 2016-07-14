@@ -12,15 +12,26 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Participant
 {
+    
+    
     /**
-     * @ORM\Column(name="user", type="string", length=255)
+     * @var User
      * @ORM\Id
+     *     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * })
      */
     private $user;
 
-    /***
-     * @ORM\ManyToOne(targetEntity="MCBundle\Entity\Session",  cascade={"persist"})
+
+    /**
+     * @var Session
      * @ORM\Id
+     * @ORM\ManyToOne(targetEntity="MCBundle\Entity\Session")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="session_id", referencedColumnName="id")
+     * })
      */
     private $session;
 
@@ -28,6 +39,14 @@ class Participant
      * @ORM\ManyToOne(targetEntity="MCBundle\Entity\StateParticipant",  cascade={"persist"})
      */
     private $stateParticipant;
+    
+     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="disable", type="boolean", options={"default":false})
+     */
+    private $disable;
+
 
 
 }

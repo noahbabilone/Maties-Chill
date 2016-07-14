@@ -35,10 +35,10 @@
                 </div>
                 <div class="col-sm-10">
                     <h4 class="font-green sbold uppercase">{{ app.user.username | capitalize }}</h4>
-                    {% if user.address %}
+                    {% if user.address and user.address | length >=1 %}
 
                         <small>
-                            <cite title="San Francisco, USA">{{ user.address[1].town }} ({{ user.address[1].postCode }}
+                            <cite title="San Francisco, USA">{{ user.address[0].town }} ({{ user.address[0].postCode }}
                                 ), FRANCE <i
                                         class="glyphicon glyphicon-map-marker">
                                 </i></cite></small>

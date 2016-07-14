@@ -3,6 +3,8 @@
 namespace MCBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -15,9 +17,9 @@ class AddressType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title', 'text', array(
+            ->add('title', TextType::class, array(
                     'label' => 'Titre',
-                    'required' => false,
+                    'required' => true,
                     'attr' => array(
                         'class' => 'form-control',
                         'placeholder' => 'Titre de l\'adresse',
@@ -25,7 +27,7 @@ class AddressType extends AbstractType
                     ),
                 )
             )
-            ->add('street', 'text', array(
+            ->add('street', TextType::class, array(
                     'label' => 'Rue',
                     'required' => false,
                     'attr' => array(
@@ -35,7 +37,7 @@ class AddressType extends AbstractType
                     ),
                 )
             )
-            ->add('frontDoor', 'text', array(
+            ->add('frontDoor', TextType::class, array(
                     'label' => 'Porte',
                     'required' => false,
                     'attr' => array(
@@ -45,7 +47,7 @@ class AddressType extends AbstractType
                     ),
                 )
             )
-            ->add('floor', 'text', array(
+            ->add('floor', TextType::class, array(
                     'label' => 'Étage',
                     'required' => false,
                     'attr' => array(
@@ -55,7 +57,7 @@ class AddressType extends AbstractType
                     ),
                 )
             )
-            ->add('building', 'text', array(
+            ->add('building', TextType::class, array(
                     'label' => 'Bât',
                     'required' => false,
                     'attr' => array(
@@ -65,7 +67,7 @@ class AddressType extends AbstractType
                     ),
                 )
             )
-            ->add('address', 'text', array(
+            ->add('address', TextType::class, array(
                     'label' => 'Adresse',
                     'required' => false,
                     'attr' => array(
@@ -75,17 +77,8 @@ class AddressType extends AbstractType
                     ),
                 )
             )
-            ->add('address2', 'text', array(
-                    'label' => 'Suite de l\'address',
-                    'required' => false,
-                    'attr' => array(
-                        'class' => 'form-control',
-                        'placeholder' => 'Suite adresse',
-                        'autocomplete' => 'off'
-                    ),
-                )
-            )
-            ->add('phone', 'text', array(
+           
+            ->add('phone', TextType::class, array(
                     'label' => 'Téléphone',
                     'required' => false,
                     'attr' => array(
@@ -95,7 +88,7 @@ class AddressType extends AbstractType
                     ),
                 )
             )
-            ->add('postCode', 'text', array(
+            ->add('postCode', TextType::class, array(
                     'label' => 'Code postal',
                     'required' => false,
                     'attr' => array(
@@ -105,7 +98,7 @@ class AddressType extends AbstractType
                     ),
                 )
             )
-            ->add('town', 'text', array(
+            ->add('town', TextType::class, array(
                     'label' => 'Ville',
                     'required' => false,
                     'attr' => array(
@@ -115,16 +108,7 @@ class AddressType extends AbstractType
                     ),
                 )
             )
-           /* ->add('other', 'text', array(
-                    'label' => 'Titre',
-                    'required' => false,
-                    'attr' => array(
-                        'class' => 'form-control',
-                        'placeholder' => 'Autres',
-                        'autocomplete' => 'off'
-                    ),
-                )
-            )*/;
+        ;
     }
 
     /**

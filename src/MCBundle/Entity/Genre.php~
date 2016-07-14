@@ -5,19 +5,35 @@ namespace MCBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * SearchFilm
+ * Category
+ *
+ * @ORM\Table(name="genre")
+ * @ORM\Entity(repositoryClass="MCBundle\Repository\GenreRepository")
  */
-class SearchFilm
+class Genre
 {
     /**
      * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="title", type="string", length=255, unique=true)
      */
     private $title;
+    
+     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="disable", type="boolean", options={"default":false})
+     */
+    private $disable;
 
 
     /**
@@ -34,7 +50,7 @@ class SearchFilm
      * Set title
      *
      * @param string $title
-     * @return SearchFilm
+     * @return Category
      */
     public function setTitle($title)
     {

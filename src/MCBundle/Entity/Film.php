@@ -35,7 +35,17 @@ class Film
      *
      * @ORM\Column(name="title", type="string", length=255,nullable=true)
      */
-    protected $title;/**
+    protected $title;
+
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="disable", type="boolean", options={"default":false})
+     */
+    private $disable;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="originalTitle", type="string", length=255,nullable=true)
@@ -67,7 +77,7 @@ class Film
      * @var string
      *
      * @ORM\Column(name="nationality", type="string", length=255,nullable=true)
-     */ 
+     */
     protected $nationality;
 
     /**
@@ -124,7 +134,7 @@ class Film
      * @ORM\Column(name="synopsisShort", type="text", nullable=true)
      */
     protected $synopsisShort;
-    
+
     /**
      * @var text
      *
@@ -143,6 +153,8 @@ class Film
     public function __construct()
     {
         $this->genre = new ArrayCollection();
+        $this->disable = false;
+
     }
 
     /**
@@ -412,7 +424,6 @@ class Film
         return $this->link;
     }
 
-   
 
     /**
      * Set synopsis
@@ -494,7 +505,6 @@ class Film
     }
 
 
-
     /**
      * Set synopsisShort
      *
@@ -510,7 +520,7 @@ class Film
     /**
      * Get synopsisShort
      *
-     * @return string 
+     * @return string
      */
     public function getSynopsisShort()
     {
@@ -533,7 +543,7 @@ class Film
     /**
      * Get poster
      *
-     * @return string 
+     * @return string
      */
     public function getPoster()
     {
@@ -556,10 +566,33 @@ class Film
     /**
      * Get originalTitle
      *
-     * @return string 
+     * @return string
      */
     public function getOriginalTitle()
     {
         return $this->originalTitle;
+    }
+
+    /**
+     * Set disable
+     *
+     * @param boolean $disable
+     * @return Film
+     */
+    public function setDisable($disable)
+    {
+        $this->disable = $disable;
+
+        return $this;
+    }
+
+    /**
+     * Get disable
+     *
+     * @return boolean
+     */
+    public function getDisable()
+    {
+        return $this->disable;
     }
 }
