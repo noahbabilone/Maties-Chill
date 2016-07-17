@@ -54,38 +54,38 @@
                 <ul class="nav navbar-nav">
 
                     <li class="classic-menu-dropdown">
-                        <a href="{{ path('session_all') }}" data-hover="megamenu-dropdown" data-close-others="true">
+                        <a href="{{ path('seances_all') }}" data-hover="megamenu-dropdown" data-close-others="true">
                             Séances
                             <i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu pull-left">
                             <li>
-                                <a href="{{ path('session_all') }}">
+                                <a href="{{ path('seances_all') }}">
                                     <i class="fa fa-clock-o fa-fw"></i> Prochaines Séances </a>
                             </li>
                             <li>
-                                <a href="{{ path('session_all') }}">
+                                <a href="{{ path('seances_all') }}">
                                     <i class="fa fa-download fa-fw"></i> Films Récents </a>
                             </li>
                             <li>
-                                <a href="{{ path('session_all') }}">
+                                <a href="{{ path('seances_all') }}">
                                     <i class="fa fa-money fa-fw"></i> Payantes </a>
                             </li>
                             <li>
-                                <a href="{{ path('session_all') }}">
+                                <a href="{{ path('seances_all') }}">
                                     <i class="fa fa-star fa-fw"></i> Gratuites </a>
                             </li>
                             <li>
-                                <a href="{{ path('session_all') }}">
+                                <a href="{{ path('seances_all') }}">
                                     <i class="fa fa-users fa-fw"></i> Top utilisateurs</a>
                             </li>
                             <li>
-                                <a href="{{ path('session_all') }}">
+                                <a href="{{ path('seances_all') }}">
                                     <i class="fa fa-list"></i> Toutes</a>
                             </li>
                             <li role="separator" class="divider"></li>
                             <li>
-                                <a href="{{ path('session_add') }}">
+                                <a href="{{ path('seances_add') }}">
                                     <i class="fa fa-plus"></i> Ajoutée</a>
                             </li>
 
@@ -162,7 +162,7 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-default">
                                 <li>
-                                    <a href="{{ path('user_session') }}">
+                                    <a href="{{ path('user_seances') }}">
                                         <i class="icon-screen-desktop"></i>Mes Séances
                                         {% if app.session.get('nbSession') %}
                                             <span class="badge badge-info nbSession"> {{ app.session.get('nbSession') }} </span>
@@ -170,7 +170,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('user_session') }}">
+                                    <a href="{{ path('user_seances') }}">
                                         <i class="icon-basket"></i>Participation(s)
                                         {% if app.session.get('nbPaticipation') %}
                                             <span class="badge badge-success nbPaticipation"> {{ app.session.get('nbPaticipation') }} </span>
@@ -178,7 +178,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('user_session') }}">
+                                    <a href="{{ path('user_seances') }}">
                                         <i class="icon-users"></i>Participant(s)
                                         {% if app.session.get('nbParticipant') %}
                                             <span class="badge badge-success nbParticipant"> {{ app.session.get('nbParticipant') }}</span>

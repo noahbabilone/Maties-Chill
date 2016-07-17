@@ -41,7 +41,7 @@
             <div class="row">
 
                 <div class="col-sm-2">
-                    {% include("MCBundle:Includes:submenu.session.html.twig") %}
+                    {% include("MCBundle:Includes:submenu.seance.html.twig") %}
                 </div>
                 <div class="col-sm-10">
                     <div class="row">
@@ -51,40 +51,40 @@
                                 <small> Participation(s)</small>
                             </h3>
                         </div>
-                        {% if sessions is defined %}
+                        {% if participates is defined %}
                             <div class="col-sm-12">
                                 <div class="search-page search-content-1">
 
                                     <div class="search-container ">
                                         <ul>
-                                            {% for session in sessions %}
+                                            {% for participate in participates %}
 
                                                 <li class="search-item clearfix">
-                                                    <a href="javascriptt:;">
-                                                        <img src="{{ session.film.poster }}"/>
+                                                    <a href="javascript:;">
+                                                        <img src="{{ participate.seance.film.poster }}"/>
                                                     </a>
 
                                                     <div class="search-content" style="margin-top: -12px; ">
                                                         <h4 class="search-title">
-                                                            <a href="javascript:;">{{ session.film.title }}
-                                                                - {{ session.typeView }}</a>
+                                                            <a href="javascript:;">{{ participate.seance.film.title }}
+                                                                - {{ participate.seance.typeView }}</a>
                                                         </h4>
                                                         {#<p class="search-desc"> </p>#}
                                                         <ul class=" list-unstyled search-desc"
                                                             style="margin-top: -17px; margin-bottom: 5px;">
 
-                                                            <li><b>Prix: </b> {{ session.price }}€</li>
-                                                            <li><b>Date: </b> {{ session.date | date('d F Y') }}
-                                                                à {{ session.date| date('h') }}
-                                                                h{{ session.date| date('i') }}</li>
-                                                            <li><b>Place(s) restante(s): </b> {{ session.maxPlace }}
+                                                            <li><b>Prix: </b> {{ participate.seance.price }}€</li>
+                                                            <li><b>Date: </b> {{ participate.seance.date | date('d F Y') }}
+                                                                à {{ participate.seance.date| date('h') }}
+                                                                h{{ participate.seance.date| date('i') }}</li>
+                                                            <li><b>Place(s) restante(s): </b> {{ participate.seance.maxPlace }}
                                                             </li>
                                                         </ul>
                                                         <p class="search-desc margin-bottom-10">
-                                                            {#<i class="fa fa-user fa-fw"></i> #}{{ session.creator | capitalize }}
-                                                            <i class="fa fa-location-arrow fa-fw"></i>{{ session.address.street }} {{ session.address.address }} {{ session.address.town | capitalize }}
-                                                            ({{ session.address.postCode }})
-                                                            <i class="fa fa-users"></i> {{ session.maxPlace }}
+                                                            {#<i class="fa fa-user fa-fw"></i> #}{{ participate.seance.creator | capitalize }}
+                                                            <i class="fa fa-location-arrow fa-fw"></i>{{ participate.seance.address.street }} {{ participate.seance.address.address }} {{ participate.seance.address.town | capitalize }}
+                                                            ({{ participate.seance.address.postCode }})
+                                                            <i class="fa fa-users"></i> {{ participate.seance.maxPlace }}
                                                         </p>
                                                         <a href="" class="btn btn-xs green-jungle"><i
                                                                     class="fa fa-envelope fa-fw"></i>Message</a>
@@ -101,8 +101,8 @@
                                         </ul>
 
                                         <div class="cbp-item">
-                                            {% if sessions %}
-                                                {{ knp_pagination_render(sessions) }}
+                                            {% if participates %}
+                                                {{ knp_pagination_render(participates) }}
                                             {% endif %}
 
                                         </div>

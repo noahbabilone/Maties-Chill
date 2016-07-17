@@ -1,0 +1,495 @@
+{% extends "MCBundle::main.html.twig" %}
+
+{% block title %}
+    Films - {{ parent() }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+    'bundles/mc/themes/global/plugins/cubeportfolio/css/cubeportfolio.css'
+    'bundles/mc/themes/global/css/components.min.css'
+    'bundles/mc/themes/pages/css/portfolio.min.css'
+    'bundles/mc/css/card.css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block body_mc %}
+    <div class="page-container page-mc">
+        <div class="page-content">
+
+            <div class="page-bar">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <ul class="page-breadcrumb">
+                            <li>
+                                <a href="{{ path('home_page') }}">Accueil</a>
+                                <i class="fa fa-circle"></i>
+                            </li>
+                            <li>
+                                <span>Séances</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-sm-2">
+                    {% include("MCBundle:Includes:submenu.html.twig") %}
+                </div>
+                <div class="col-sm-10">
+                    <div class="row">
+
+                        {% if nextSeances is defined and nextSeances %}
+                            <div class="col-sm-12">
+                                <h4 class="page-title page-header"> Séances <a
+                                            href="{{ path("film_action", {"action":"last_add"}) }}">
+                                        <small class="font-blue">Prochaines séances</small></a>
+                                </h4>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="portfolio-content">
+                                    <div id="js-grid-juicy-projects" class="cbp">
+                                        {% for nextSeance in nextSeances %}
+                                            <div class="cbp-item">
+                                                <article class="card">
+                                                    <header class="card__thumb">
+                                                        <a href="{{ path("film_view", {"slug": nextSeance.seance.film.id}) }}">
+                                                            {% if nextSeance.seance.film.poster is defined and nextSeance.seance.film.poster %}
+
+                                                                <img src="{{ nextSeance.seance.film.poster }}"
+                                                                     class=" pull-left margin-right"
+                                                                     alt="{{ nextSeance.seance.film.title }}">
+                                                            {% else %}
+                                                                <img src="../../uploads/images/400x300.png"
+                                                                     class=" pull-left margin-right"
+                                                                     alt="{{ nextSeance.seance.film.title }}">
+                                                            {% endif %}                                    </a>
+                                                    </header>
+                                                    <div class="session__price">
+                                                    <span class="session__price_val">
+                                                    {% if nextSeance.seance.price > 0 %}{{ nextSeance.seance.price }}€{% else %}Gratuit{% endif %}
+                                                    </span>
+                                                    </div>
+
+                                                    <div class="card__body">
+                                                        <div class="card__category">
+                                                            <i class="fa fa-clock-o"></i>
+                                                            {{ nextSeance.seance.date| date("d F") }} à
+                                                            {{ nextSeance.seance.date| date("H") }}
+                                                            h{{ nextSeance.seance.date| date("i") }}
+                                                        </div>
+                                                        <h6 class="card__title">
+                                                            <a href="{{ path("seances_view", {"slug": nextSeance.seance.film.id}) }}"
+                                                               class="font-grey">
+                                                                {{ nextSeance.seance.film.title |length > 25 ? nextSeance.seance.film.title|slice(0, 25) ~ '...' : nextSeance.seance.film.title }}
+                                                            </a></h6>
+                                                        <ul class="card__description list-unstyled">
+                                                            <h6 class="sub_card_title">
+                                                                <a href="{{ path("seances_view", {"slug": nextSeance.seance.film.id}) }}"
+                                                                   class="font-yellow-casablanca">
+                                                                    {{ nextSeance.seance.film.title |capitalize }}
+                                                                </a></h6>
+
+                                                            {% if nextSeance.seance.creator is defined and nextSeance.seance.creator %}
+                                                                <li>
+                                                                    <i class="fa fa-user"></i> {{ nextSeance.seance.creator.username | capitalize }}
+                                                                </li>
+                                                            {% endif %}
+
+                                                            {% if nextSeance.seance.address.town is defined and nextSeance.seance.address.town %}
+                                                                <li>
+                                                                    <i class="fa fa-location-arrow"></i> {{ nextSeance.seance.address.town }}
+                                                                    {% if nextSeance.seance.address.postCode is defined and nextSeance.seance.address.postCode %}
+                                                                        ({{ nextSeance.seance.address.postCode }})
+                                                                    {% endif %}
+                                                                </li>
+                                                            {% endif %}
+
+                                                            {% if nextSeance.seance.maxPlace is defined and nextSeance.seance.maxPlace %}
+                                                                <li>
+                                                                    <i class="fa fa-user-plus"></i>
+                                                                    {% if ( nextSeance.seance.maxPlace - nextSeance.participants ) >0 %}
+                                                                        {{ nextSeance.seance.maxPlace - nextSeance.participants }} Place(s) restante(s)
+                                                                    {% else %}
+                                                                        Complet
+                                                                    {% endif %}
+
+
+                                                                </li>
+                                                            {% endif %}
+
+                                                        </ul>
+                                                    </div>
+                                                    <footer class="card__footer ">
+                                                        {#<span class="glyphicon glyphicon-time"></span> 6 min#}
+
+                                                        <span class="fa fa-users"></span>
+                                                        <small>{{ nextSeance.participants }}</small>
+                                                        &nbsp;
+                                                        <span class="fa fa-comments"></span>
+                                                        <small>{{ random(50) }}</small>
+                                                            <span class="pull-right"><a
+                                                                        href="{{ path("seances_view", {"slug": nextSeance.seance.film.id}) }}"
+                                                                        class="text-info">&nbsp;Suite&raquo;
+                                                            </a></span>
+
+                                                    </footer>
+                                                </article>
+
+                                            </div>
+
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                            </div>
+                        {% endif %}
+
+                        {% if recentMoviesSeances is defined and recentMoviesSeances %}
+                            <div class="col-sm-12">
+                                <h4 class="page-header"><a
+                                            href="{{ path("film_action", {"action":"last_add"}) }}">
+                                        Films récents</a>
+                                </h4>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="portfolio-content">
+                                    <div id="js-grid-juicy-projects" class="cbp">
+                                        {% for recentMovies in recentMoviesSeances %}
+                                            <div class="cbp-item">
+                                                <article class="card">
+                                                    <header class="card__thumb">
+                                                        <a href="{{ path("film_view", {"slug": recentMovies.seance.film.id}) }}">
+                                                            {% if recentMovies.seance.film.poster is defined and recentMovies.seance.film.poster %}
+
+                                                                <img src="{{ recentMovies.seance.film.poster }}"
+                                                                     class=" pull-left margin-right"
+                                                                     alt="{{ recentMovies.seance.film.title }}">
+                                                            {% else %}
+                                                                <img src="../../uploads/images/400x300.png"
+                                                                     class=" pull-left margin-right"
+                                                                     alt="{{ recentMovies.seance.film.title }}">
+                                                            {% endif %}                                    </a>
+                                                    </header>
+                                                    <div class="session__price">
+                                                        <span class="session__price_val">
+                                                        {% if recentMovies.seance.price > 0 %}{{ recentMovies.seance.price }}€{% else %}Gratuit{% endif %}
+                                                        </span>
+                                                    </div>
+
+                                                    <div class="card__body">
+                                                        <div class="card__category">
+                                                            <i class="fa fa-clock-o"></i>
+                                                            {{ recentMovies.seance.date| date("d F") }} à
+                                                            {{ recentMovies.seance.date| date("H") }}
+                                                            h{{ recentMovies.seance.date| date("i") }}
+                                                        </div>
+                                                        <h5 class="card__title">
+                                                            <a href="{{ path("seances_view", {"slug": recentMovies.seance.film.id}) }}"
+                                                               class="font-grey">
+                                                                {{ recentMovies.seance.film.title |length > 26 ? recentMovies.seance.film.title|slice(0, 26) ~ '...' : recentMovies.seance.film.title }}
+                                                            </a></h5>
+                                                        <ul class="card__description list-unstyled">
+
+                                                            <h6 class="sub_card_title">
+                                                                <a href="{{ path("seances_view", {"slug": recentMovies.seance.film.id}) }}"
+                                                                   class="font-yellow-casablanca">
+                                                                    {{ recentMovies.seance.film.title | capitalize }}
+                                                                </a></h6>
+                                                            {% if recentMovies.seance.creator is defined and recentMovies.seance.creator %}
+                                                                <li>
+                                                                    <i class="fa fa-user"></i> {{ recentMovies.seance.creator.username | capitalize }}
+                                                                </li>
+                                                            {% endif %}
+
+                                                            {% if recentMovies.seance.address.town is defined and recentMovies.seance.address.town %}
+                                                                <li>
+                                                                    <i class="fa fa-location-arrow"></i> {{ recentMovies.seance.address.town }}
+                                                                    {% if recentMovies.seance.address.postCode is defined and recentMovies.seance.address.postCode %}
+                                                                        ({{ recentMovies.seance.address.postCode }})
+                                                                    {% endif %}
+                                                                </li>
+                                                            {% endif %}
+
+                                                            {% if recentMovies.seance.maxPlace is defined and recentMovies.seance.maxPlace %}
+                                                                <li>
+                                                                    <i class="fa fa-user-plus"></i>
+                                                                    {% if ( recentMovies.seance.maxPlace - recentMovies.participants ) >0 %}
+                                                                        {{ recentMovies.seance.maxPlace - recentMovies.participants }} Place(s) restante(s)
+                                                                    {% else %}
+                                                                        Complet
+                                                                    {% endif %}
+
+
+                                                                </li>
+                                                            {% endif %}
+
+                                                        </ul>
+                                                    </div>
+                                                    <footer class="card__footer ">
+                                                        {#<span class="glyphicon glyphicon-time"></span> 6 min#}
+
+                                                        <span class="fa fa-users"></span>
+                                                        <small>{{ recentMovies.participants }}</small>
+                                                        &nbsp;
+                                                        <span class="fa fa-comments"></span>
+                                                        <small>{{ random(50) }}</small>
+                                                        <span class="pull-right">
+                                                        <a href="{{ path("seances_view", {"slug": recentMovies.seance.film.id}) }}"
+                                                           class="text-info">&nbsp;Suite&raquo;</a>
+                                                        </span>
+                                                        {#<span class="pull-right"><a#}
+                                                        {#href="{{ path("film_view", {"slug": recentMovies.seance.film.id}) }}"#}
+                                                        {#class="text-info"><i#}
+                                                        {#class="fa fa-user-plus"></i></a>&nbsp;</span>#}
+                                                    </footer>
+                                                </article>
+
+                                            </div>
+
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                            </div>
+                        {% endif %}
+
+                        {% if seancesPaying is defined and seancesPaying %}
+                            <div class="col-sm-12">
+                                <h4 class="page-header"><a
+                                            href="{{ path("film_action", {"action":"last_add"}) }}">
+                                        Séances Payantes</a>
+                                </h4>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="portfolio-content">
+                                    <div id="js-grid-juicy-projects" class="cbp">
+                                        {% for seancePaying in seancesPaying %}
+
+                                            <div class="cbp-item">
+                                                <article class="card">
+                                                    <header class="card__thumb">
+                                                        <a href="{{ path("film_view", {"slug": seancePaying.seance.film.id}) }}">
+                                                            {% if seancePaying.seance.film.poster is defined and seancePaying.seance.film.poster %}
+
+                                                                <img src="{{ seancePaying.seance.film.poster }}"
+                                                                     class=" pull-left margin-right"
+                                                                     alt="{{ seancePaying.seance.film.title }}">
+                                                            {% else %}
+                                                                <img src="../../uploads/images/400x300.png"
+                                                                     class=" pull-left margin-right"
+                                                                     alt="{{ seancePaying.seance.film.title }}">
+                                                            {% endif %}                                    </a>
+                                                    </header>
+                                                    <div class="session__price">
+                                                        <span class="session__price_val">
+                                                        {% if seancePaying.seance.price > 0 %}{{ seancePaying.seance.price }}€{% else %}Gratuit{% endif %}
+                                                        </span>
+                                                    </div>
+
+                                                    <div class="card__body">
+                                                        <div class="card__category">
+                                                            <i class="fa fa-clock-o"></i>
+                                                            {{ seancePaying.seance.date| date("d F") }} à
+                                                            {{ seancePaying.seance.date| date("H") }}
+                                                            h{{ seancePaying.seance.date| date("i") }}
+                                                        </div>
+                                                        <h5 class="card__title">
+                                                            <a href="{{ path("seances_view", {"slug": seancePaying.seance.film.id}) }}"
+                                                               class="font-grey">
+                                                                {{ seancePaying.seance.film.title |length > 26 ? seancePaying.seance.film.title| capitalize|slice(0, 26) ~ '...' : seancePaying.seance.film.title | capitalize }}
+                                                            </a></h5>
+                                                        <ul class="card__description list-unstyled">
+                                                            <h6 class="sub_card_title">
+                                                                <a href="{{ path("seances_view", {"slug": seancePaying.seance.film.id}) }}"
+                                                                   class="font-yellow-casablanca">
+                                                                    {{ seancePaying.seance.film.title | capitalize }}
+                                                                </a></h6>
+
+                                                            {% if seancePaying.seance.creator is defined and seancePaying.seance.creator %}
+                                                                <li>
+                                                                    <i class="fa fa-user"></i> {{ seancePaying.seance.creator.username | capitalize }}
+                                                                </li>
+                                                            {% endif %}
+
+                                                            {% if seancePaying.seance.address.town is defined and seancePaying.seance.address.town %}
+                                                                <li>
+                                                                    <i class="fa fa-location-arrow"></i> {{ seancePaying.seance.address.town }}
+                                                                    {% if seancePaying.seance.address.postCode is defined and seancePaying.seance.address.postCode %}
+                                                                        ({{ seancePaying.seance.address.postCode }})
+                                                                    {% endif %}
+                                                                </li>
+                                                            {% endif %}
+
+                                                            {% if seancePaying.seance.maxPlace is defined and seancePaying.seance.maxPlace %}
+                                                                <li>
+                                                                    <i class="fa fa-user-plus"></i>
+                                                                    {% if ( seancePaying.seance.maxPlace - seancePaying.participants ) >0 %}
+                                                                        {{ seancePaying.seance.maxPlace - seancePaying.participants }} Place(s) restante(s)
+                                                                    {% else %}
+                                                                        Complet
+                                                                    {% endif %}
+                                                                </li>
+                                                            {% endif %}
+
+                                                        </ul>
+                                                    </div>
+                                                    <footer class="card__footer ">
+                                                        {#<span class="glyphicon glyphicon-time"></span> 6 min#}
+
+                                                        <span class="fa fa-users"></span>
+                                                        <small>{{ seancePaying.participants }}</small>
+                                                        &nbsp;
+                                                        <span class="fa fa-comments"></span>
+                                                        <small>{{ random(50) }}</small>
+                                                        <span class="pull-right">
+                                                            <a href="{{ path("seances_view", {"slug": seancePaying.seance.film.id}) }}"
+                                                               class="text-info">&nbsp;Suite&raquo;</a>
+                                                        </span>
+                                                        {#<span class="pull-right"><a 
+                                                                    href="{{ path("film_view", {"slug": nextSeance.seance.film.id}) }}"
+                                                                    class="text-info"><i class="fa fa-user-plus"></i></a>&nbsp;</span> #}
+                                                    </footer>
+                                                </article>
+
+                                            </div>
+
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                            </div>
+                        {% endif %}
+                        {% if seancesFrees is defined and seancesFrees %}
+                            <div class="col-sm-12">
+                                <h4 class="page-header"><a
+                                            href="{{ path("film_action", {"action":"last_add"}) }}">
+                                        Séances Gratuites</a>
+                                </h4>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="portfolio-content">
+                                    <div id="js-grid-juicy-projects" class="cbp">
+                                        {% for seancesFree in seancesFrees %}
+
+                                            <div class="cbp-item">
+                                                <article class="card">
+                                                    <header class="card__thumb">
+                                                        <a href="{{ path("film_view", {"slug": seancesFree.seance.film.id}) }}">
+                                                            {% if seancesFree.seance.film.poster is defined and seancesFree.seance.film.poster %}
+
+                                                                <img src="{{ seancesFree.seance.film.poster }}"
+                                                                     class=" pull-left margin-right"
+                                                                     alt="{{ seancesFree.seance.film.title }}">
+                                                            {% else %}
+                                                                <img src="../../uploads/images/400x300.png"
+                                                                     class=" pull-left margin-right"
+                                                                     alt="{{ seancesFree.seance.film.title }}">
+                                                            {% endif %}                                    </a>
+                                                    </header>
+                                                    <div class="session__price">
+                                                        <span class="session__price_val">
+                                                        {% if seancesFree.seance.price > 0 %}{{ seancesFree.seance.price }}€{% else %}Gratuit{% endif %}
+                                                        </span>
+                                                    </div>
+                                                    <div class="card__body">
+                                                        <div class="card__category">
+                                                            <i class="fa fa-clock-o"></i>
+                                                            {{ seancesFree.seance.date| date("d F") }} à
+                                                            {{ seancesFree.seance.date| date("H") }}
+                                                            h{{ seancesFree.seance.date| date("i") }}
+                                                        </div>
+                                                        <h5 class="card__title">
+                                                            <a href="{{ path("seances_view", {"slug": seancesFree.seance.film.id}) }}"
+                                                               class="font-grey">
+                                                                {{ seancesFree.seance.film.title |length > 26 ? seancesFree.seance.film.title| capitalize|slice(0, 26) ~ '...' : seancesFree.seance.film.title | capitalize }}
+                                                                {#{{ seancesFree.seance.film.title |capitalize }}#}
+                                                            </a></h5>
+                                                        <ul class="card__description list-unstyled">
+                                                            <h6 class="sub_card_title">
+                                                                <a href="{{ path("seances_view", {"slug": seancesFree.seance.film.id}) }}"
+                                                                   class="font-yellow-casablanca">
+                                                                    {{ seancesFree.seance.film.title | capitalize }}
+                                                                </a></h6>
+
+                                                            {% if seancesFree.seance.creator is defined and seancesFree.seance.creator %}
+                                                                <li>
+                                                                    <i class="fa fa-user"></i> {{ seancesFree.seance.creator.username | capitalize }}
+                                                                </li>
+                                                            {% endif %}
+
+                                                            {% if seancesFree.seance.address.town is defined and seancesFree.seance.address.town %}
+                                                                <li>
+                                                                    <i class="fa fa-location-arrow"></i> {{ seancesFree.seance.address.town }}
+                                                                    {% if seancesFree.seance.address.postCode is defined and seancesFree.seance.address.postCode %}
+                                                                        ({{ seancesFree.seance.address.postCode }})
+                                                                    {% endif %}
+                                                                </li>
+                                                            {% endif %}
+
+                                                            {% if seancesFree.seance.maxPlace is defined and seancesFree.seance.maxPlace %}
+                                                                <li>
+                                                                    <i class="fa fa-user-plus"></i>
+                                                                    {% if ( seancesFree.seance.maxPlace - seancesFree.participants ) >0 %}
+                                                                        {{ seancesFree.seance.maxPlace - seancesFree.participants }} Place(s) restante(s)
+                                                                    {% else %}
+                                                                        Complet
+                                                                    {% endif %}
+
+
+                                                                </li>
+                                                            {% endif %}
+
+                                                        </ul>
+                                                    </div>
+                                                    <footer class="card__footer ">
+                                                        {#<span class="glyphicon glyphicon-time"></span> 6 min#}
+
+                                                        <span class="fa fa-users"></span>
+                                                        <small>{{ seancesFree.participants }}</small>
+                                                        &nbsp;
+                                                        <span class="fa fa-comments"></span>
+                                                        <small>{{ random(50) }}</small>
+                                                        <span class="pull-right">
+                                                            <a href="{{ path("seances_view", {"slug": seancesFree.seance.film.id}) }}"
+                                                               class="text-info">&nbsp;Suite&raquo;</a>
+                                                        </span>
+                                                        {#<span class="pull-right"><a 
+                                                                    href="{{ path("film_view", {"slug": nextSeance.seance.film.id}) }}"
+                                                                    class="text-info"><i class="fa fa-user-plus"></i></a>&nbsp;</span> #}
+                                                    </footer>
+                                                </article>
+
+                                            </div>
+
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                            </div>
+                        {% endif %}
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+    {% block javascripts %}
+        {{ parent() }}
+        {% javascripts
+        'bundles/mc/themes/global/plugins/cubeportfolio/js/jquery.cubeportfolio.min.js'
+        'bundles/mc/js/cubePortfolio-seance-home.js' %}
+        {#  #}
+        <script src="{{ asset_url }}"></script>
+        
+        {% endjavascripts %}
+    {% endblock %}

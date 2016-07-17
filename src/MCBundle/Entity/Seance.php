@@ -5,15 +5,18 @@ namespace MCBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use MCBundle\Entity\Film;
+use MCBundle\Entity\Material;
+use MCBundle\Entity\Modality;
 use UserBundle\Entity\User;
 
 /**
- * Session
+ * Seance
  *
- * @ORM\Table(name="session")
- * @ORM\Entity(repositoryClass="MCBundle\Repository\SessionRepository")
+ * @ORM\Table(name="seance")
+ * @ORM\Entity(repositoryClass="MCBundle\Repository\SeanceRepository")
  */
-class Session
+class Seance
 {
     /**
      * @var int
@@ -91,15 +94,15 @@ class Session
      */
     private $creator;
     
-     /**
-     * @ORM\ManyToMany(targetEntity="UserBundle\Entity\User", cascade={"persist"})
-     * @ORM\JoinTable(name="session_participant",
-     *      joinColumns={@ORM\JoinColumn(name="session_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="participant_id", referencedColumnName="id")}
-     *      )
-     *
-     * */
-    protected $participant;
+//     /**
+//     * @ORM\ManyToMany(targetEntity="UserBundle\Entity\User", cascade={"persist"})
+//     * @ORM\JoinTable(name="seance_participant",
+//     *      joinColumns={@ORM\JoinColumn(name="seance_id", referencedColumnName="id")},
+//     *      inverseJoinColumns={@ORM\JoinColumn(name="participant_id", referencedColumnName="id")}
+//     *      )
+//     *
+//     * */
+//    protected $participant;
 
     /**
      * @var boolean
@@ -150,7 +153,7 @@ class Session
      * Set date
      *
      * @param \DateTime $date
-     * @return Session
+     * @return Seance
      */
     public function setDate($date)
     {
@@ -176,7 +179,7 @@ class Session
      * Set typeView
      *
      * @param string $typeView
-     * @return Session
+     * @return Seance
      */
     public function setTypeView($typeView)
     {
@@ -199,7 +202,7 @@ class Session
      * Set description
      *
      * @param string $description
-     * @return Session
+     * @return Seance
      */
     public function setDescription($description)
     {
@@ -222,7 +225,7 @@ class Session
      * Set contribution
      *
      * @param string $contribution
-     * @return Session
+     * @return Seance
      */
     public function setContribution($contribution)
     {
@@ -245,7 +248,7 @@ class Session
      * Set price
      *
      * @param integer $price
-     * @return Session
+     * @return Seance
      */
     public function setPrice($price)
     {
@@ -268,7 +271,7 @@ class Session
      * Set maxPlace
      *
      * @param integer $maxPlace
-     * @return Session
+     * @return Seance
      */
     public function setMaxPlace($maxPlace)
     {
@@ -291,7 +294,7 @@ class Session
      * Set address
      *
      * @param \MCBundle\Entity\Address $address
-     * @return Session
+     * @return Seance
      */
     public function setAddress(\MCBundle\Entity\Address $address)
     {
@@ -313,10 +316,10 @@ class Session
     /**
      * Add material
      *
-     * @param \MCBundle\Entity\Material $material
-     * @return Session
+     * @param Material $material
+     * @return Seance
      */
-    public function addMaterial(\MCBundle\Entity\Material $material)
+    public function addMaterial(Material $material)
     {
         $this->material[] = $material;
 
@@ -326,9 +329,9 @@ class Session
     /**
      * Remove material
      *
-     * @param \MCBundle\Entity\Material $material
+     * @param Material $material
      */
-    public function removeMaterial(\MCBundle\Entity\Material $material)
+    public function removeMaterial(Material $material)
     {
         $this->material->removeElement($material);
     }
@@ -346,10 +349,10 @@ class Session
     /**
      * Set modality
      *
-     * @param \MCBundle\Entity\Modality $modality
-     * @return Session
+     * @param Modality $modality
+     * @return Seance
      */
-    public function setModality(\MCBundle\Entity\Modality $modality)
+    public function setModality(Modality $modality)
     {
         $this->modality = $modality;
 
@@ -359,7 +362,7 @@ class Session
     /**
      * Get modality
      *
-     * @return \MCBundle\Entity\Modality
+     * @return Modality
      */
     public function getModality()
     {
@@ -369,10 +372,10 @@ class Session
     /**
      * Set film
      *
-     * @param \MCBundle\Entity\Film $film
-     * @return Session
+     * @param Film $film
+     * @return Seance
      */
-    public function setFilm(\MCBundle\Entity\Film $film)
+    public function setFilm(Film $film)
     {
         $this->film = $film;
 
@@ -382,7 +385,7 @@ class Session
     /**
      * Get film
      *
-     * @return \MCBundle\Entity\Film
+     * @return Film
      */
     public function getFilm()
     {
@@ -393,7 +396,7 @@ class Session
      * Set creator
      *
      * @param User $creator
-     * @return Session
+     * @return Seance
      */
     public function setCreator(User $creator)
     {
@@ -416,7 +419,7 @@ class Session
      * Add participant
      *
      * @param User $participant
-     * @return Session
+     * @return Seance
      */
     public function addParticipant(User $participant)
     {
@@ -425,31 +428,31 @@ class Session
         return $this;
     }
 
-    /**
-     * Remove participant
-     *
-     * @param User $participant
-     */
-    public function removeParticipant(User $participant)
-    {
-        $this->participant->removeElement($participant);
-    }
-
-    /**
-     * Get participant
-     *
-     * @return Collection
-     */
-    public function getParticipant()
-    {
-        return $this->participant;
-    }
+//    /**
+//     * Remove participant
+//     *
+//     * @param User $participant
+//     */
+//    public function removeParticipant(User $participant)
+//    {
+//        $this->participant->removeElement($participant);
+//    }
+//
+//    /**
+//     * Get participant
+//     *
+//     * @return Collection
+//     */
+//    public function getParticipant()
+//    {
+//        return $this->participant;
+//    }
 
     /**
      * Set disable
      *
      * @param boolean $disable
-     * @return Session
+     * @return Seance
      */
     public function setDisable($disable)
     {

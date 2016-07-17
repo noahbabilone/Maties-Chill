@@ -3,6 +3,7 @@
 namespace MCBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use MCBundle\Entity\Seance;
 use UserBundle\Entity\User;
 
 /**
@@ -42,9 +43,9 @@ class Comment
     private $user;
 
      /**
-     * @ORM\ManyToOne(targetEntity="MCBundle\Entity\Session",  cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="MCBundle\Entity\Seance",  cascade={"persist"})
      */
-    private $session;
+    private $seance;
     
 
     /**
@@ -83,10 +84,10 @@ class Comment
     /**
      * Set user
      *
-     * @param \UserBundle\Entity\User $user
+     * @param User $user
      * @return Comment
      */
-    public function setUser(\UserBundle\Entity\User $user = null)
+    public function setUser(User $user = null)
     {
         $this->user = $user;
 
@@ -96,7 +97,7 @@ class Comment
     /**
      * Get user
      *
-     * @return \UserBundle\Entity\User 
+     * @return User 
      */
     public function getUser()
     {
@@ -104,26 +105,26 @@ class Comment
     }
 
     /**
-     * Set session
+     * Set seance
      *
-     * @param \MCBundle\Entity\Session $session
+     * @param Seance $seance
      * @return Comment
      */
-    public function setSession(\MCBundle\Entity\Session $session = null)
+    public function setSeance(Seance $seance = null)
     {
-        $this->session = $session;
+        $this->seance = $seance;
 
         return $this;
     }
 
     /**
-     * Get session
+     * Get seance
      *
-     * @return \MCBundle\Entity\Session 
+     * @return Seance 
      */
-    public function getSession()
+    public function getSeance()
     {
-        return $this->session;
+        return $this->seance;
     }
 
     /**

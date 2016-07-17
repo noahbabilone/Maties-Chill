@@ -9,21 +9,21 @@ use MCBundle\Entity\Genre;
 
 use MCBundle\Form\MaterialType;
 use MCBundle\Form\AddressType;
-use MCBundle\Form\SessionType;
+use MCBundle\Form\SeanceType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use MCBundle\Entity\Film;
-use MCBundle\Entity\Session;
+use MCBundle\Entity\Seance;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 
-class SessionBOController extends Controller
+class SeanceBOController extends Controller
 {
 
     /**
-     * Get all sessions
+     * Get all seances
      * @param Request $request
      * @Route("/dashboard", name="dashboard")
      * @return Response
@@ -34,66 +34,66 @@ class SessionBOController extends Controller
         $limitPage = 10;
         $numberPage = 1;
 
-        $result = $em->getRepository('MCBundle:Session')->findAll();
-        $sessions = $this->get('knp_paginator')->paginate(
+        $result = $em->getRepository('MCBundle:Seance')->findAll();
+        $seances = $this->get('knp_paginator')->paginate(
             $result,
             $request->query->get('page', $numberPage),
             $limitPage
         );
-        $data = array("sessions" => $sessions);
+        $data = array("seances" => $seances);
         return $this->render('MCBundle:BackOffice:index.html.twig', $data);
     }
 
     /**
-     * Get all sessions
+     * Get all seances
      * @param Request $request
-     * @Route("/sessions", name="list_sessions")
+     * @Route("/seances", name="list_seances")
      * @return Response
      */
-    public function listSessionAction(Request $request)
+    public function listSeanceAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $limitPage = 10;
         $numberPage = 1;
 
-        $result = $em->getRepository('MCBundle:Session')->getDescSessions();
-        $sessions = $this->get('knp_paginator')->paginate(
+        $result = $em->getRepository('MCBundle:Seance')->getDescSeances();
+        $seances = $this->get('knp_paginator')->paginate(
             $result,
             $request->query->get('page', $numberPage),
             $limitPage
         );
 
-        $data = array("sessions" => $sessions);
-        if ($request->getSession()->has('add-session')) {
-            $data['result'] = $request->getSession()->get('add-session');
+        $data = array("seances" => $seances);
+        if ($request->getSeance()->has('add-seance')) {
+            $data['result'] = $request->getSeance()->get('add-seance');
             $data['message'] = "La séance a été créée.";
-            $request->getSession()->remove('add-session');
+            $request->getSeance()->remove('add-seance');
         }
 
 
-        return $this->render('MCBundle:BackOffice:sessions.html.twig', $data);
+        return $this->render('MCBundle:BackOffice:seances.html.twig', $data);
     }
 
     /**
-     * Get all sessions
+     * Get all seances
      * @param Request $request
-     * @Route("/sessions/add", name="add_session")
+     * @Route("/seances/add", name="add_seance")
      * @return Response
      */
-    public function addSessionAction(Request $request)
+    public function addSeanceAction(Request $request)
     {
-        $session = new Session();
-        $form = $this->createForm(new SessionType(), $session);
+        $seance = new Seance();
+        $form = $this->createForm(new SeanceType(), $seance);
         $formMaterial = $this->createForm(new MaterialType(), new Material());
         $formAddress = $this->createForm(new AddressType(), new Address());
 
-        if ($form->handleRequest($request)->isValid() && $session->getFilmId()) {
+        if ($form->handleRequest($request)->isValid() && $seance->getFilmId()) {
             $em = $this->getDoctrine()->getManager();
-            $film = $em->getRepository('MCBundle:Film')->findOneBy(array('ISAN' => $session->getFilmId()));
+            $film = $em->getRepository('MCBundle:Film')->findOneBy(array('ISAN' => $seance->getFilmId()));
             if (!$film) {
                // $em = $this->getDoctrine()->getManager();
                 $cine = $this->get("mc_allocine");
-                $result = $cine->get($session->getFilmId());
+                $result = $cine->get($seance->getFilmId());
                 $data = json_decode($result);
                // dump($data);
 
@@ -105,18 +105,18 @@ class SessionBOController extends Controller
                 }
 
             }
-            $session->setFilm($film);
+            $seance->setFilm($film);
             $creator = $user = $this->get('security.context')->getToken()->getUser();
-            $session->setCreator($creator);
-            $em->persist($session);
+            $seance->setCreator($creator);
+            $em->persist($seance);
             $em->flush();
 
-            $request->getSession()->set('add-session', true);
-            return $this->redirectToRoute('list_sessions', array(), 301);
+            $request->getSeance()->set('add-seance', true);
+            return $this->redirectToRoute('list_seances', array(), 301);
 
         }
 
-        return $this->render('MCBundle:BackOffice:add-sessions.html.twig', array(
+        return $this->render('MCBundle:BackOffice:add-seances.html.twig', array(
             'form' => $form->createView(),
             'formMaterial' => $formMaterial->createView(),
             'formAddress' => $formAddress->createView(),
@@ -126,7 +126,7 @@ class SessionBOController extends Controller
 
 
     /**
-     * Get all sessions
+     * Get all seances
      * @param Request $request
      * @Route("/films", name="list_films")
      * @return Response

@@ -27,14 +27,14 @@ class Participant
 
 
     /**
-     * @var Session
+     * @var Seance
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="MCBundle\Entity\Session")
+     * @ORM\ManyToOne(targetEntity="MCBundle\Entity\Seance")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="session_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="seance_id", referencedColumnName="id")
      * })
      */
-    private $session;
+    private $seance;
 
     /**
      * @ORM\ManyToOne(targetEntity="MCBundle\Entity\StateParticipant",  cascade={"persist"})
@@ -98,26 +98,26 @@ class Participant
     }
 
     /**
-     * Set session
+     * Set seance
      *
-     * @param Session $session
+     * @param Seance $seance
      * @return Participant
      */
-    public function setSession(Session $session)
+    public function setSeance(Seance $seance)
     {
-        $this->session = $session;
+        $this->seance = $seance;
 
         return $this;
     }
 
     /**
-     * Get session
+     * Get seance
      *
-     * @return Session 
+     * @return Seance 
      */
-    public function getSession()
+    public function getSeance()
     {
-        return $this->session;
+        return $this->seance;
     }
 
     /**

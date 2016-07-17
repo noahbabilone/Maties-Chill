@@ -3,6 +3,9 @@
 namespace MCBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use MCBundle\Entity\Seance;
+use MCBundle\Entity\TypeNote;
+use UserBundle\Entity\User;
 
 /**
  * Note
@@ -41,9 +44,9 @@ class Note
     private $typeNote;
 
     /**
-     * @ORM\ManyToOne(targetEntity="MCBundle\Entity\Session",  cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="MCBundle\Entity\Seance",  cascade={"persist"})
      */
-    private $session;
+    private $seance;
 
     /**
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User",  cascade={"persist"})
@@ -115,10 +118,10 @@ class Note
     /**
      * Set typeNote
      *
-     * @param \MCBundle\Entity\TypeNote $typeNote
+     * @param TypeNote $typeNote
      * @return Note
      */
-    public function setTypeNote(\MCBundle\Entity\TypeNote $typeNote = null)
+    public function setTypeNote(TypeNote $typeNote = null)
     {
         $this->typeNote = $typeNote;
 
@@ -128,7 +131,7 @@ class Note
     /**
      * Get typeNote
      *
-     * @return \MCBundle\Entity\TypeNote 
+     * @return TypeNote 
      */
     public function getTypeNote()
     {
@@ -136,35 +139,35 @@ class Note
     }
 
     /**
-     * Set session
+     * Set seance
      *
-     * @param \MCBundle\Entity\Session $session
+     * @param Seance $seance
      * @return Note
      */
-    public function setSession(\MCBundle\Entity\Session $session = null)
+    public function setSeance(Seance $seance = null)
     {
-        $this->session = $session;
+        $this->seance = $seance;
 
         return $this;
     }
 
     /**
-     * Get session
+     * Get seance
      *
-     * @return \MCBundle\Entity\Session 
+     * @return Seance 
      */
-    public function getSession()
+    public function getSeance()
     {
-        return $this->session;
+        return $this->seance;
     }
 
     /**
      * Set user
      *
-     * @param \UserBundle\Entity\User $user
+     * @param User $user
      * @return Note
      */
-    public function setUser(\UserBundle\Entity\User $user = null)
+    public function setUser(User $user = null)
     {
         $this->user = $user;
 
@@ -174,7 +177,7 @@ class Note
     /**
      * Get user
      *
-     * @return \UserBundle\Entity\User 
+     * @return User 
      */
     public function getUser()
     {
@@ -184,10 +187,10 @@ class Note
     /**
      * Set assign
      *
-     * @param \UserBundle\Entity\User $assign
+     * @param User $assign
      * @return Note
      */
-    public function setAssign(\UserBundle\Entity\User $assign = null)
+    public function setAssign(User $assign = null)
     {
         $this->assign = $assign;
 
@@ -197,7 +200,7 @@ class Note
     /**
      * Get assign
      *
-     * @return \UserBundle\Entity\User 
+     * @return User 
      */
     public function getAssign()
     {

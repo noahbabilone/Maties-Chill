@@ -3,12 +3,12 @@
 namespace MCBundle\Controller;
 
 use MCBundle\Entity\Film;
-use MCBundle\Entity\Session;
+use MCBundle\Entity\Seance;
 use MCBundle\Entity\Address;
 use MCBundle\Entity\Material;
 use MCBundle\Entity\Genre;
 
-use MCBundle\Form\SessionType;
+use MCBundle\Form\SeanceType;
 use MCBundle\Form\MaterialType;
 use MCBundle\Form\AddressType;
 
@@ -21,11 +21,11 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use FOS\UserBundle\Model\User;
 
 
-class SessionController extends Controller
+class SeanceController extends Controller
 {
     /**
-     * @Route("/seances", name="session_all")
-     * Get all sessions
+     * @Route("/seances/all", name="seances_all")
+     * Get all seances
      * @param Request $request
      * @return Response
      */
@@ -35,54 +35,94 @@ class SessionController extends Controller
         $numberPage = 1;
 
         $em = $this->getDoctrine()->getManager();
-        $result = $em->getRepository('MCBundle:Session')->findAll();
+        $result = $em->getRepository('MCBundle:Seance')->findAll();
 
-        $sessions = $this->get('knp_paginator')->paginate(
+        $seances = $this->get('knp_paginator')->paginate(
             $result,
             $request->query->get('page', $numberPage),
             $limitPage
         );
         return $this->render(
-            'MCBundle:Pages:sessions.html.twig',
+            'MCBundle:Pages:seances.html.twig',
             array(
-                "sessions" => $sessions
+                "seances" => $seances
             )
         );
-    } 
+    }
 
+    /**
+     * @Route("/seances", name="seances_home")
+     * Get all seances
+     * @param Request $request
+     * @return Response
+     */
+    public function seanceHomeAction(Request $request)
+    {
+
+
+        $em = $this->getDoctrine()->getManager();
+        $data = array();
+
+
+        if ($request->get('action') !== null && !empty($request->get('action'))) {
+            $action = $request->get('action');
+            
+            dump($action);
+            die;
+        }
+
+
+        $limit = 8;
+        //Prochaines
+        $data['nextSeances'] = $em->getRepository('MCBundle:Seance')->nextSeance($limit);
+
+        //Films récents
+        $data['recentMoviesSeances'] = $em->getRepository('MCBundle:Seance')->recentMoviesSeance($limit);
+
+        //Payantes
+        $data['seancesPaying'] = $em->getRepository('MCBundle:Seance')->seancePaying($limit);
+
+        //Gratuites
+        $data['seancesFrees'] = $em->getRepository('MCBundle:Seance')->seanceFree($limit);
+
+        //Top users
+        //$topUsers = $em->getRepository('MCBundle:Seance')->seanceFree(10);
+
+        return $this->render('MCBundle:Pages:seances.html.twig', $data);
+    }
 
 
     /**
-     * @Route("/seances/view/{slug}", name="session_view")
+     * @Route("/seances/view/{slug}", name="seances_view")
      * @param $slug
      * @return Response
      */
-    public function viewSessionsAction($slug)
+    public function viewSeancesAction($slug)
     {
         $em = $this->getDoctrine()->getManager();
-        $session = $em->getRepository('MCBundle:Session')->find($slug);
+        $seance = $em->getRepository('MCBundle:Seance')->find($slug);
 
-        return $this->render('MCBundle:Pages:viewSession.html.twig', array(
-            "session" => $session,
+        return $this->render('MCBundle:Pages:viewSeance.html.twig', array(
+            "seance" => $seance,
         ));
 
     }
-    
+
     /**
-     * Get all sessions for each Id Film
+     * Get all seances for each Id Film
      * @param $idFilm
      * @return Response
      */
-    public function sessionByFilmAction($idFilm)
+    public function seanceByFilmAction($idFilm)
     {
         $em = $this->getDoctrine()->getManager();
-        $sessions = $em->getRepository('MCBundle:Session')->fin($idFilm);
+        $seances = $em->getRepository('MCBundle:Seance')->fin($idFilm);
         $film = $em->getRepository('MCBundle:Film')->find($idFilm);
 
         return $this->render(
-            'MCBundle:Pages:films.html.twig',   
+            'MCBundle:Pages:films.html.twig',
             array(
-                "sessions" => $sessions,
+                "seances" => $seances,
                 "film" => $film,
             )
         );
@@ -90,22 +130,22 @@ class SessionController extends Controller
 
     /**
      * @param Request $request
-     * @Route("/session/remove", name="session_remove",  options = {"expose"=true})
+     * @Route("/seance/remove", name="seances_remove",  options = {"expose"=true})
      * @return response
      * @throws NotFoundHttpException
      */
-    public function removeSessionAction(Request $request)
+    public function removeSeanceAction(Request $request)
     {
 
         if ($request->isXmlHttpRequest()) {
             $em = $this->getDoctrine()->getManager();
             $id = $request->get('id');
-            $session = $em->getRepository('MCBundle:Session')->find($id);
-            if (null === $session) {
+            $seance = $em->getRepository('MCBundle:Seance')->find($id);
+            if (null === $seance) {
                 throw new NotFoundHttpException("La séance (ID: " . $id . ") n'existe pas.");
             }
-            $message = "La séance " . "(<b>" .$session->getFilm()->getTitle(). " -  ".$session->getTypeView() ."</b>)  a été supprimée.";
-            //$em->remove($session);
+            $message = "La séance " . "(<b>" . $seance->getFilm()->getTitle() . " -  " . $seance->getTypeView() . "</b>)  a été supprimée.";
+            //$em->remove($seance);
             //$em->flush();
             return new Response(json_encode(array('result' => 'success', 'message' => $message)));
         }
@@ -114,25 +154,25 @@ class SessionController extends Controller
 
 
     /**
-     * Get all sessions
+     * Get all seances
      * @param Request $request
-     * @Route("/sessions/add", name="session_add")
+     * @Route("/seances/add", name="seances_add")
      * @return Response
      */
-    public function addSessionAction(Request $request)
+    public function addSeanceAction(Request $request)
     {
-        $session = new Session();
-        $form = $this->createForm(new SessionType(), $session);
+        $seance = new Seance();
+        $form = $this->createForm(new SeanceType(), $seance);
         $formMaterial = $this->createForm(new MaterialType(), new Material());
         $formAddress = $this->createForm(new AddressType(), new Address());
 
-        if ($form->handleRequest($request)->isValid() && $session->getFilmId()) {
+        if ($form->handleRequest($request)->isValid() && $seance->getFilmId()) {
             $em = $this->getDoctrine()->getManager();
-            $film = $em->getRepository('MCBundle:Film')->findOneBy(array('ISAN' => $session->getFilmId()));
+            $film = $em->getRepository('MCBundle:Film')->findOneBy(array('ISAN' => $seance->getFilmId()));
             if (!$film) {
                 // $em = $this->getDoctrine()->getManager();
                 $cine = $this->get("mc_allocine");
-                $result = $cine->get($session->getFilmId());
+                $result = $cine->get($seance->getFilmId());
                 $data = json_decode($result);
                 // dump($data);
 
@@ -144,20 +184,20 @@ class SessionController extends Controller
                 }
 
             }
-            $session->setFilm($film);
+            $seance->setFilm($film);
             //$creator = $user = $this->get('security.context')->getToken()->getUser();
             $creator = $user = $this->getUser();
-            $session->setCreator($creator);
+            $seance->setCreator($creator);
 
-            $em->persist($session);
+            $em->persist($seance);
             $em->flush();
 
-            $request->getSession()->set('add-session', true);
-            return $this->redirectToRoute('session_view', array('slug' => $session->getId()), 301);
+            $request->getSeance()->set('add-seance', true);
+            return $this->redirectToRoute('seances_view', array('slug' => $seance->getId()), 301);
 
         }
 
-        return $this->render('MCBundle:Pages:add-sessions.html.twig', array(
+        return $this->render('MCBundle:Pages:add-seances.html.twig', array(
             'form' => $form->createView(),
             'formMaterial' => $formMaterial->createView(),
             'formAddress' => $formAddress->createView(),
@@ -288,36 +328,36 @@ class SessionController extends Controller
     }
 
 
-    public function addSession()
+    public function addSeance()
     {
 
         $em = $this->getDoctrine()->getManager();
-        $session = new Session();
-        $session->setDate(new \DateTime("2016-6-25"));
-        $session->setTypeView("VOSTFR");
-        $session->setDescription("Le DKS dici forte miretur, quod alia quaedam in hoc facultas sit ingeni, neque haec dicendi ratio aut disciplina, ne nos quidem huic uni studio penitus umquam dediti fuimus. Etenim omnes artes, quae ad humanitatem pertinent, habent quoddam commune vinculum, et quasi cognatione quadam inter se continentur. ");
-        $session->setContribution("Chips, soda, coca ou tout ce que vous voulez apporter ");
-        $session->setPrice(6);
-        $session->setMaxPlace(5);
+        $seance = new Seance();
+        $seance->setDate(new \DateTime("2016-6-25"));
+        $seance->setTypeView("VOSTFR");
+        $seance->setDescription("Le DKS dici forte miretur, quod alia quaedam in hoc facultas sit ingeni, neque haec dicendi ratio aut disciplina, ne nos quidem huic uni studio penitus umquam dediti fuimus. Etenim omnes artes, quae ad humanitatem pertinent, habent quoddam commune vinculum, et quasi cognatione quadam inter se continentur. ");
+        $seance->setContribution("Chips, soda, coca ou tout ce que vous voulez apporter ");
+        $seance->setPrice(6);
+        $seance->setMaxPlace(5);
 
         $address = $em->getRepository('MCBundle:Address')->find(1);
-        $session->setAddress($address);
+        $seance->setAddress($address);
 
         $material = $em->getRepository('MCBundle:Material')->find(3);
-        $session->addMaterial($material);
+        $seance->addMaterial($material);
         $material = $em->getRepository('MCBundle:Material')->find(1);
-        $session->addMaterial($material);
+        $seance->addMaterial($material);
         $material = $em->getRepository('MCBundle:Material')->find(2);
-        $session->addMaterial($material);
+        $seance->addMaterial($material);
 
         $modality = $em->getRepository('MCBundle:Modality')->find(2);
-        $session->setModality($modality);
+        $seance->setModality($modality);
         $film = $em->getRepository('MCBundle:Film')->find(2);
-        $session->setFilm($film);
+        $seance->setFilm($film);
         $user = $em->getRepository('UserBundle:User')->find(1);
-        $session->setCreator($user);
+        $seance->setCreator($user);
 
-//        $em->persist($session);
+//        $em->persist($seance);
 //        $em->flush();
         return new Response("Add");
     }

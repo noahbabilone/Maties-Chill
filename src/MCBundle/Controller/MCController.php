@@ -3,7 +3,7 @@
 namespace MCBundle\Controller;
 
 use MCBundle\Entity\Film;
-use MCBundle\Entity\Session;
+use MCBundle\Entity\Seance;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,26 +15,26 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class MCController extends Controller
 {
-   
+
     /**
      * @Route("/", name="home_page")
      * @return Response
      */
-    public function ssindexAction()
+    public function indexAction()
     {
         $user = $this->getUser();
         if ($user) {
-            $userSession = $this->get('session');
+            $userSeance = $this->get('session');
             $em = $this->getDoctrine()->getManager();
-            $sessions = $em->getRepository('MCBundle:Session')->findByCreator($user->getId());
+            $seances = $em->getRepository('MCBundle:Seance')->findByCreator($user->getId());
 
-            $userSession->set('nbSession', COUNT($sessions));
+            $userSeance->set('nbSeance', COUNT($seances));
             $nbParticipant = 0;
-            foreach ($sessions as $session) {
-                $nbParticipant += COUNT($session->getParticipant());
+            foreach ($seances as $seance) {
+                $nbParticipant += COUNT($seance->getParticipant());
             }
 
-            $userSession->set('nbParticipant', $nbParticipant);
+            $userSeance->set('nbParticipant', $nbParticipant);
 
         }
         return $this->render('MCBundle:Pages:index.html.twig');
@@ -43,32 +43,41 @@ class MCController extends Controller
 
     /**
      * @Route("/search", name="search_")
-     * Get all sessions
+     * Get all seances
      * @param Request $request
      * @return Response
      */
     public function searchAction(Request $request)
     {
-        $limitPage = 16;
+        //$limitPage = 16;
         $numberPage = 1;
+        $data = array();
+        $arrShow = array("8", "16", "32", "32");
+        $data["shows"] = $arrShow;
+        $arrSort = array("1" => "Date Croissante", "2" => "Date Décroissante", "3" => "Prix croissante", "4" => "Prix Dé&eacute;croissant");
+        $data["sorts"] = $arrSort;
+        $arrViewing = array("vf" => "VF", "vo" => "VO", "vostf" => "VOSTFR", "VOST" => "VOST", "vf_3D" => "VF en 3D", "vo_3D" => "VO en 3D");
+        $data["viewings"] = $arrViewing;
 
         $em = $this->getDoctrine()->getManager();
 
-        $search = ($request->get('q') != null) ? $request->get('q') : null;
-        $result = $em->getRepository('MCBundle:Session')->search($search);
+        $keyword = ($request->get('q') !== null && !empty($request->get('q'))) ? $request->get('q') : null;
 
+        $limitPage = ($request->get('show') !== null && in_array($request->get('show'), $arrShow)) ? $request->get('show') : 8;
+        $order = ($request->get('order') !== null && 0 < intval($request->get('order'))
+            && intval($request->get('order')) <= COUNT($arrSort)) ? $request->get('order') : null;
+        $typeView = ($request->get('view') !== null && !empty($request->get('view'))) ? $request->get('view') : null;
+        $location = ($request->get('location') !== null && !empty($request->get('location'))) ? $request->get('location') : null;
+        
+        $result = $em->getRepository('MCBundle:Seance')->searchSeance($keyword, $limitPage, $order, $typeView, $location);
 
-        $sessions = $this->get('knp_paginator')->paginate(
+        $seances = $this->get('knp_paginator')->paginate(
             $result,
             $request->query->get('page', $numberPage),
             $limitPage
         );
-        return $this->render(
-            'MCBundle:Pages:search.html.twig',
-            array(
-                "sessions" => $sessions
-            )
-        );
+        $data['seances'] = $seances;
+        return $this->render('MCBundle:Pages:search.html.twig', $data);
     }
 
 

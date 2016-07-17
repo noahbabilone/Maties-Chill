@@ -4,7 +4,7 @@ namespace UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use MCBundle\Entity\Film;
-use MCBundle\Entity\Session;
+use MCBundle\Entity\Seance;
 use MCBundle\Entity\Address;
 use MCBundle\Form\AddressType;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +19,7 @@ class UserController extends Controller
 
     /**
      * @Route("/address", name="user_address")
-     * Get all sessions
+     * Get all seances
      * @param Request $request
      * @return Response
      * @throws HttpException
@@ -91,12 +91,12 @@ class UserController extends Controller
 
 
     /**
-     * @Route("/seances", name="user_session")
+     * @Route("/seances", name="user_seances")
      * @param Request $request
      * @return Response
      * @throws HttpException
      */
-    public function userSessionsAction(Request $request)
+    public function userSeancesAction(Request $request)
     {
         $user = $user = $this->getUser();
         if (!$user) {
@@ -106,27 +106,27 @@ class UserController extends Controller
 
 
         if ($request->get('view')) {
-            $session = $em->getRepository('MCBundle:Session')->find($request->get('view'));
+            $seance = $em->getRepository('MCBundle:Seance')->find($request->get('view'));
 
-            return $this->render('MCBundle:Profile:viewSessionUser.html.twig', array(
-                "session" => $session,
+            return $this->render('MCBundle:Profile:seanceView.html.twig', array(
+                "seance" => $seance,
             ));
         }
 
         $limitPage = 11;
         $numberPage = 1;
 
-        $result = $em->getRepository('MCBundle:Session')->findByCreator($user->getId());
-
-        $sessions = $this->get('knp_paginator')->paginate(
-            $result,
+        $entity = $em->getRepository('MCBundle:Seance')->findMySeance($user->getId()); 
+        
+        $results = $this->get('knp_paginator')->paginate(
+            $entity,
             $request->query->get('page', $numberPage),
             $limitPage
         );
 
 
-        return $this->render('MCBundle:Profile:sessionsUser.html.twig', array(
-            "sessions" => $sessions,
+        return $this->render('MCBundle:Profile:seances.html.twig', array(
+            "results" => $results,
         ));
 
     }
@@ -147,21 +147,20 @@ class UserController extends Controller
 
 
         if ($request->get('view')) {
-            $session = $em->getRepository('MCBundle:Session')->find($request->get('view'));
+            $seance = $em->getRepository('MCBundle:Seance')->find($request->get('view'));
 
             return $this->render('MCBundle:Profile:participation.html.twig', array(
-                "session" => $session,
+                "seance" => $seance,
             ));
         }
 
         $limitPage = 11;
         $numberPage = 1;
 
-        $result = $em->getRepository('MCBundle:Session')->findParticipant($user->getId());
+        $result = $em->getRepository('MCBundle:Participant')->findParticipation($user->getId());
 //        dump($result);
 //        die;
-
-        $sessions = $this->get('knp_paginator')->paginate(
+        $participates = $this->get('knp_paginator')->paginate(
             $result,
             $request->query->get('page', $numberPage),
             $limitPage
@@ -169,7 +168,7 @@ class UserController extends Controller
 
 
         return $this->render('MCBundle:Profile:participation.html.twig', array(
-            "sessions" => $sessions,
+            "participates" => $participates,
         ));
 
     }
@@ -191,7 +190,7 @@ class UserController extends Controller
         $limitPage = 8;
         $numberPage = 1;
 
-        $result = $em->getRepository('MCBundle:Session')->findParticipant($user->getId());
+        $result = $em->getRepository('MCBundle:Participant')->findParticipant($user->getId());
         $participants = $this->get('knp_paginator')->paginate(
             $result,
             $request->query->get('page', $numberPage),
@@ -212,7 +211,7 @@ class UserController extends Controller
      * @return response
      * @throws NotFoundHttpException
      */
-    public function removeSessionAction(Request $request)
+    public function removeSeanceAction(Request $request)
     {
 
         if ($request->isXmlHttpRequest()) {
@@ -223,7 +222,7 @@ class UserController extends Controller
                 throw new NotFoundHttpException("L'adresse (ID: " . $id . ") n'existe pas.");
             }
             $message = "L'adresse " . "(ID: <b>" . $address->getId() . '</b>) ' . $address->getTitle() . ' a été supprimée.';
-            //$em->remove($session);
+            //$em->remove($seance);
             //$em->flush();
             return new Response(json_encode(array('result' => 'success', 'message' => $message)));
         }

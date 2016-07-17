@@ -57,7 +57,13 @@ class Film
      *
      * @ORM\Column(name="releaseDate", type="datetime",nullable=true)
      */
-    protected $releaseDate;
+    protected $releaseDate; 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dateAdded", type="datetime",nullable=true)
+     */
+    protected $dateAdded;
 
     /**
      * @var string
@@ -154,6 +160,7 @@ class Film
     {
         $this->genre = new ArrayCollection();
         $this->disable = false;
+        $this->dateAdded= new \DateTime();
 
     }
 
@@ -594,5 +601,28 @@ class Film
     public function getDisable()
     {
         return $this->disable;
+    }
+
+    /**
+     * Set dateAdded
+     *
+     * @param \DateTime $dateAdded
+     * @return Film
+     */
+    public function setDateAdded($dateAdded)
+    {
+        $this->dateAdded = $dateAdded;
+
+        return $this;
+    }
+
+    /**
+     * Get dateAdded
+     *
+     * @return \DateTime 
+     */
+    public function getDateAdded()
+    {
+        return $this->dateAdded;
     }
 }

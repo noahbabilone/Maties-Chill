@@ -8,10 +8,10 @@ api-film:
     prefix: /api/
     resource: MCBundle\Controller\Rest\MCRestFilmController
     
-api-session:
+api-seance:
     type:  rest
     prefix: /api/
-    resource: MCBundle\Controller\Rest\MCRestSessionController
+    resource: MCBundle\Controller\Rest\MCRestSeanceController
 api-user:
     type:  rest
     prefix: /api/
@@ -32,8 +32,8 @@ mc_themes:
     type:     annotation
     prefix:   /mc
     
-mc_session:
-    resource: MCBundle\Controller\SessionController
+mc_seance:
+    resource: MCBundle\Controller\SeanceController
     type:     annotation
     prefix:   /mc
     
@@ -48,6 +48,6 @@ mc_coming_soon:
     prefix:   /
 
 mc_backoffice:
-    resource: MCBundle\Controller\BackOffice\SessionBOController
+    resource: MCBundle\Controller\BackOffice\SeanceBOController
     type:     annotation
     prefix:   /backoffice

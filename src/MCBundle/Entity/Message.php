@@ -3,6 +3,8 @@
 namespace MCBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use MCBundle\Entity\Seance;
+use UserBundle\Entity\User;
 
 /**
  * Message
@@ -42,9 +44,9 @@ class Message
     private $readMessage;
 
     /**
-     * @ORM\ManyToOne(targetEntity="MCBundle\Entity\Session",  cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="MCBundle\Entity\Seance",  cascade={"persist"})
      */
-    private $session;
+    private $seance;
 
     /**
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User",  cascade={"persist"})
@@ -116,35 +118,35 @@ class Message
     }
 
     /**
-     * Set session
+     * Set seance
      *
-     * @param \MCBundle\Entity\Session $session
+     * @param Seance $seance
      * @return Message
      */
-    public function setSession(\MCBundle\Entity\Session $session = null)
+    public function setSeance(Seance $seance = null)
     {
-        $this->session = $session;
+        $this->seance = $seance;
 
         return $this;
     }
 
     /**
-     * Get session
+     * Get seance
      *
-     * @return \MCBundle\Entity\Session 
+     * @return Seance 
      */
-    public function getSession()
+    public function getSeance()
     {
-        return $this->session;
+        return $this->seance;
     }
 
     /**
      * Set sender
      *
-     * @param \UserBundle\Entity\User $sender
+     * @param User $sender
      * @return Message
      */
-    public function setSender(\UserBundle\Entity\User $sender = null)
+    public function setSender(User $sender = null)
     {
         $this->sender = $sender;
 
@@ -154,7 +156,7 @@ class Message
     /**
      * Get sender
      *
-     * @return \UserBundle\Entity\User 
+     * @return User 
      */
     public function getSender()
     {
@@ -164,10 +166,10 @@ class Message
     /**
      * Set receiver
      *
-     * @param \UserBundle\Entity\User $receiver
+     * @param User $receiver
      * @return Message
      */
-    public function setReceiver(\UserBundle\Entity\User $receiver = null)
+    public function setReceiver(User $receiver = null)
     {
         $this->receiver = $receiver;
 
@@ -177,7 +179,7 @@ class Message
     /**
      * Get receiver
      *
-     * @return \UserBundle\Entity\User 
+     * @return User 
      */
     public function getReceiver()
     {

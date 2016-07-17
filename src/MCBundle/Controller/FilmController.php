@@ -17,7 +17,7 @@ class FilmController extends Controller
 {
     /**
      * @Route("/films", name="film_home")
-     * Get all sessions
+     * Get all seances
      * @return Response
      */
     public function filmsIndexAction()
@@ -47,11 +47,11 @@ class FilmController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $film = $em->getRepository('MCBundle:Film')->find($slug);
-        $sessions = $em->getRepository('MCBundle:Session')->sessionByFilm($film->getId());
+        $seances = $em->getRepository('Seance.php')->seanceByFilm($film->getId());
         
         return $this->render('MCBundle:Pages:viewFilm.html.twig', array(
             "film" => $film,
-            "sessions" => $sessions,
+            "seances" => $seances,
         ));
 
     }
@@ -59,7 +59,7 @@ class FilmController extends Controller
     
      /**
      * @Route("/films/{action}", name="film_action")
-     * Get all sessions
+     * Get all seances
      * @param null $action
      * @param Request $request
      * @return Response
