@@ -104,12 +104,16 @@ class UserController extends Controller
         }
         $em = $this->getDoctrine()->getManager();
 
-
-        if ($request->get('view')) {
-            $seance = $em->getRepository('MCBundle:Seance')->find($request->get('view'));
-
+        $idSeance = $request->get('view');
+        if ($idSeance) {
+            $results = $em->getRepository('MCBundle:Seance')->findOneSeanceUser($user->getId(),$idSeance);
+            $participants = $em->getRepository('MCBundle:Participant')->findParticipantOneSeance($user->getId(),$idSeance);
+            
+           // dump($results);
+           // die();
             return $this->render('MCBundle:Profile:seanceView.html.twig', array(
-                "seance" => $seance,
+                "results" => $results,
+                "participants" => $participants,
             ));
         }
 

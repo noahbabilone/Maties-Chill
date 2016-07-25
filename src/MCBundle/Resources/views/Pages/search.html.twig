@@ -75,7 +75,8 @@
                         <!-- END PAGE HEADER-->
                         <form class="filter" method="get" action="{{ path('search_') }}">
                             <div class="row">
-                                <input type="hidden" class="form-control" name="q" value="{{ app.request.get('q') }}" autocomplete="off">
+                                <input type="hidden" class="form-control" name="q" value="{{ app.request.get('q') }}"
+                                       autocomplete="off">
                                 {% if shows is defined and shows %}
                                     <div class="form-group">
                                         <div class="col-sm-2">
@@ -126,15 +127,17 @@
                                     <div class="form-group">
                                         <input type="text" class="form-control input-sm"
                                                placeholder="Ville ou code postale"
-                                        name="location" value="{{ app.request.get('location') }}">
+                                               name="location" value="{{ app.request.get('location') }}">
                                     </div>
                                 </div>
                                 <div class="col-sm-1">
                                     <div class="form-group">
-                                        <button class="btn btn-sm btn-default" type="submit"><i class="fa fa-search"></i> Rechercher</button>
+                                        <button class="btn btn-sm btn-default" type="submit"><i
+                                                    class="fa fa-search"></i> Rechercher
+                                        </button>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-sm-2 col-sm-offset-1 text-right">
                                     {% if (app.request.query.get("show") or app.request.query.get("order")  or app.request.query.get("view")) and
                                     app.request.query.get("q") %}
@@ -201,11 +204,14 @@
                                                             {{ session.date| date("H") }}h{{ session.date| date("i") }}
                                                         </div>
                                                         <h5 class="card__title"><a href="#">
-                                                                {#{{ session.film.title |length > 30 ? session.film.title|slice(0, 30) ~ '...' : session.film.title }}#}
-                                                                {{ session.film.title }} - {{ session.typeView }}
+                                                                {{ session.film.title |length > 25 ? session.film.title| capitalize|slice(0, 25) ~ '...' : session.film.title | capitalize }}
+                                                                {#{{ session.film.title }} - {{ session.typeView }}#}
                                                             </a></h5>
                                                         <ul class="card__description list-unstyled">
-
+ <h5 class="card__title"><a href="#">
+                                                                {{ session.film.title | capitalize }}
+                                                                {#{{ session.film.title }} - {{ session.typeView }}#}
+                                                            </a></h5>
 
                                                             {% if session.creator is defined and session.creator %}
                                                                 <li>
@@ -242,8 +248,7 @@
                                                         <small>{{ random(50) }}</small>
                                                         <span class="pull-right"><a
                                                                     href="{{ path("seances_view", {"slug": session.film.id}) }}"
-                                                                    class="text-info"><i
-                                                                        class="fa fa-shopping-cart"></i>&nbsp;Suite&raquo;
+                                                                    class="text-info">&nbsp;Suite&raquo;
                                                             </a></span>
                                                         {#<span class="pull-right"><a 
                                                                     href="{{ path("film_view", {"slug": session.film.id}) }}"
@@ -283,118 +288,8 @@
         {{ parent() }}
         {% javascripts
         'bundles/mc/themes/global/plugins/cubeportfolio/js/jquery.cubeportfolio.min.js'
-        'bundles/mc/themes/pages/scripts/portfolio-1.min.js' %}
+        'bundles/mc/themes/pages/scripts/portfolio-1.js' %}
         {#  #}
         <script src="{{ asset_url }}"></script>
         {% endjavascripts %}
     {% endblock %}
-                        {% if seancesPaying is defined and seancesPaying %}
-                            <div class="col-sm-12">
-                                <h4 class="page-title page-header"><a
-                                            href="{{ path("film_action", {"action":"last_add"}) }}">
-                                        Séances Payantes</a>
-                                </h4>
-                            </div>
-                            <div class="col-sm-12">
-                                <div class="portfolio-content">
-                                    <div id="js-grid-juicy-projects" class="cbp">
-                                        {% for seancePaying in seancesPaying %}
-
-                                            <div class="cbp-item">
-                                                <article class="card">
-                                                    <header class="card__thumb">
-                                                        <a href="{{ path("film_view", {"slug": seancePaying.seance.film.id}) }}">
-                                                            {% if seancePaying.seance.film.poster is defined and seancePaying.seance.film.poster %}
-
-                                                                <img src="{{ seancePaying.seance.film.poster }}"
-                                                                     class=" pull-left margin-right"
-                                                                     alt="{{ seancePaying.seance.film.title }}">
-                                                            {% else %}
-                                                                <img src="../../uploads/images/400x300.png"
-                                                                     class=" pull-left margin-right"
-                                                                     alt="{{ seancePaying.seance.film.title }}">
-                                                            {% endif %}                                    </a>
-                                                    </header>
-                                                    <div class="session__price">
-                                                        <span class="session__price_val">
-                                                        {% if seancePaying.seance.price > 0 %}{{ seancePaying.seance.price }}€{% else %}Gratuit{% endif %}
-                                                        </span>
-                                                    </div>
-
-                                                    <div class="seances__price">
-                                                        <span class="seances__price_val">
-                                                        {% if seancePaying.seance.price > 0 %}{{ seancePaying.seance.price }}€{% else %}Gratuit{% endif %}
-                                                        </span>
-                                                    </div>
-                                                    <div class="card__body">
-                                                        <div class="card__category">
-                                                            <i class="fa fa-clock-o"></i>
-                                                            {{ seancePaying.seance.date| date("d F") }} à
-                                                            {{ seancePaying.seance.date| date("H") }}
-                                                            h{{ seancePaying.seance.date| date("i") }}
-                                                        </div>
-                                                        <h5 class="card__title">
-                                                            <a href="{{ path("seances_view", {"slug": seancePaying.seance.film.id}) }}"
-                                                               class="font-grey">
-                                                                {#{{ nextSeance.seance.film.title |length > 30 ? nextSeance.seance.film.title|slice(0, 30) ~ '...' : nextSeance.seance.film.title }}#}
-                                                                {{ seancePaying.seance.film.title |capitalize }}
-                                                            </a></h5>
-                                                        <ul class="card__description list-unstyled">
-
-
-                                                            {% if seancePaying.seance.creator is defined and seancePaying.seance.creator %}
-                                                                <li>
-                                                                    <i class="fa fa-user"></i> {{ seancePaying.seance.creator.username | capitalize }}
-                                                                </li>
-                                                            {% endif %}
-
-                                                            {% if seancePaying.seance.address.town is defined and seancePaying.seance.address.town %}
-                                                                <li>
-                                                                    <i class="fa fa-location-arrow"></i> {{ seancePaying.seance.address.town }}
-                                                                    {% if seancePaying.seance.address.postCode is defined and seancePaying.seance.address.postCode %}
-                                                                        ({{ seancePaying.seance.address.postCode }})
-                                                                    {% endif %}
-                                                                </li>
-                                                            {% endif %}
-
-                                                            {% if seancePaying.seance.maxPlace is defined and seancePaying.seance.maxPlace %}
-                                                                <li>
-                                                                    <i class="fa fa-user-plus"></i>
-                                                                    {% if ( seancePaying.seance.maxPlace - seancePaying.participants ) >0 %}
-                                                                        {{ seancePaying.seance.maxPlace - seancePaying.participants }} Place(s) restante(s)
-                                                                    {% else %}
-                                                                        Complet
-                                                                    {% endif %}
-
-
-                                                                </li>
-                                                            {% endif %}
-
-                                                        </ul>
-                                                    </div>
-                                                    <footer class="card__footer ">
-                                                        {#<span class="glyphicon glyphicon-time"></span> 6 min#}
-
-                                                        <span class="fa fa-users"></span>
-                                                        <small>{{ seancePaying.participants }}</small>
-                                                        &nbsp;
-                                                        <span class="fa fa-comments"></span>
-                                                        <small>{{ random(50) }}</small>
-                                                        <span class="pull-right">
-                                                            <a href="{{ path("seances_view", {"slug": seancePaying.seance.film.id}) }}"
-                                                               class="text-info"><i class="fa fa-shopping-cart"></i>&nbsp;Suite&raquo;</a>
-                                                        </span>
-                                                        {#<span class="pull-right"><a 
-                                                                    href="{{ path("film_view", {"slug": nextSeance.seance.film.id}) }}"
-                                                                    class="text-info"><i class="fa fa-user-plus"></i></a>&nbsp;</span> #}
-                                                    </footer>
-                                                </article>
-
-                                            </div>
-
-                                        {% endfor %}
-                                    </div>
-                                </div>
-
-                            </div>
-                        {% endif %}

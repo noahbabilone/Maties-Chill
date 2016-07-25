@@ -68,4 +68,27 @@ class StateParticipant
     {
         return $this->title;
     }
+
+    /**
+     * Set disable
+     *
+     * @param boolean $disable
+     * @return StateParticipant
+     */
+    public function setDisable($disable)
+    {
+        $this->disable = $disable;
+
+        return $this;
+    }
+
+    /**
+     * Get disable
+     *
+     * @return boolean 
+     */
+    public function getDisable()
+    {
+        return $this->disable;
+    }
 }

@@ -54,33 +54,33 @@
                 <ul class="nav navbar-nav">
 
                     <li class="classic-menu-dropdown">
-                        <a href="{{ path('seances_all') }}" data-hover="megamenu-dropdown" data-close-others="true">
+                        <a href="{{ path("seances_action", {"action":"all"}) }}" data-hover="megamenu-dropdown" data-close-others="true">
                             Séances
                             <i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu pull-left">
                             <li>
-                                <a href="{{ path('seances_all') }}">
+                                <a href="{{ path("seances_action", {"action":"next_seance"}) }}">
                                     <i class="fa fa-clock-o fa-fw"></i> Prochaines Séances </a>
                             </li>
                             <li>
-                                <a href="{{ path('seances_all') }}">
+                                <a href="{{ path("seances_action", {"action":"recent_movies"}) }}">
                                     <i class="fa fa-download fa-fw"></i> Films Récents </a>
                             </li>
                             <li>
-                                <a href="{{ path('seances_all') }}">
+                                <a href="{{ path("seances_action", {"action":"seances_paying"}) }}">
                                     <i class="fa fa-money fa-fw"></i> Payantes </a>
                             </li>
                             <li>
-                                <a href="{{ path('seances_all') }}">
+                                <a href="{{ path("seances_action", {"action":"seances_free"}) }}">
                                     <i class="fa fa-star fa-fw"></i> Gratuites </a>
                             </li>
                             <li>
-                                <a href="{{ path('seances_all') }}">
+                                <a href="{{ path("seances_action", {"action":"all"}) }}">
                                     <i class="fa fa-users fa-fw"></i> Top utilisateurs</a>
                             </li>
                             <li>
-                                <a href="{{ path('seances_all') }}">
+                                <a href="{{ path("seances_action", {"action":"all"}) }}">
                                     <i class="fa fa-list"></i> Toutes</a>
                             </li>
                             <li role="separator" class="divider"></li>

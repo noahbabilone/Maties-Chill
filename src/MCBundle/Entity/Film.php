@@ -152,6 +152,13 @@ class Film
      * @ORM\ManyToMany(targetEntity="MCBundle\Entity\Genre",  cascade={"persist"})
      */
     protected $genre;
+    
+     /**
+     * @var string
+     *
+     * @ORM\Column(name="keywords", type="string", length=255,nullable=true)
+     */
+    private $keywords;
 
     /**
      * Constructor
@@ -624,5 +631,28 @@ class Film
     public function getDateAdded()
     {
         return $this->dateAdded;
+    }
+
+    /**
+     * Set keywords
+     *
+     * @param string $keywords
+     * @return Film
+     */
+    public function setKeywords($keywords)
+    {
+        $this->keywords = $keywords;
+
+        return $this;
+    }
+
+    /**
+     * Get keywords
+     *
+     * @return string 
+     */
+    public function getKeywords()
+    {
+        return $this->keywords;
     }
 }

@@ -34,6 +34,30 @@ class ParticipantRepository extends EntityRepository
         return $query->getResult();
 
     }
+
+    /**
+     * @param $user
+     * @param $seance
+     * @param null $limit
+     * @return mixed
+     */
+    public function findParticipantOneSeance($user,$seance, $limit = null)
+    {
+        $em = $this->getEntityManager();
+        $query = $em->createQuery("
+                    SELECT p
+                    FROM MCBundle:Participant p
+                    JOIN p.seance s 
+                    JOIN s.creator c
+                    WHERE c.id = :id and s.id = :seance
+                    ORDER BY s.date ASC")
+            ->setParameter("id", $user)
+            ->setParameter("seance", $seance)
+            ->setMaxResults($limit);
+
+        return $query->getResult();
+
+    }
     
     
     

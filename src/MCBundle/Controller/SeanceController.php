@@ -24,30 +24,68 @@ use FOS\UserBundle\Model\User;
 class SeanceController extends Controller
 {
     /**
-     * @Route("/seances/all", name="seances_all")
+     * @Route("/seances/get/{action}", name="seances_action")
      * Get all seances
      * @param Request $request
+     * @param $action
      * @return Response
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request, $action)
     {
-        $limitPage = 16;
+
+        ////die;
         $numberPage = 1;
+        $data = array();
+        $arrShow = array("10", "15", "20", "25", "30");
+        $data["shows"] = $arrShow;
+        $arrSort = array("1" => "Date Croissante", "2" => "Date Décroissante", "3" => "Prix croissante", "4" => "Prix Dé&eacute;croissant");
+        $data["sorts"] = $arrSort;
+        $arrViewing = array("vf" => "VF", "vo" => "VO", "vostf" => "VOSTFR", "VOST" => "VOST", "vf_3D" => "VF en 3D", "vo_3D" => "VO en 3D");
+        $data["viewings"] = $arrViewing;
 
         $em = $this->getDoctrine()->getManager();
-        $result = $em->getRepository('MCBundle:Seance')->findAll();
 
-        $seances = $this->get('knp_paginator')->paginate(
+        $limitPage = ($request->get('show') !== null && in_array($request->get('show'), $arrShow)) ? $request->get('show') : 15;
+        $order = ($request->get('order') !== null && 0 < intval($request->get('order'))
+            && intval($request->get('order')) <= COUNT($arrSort)) ? $request->get('order') : null;
+        $typeView = ($request->get('view') !== null && !empty($request->get('view'))) ? $request->get('view') : null;
+        $location = ($request->get('location') !== null && !empty($request->get('location'))) ? $request->get('location') : null;
+
+        if ($action == 'all') {
+            $result = $em->getRepository('MCBundle:Seance')->seance($action, null, $order, $typeView, $location);
+            $data["pageTitle"] = 'Toutes';
+        } else if ($action == 'next_seance') {
+            $result = $em->getRepository('MCBundle:Seance')->seance($action, null, $order, $typeView, $location);
+            $data["pageTitle"] = 'Prochaines séances';
+
+        } else if ($action == 'recent_movies') {
+            $result = $em->getRepository('MCBundle:Seance')->seance($action, null, $order, $typeView, $location);
+            $data["pageTitle"] = 'Films recents';
+            $data["sorts"] = null;
+
+
+        } else if ($action == 'seances_paying') {
+
+            $result = $em->getRepository('MCBundle:Seance')->seance($action, null, $order, $typeView, $location);
+            $data["pageTitle"] = 'Séances gratuites';
+
+        } else if ($action == 'seances_free') {
+            $result = $em->getRepository('MCBundle:Seance')->seance($action, null, $order, $typeView, $location);
+
+            $data["pageTitle"] = 'Séances gratuites';
+        } else {
+            $result = array(); // not found
+            $data["pageTitle"] = 'Aucune séance';
+
+        }
+
+
+        $data['results'] = $this->get('knp_paginator')->paginate(
             $result,
             $request->query->get('page', $numberPage),
             $limitPage
         );
-        return $this->render(
-            'MCBundle:Pages:seances.html.twig',
-            array(
-                "seances" => $seances
-            )
-        );
+        return $this->render('MCBundle:Pages:seancesAction.html.twig', $data);
     }
 
     /**
@@ -63,20 +101,11 @@ class SeanceController extends Controller
         $em = $this->getDoctrine()->getManager();
         $data = array();
 
-
-        if ($request->get('action') !== null && !empty($request->get('action'))) {
-            $action = $request->get('action');
-            
-            dump($action);
-            die;
-        }
-
-
         $limit = 8;
         //Prochaines
-        $data['nextSeances'] = $em->getRepository('MCBundle:Seance')->nextSeance($limit);
+        $data['nextSeances'] = $em->getRepository('MCBundle:Seance')->nextSeances($limit);
 
-        //Films récents
+        //Films récentss
         $data['recentMoviesSeances'] = $em->getRepository('MCBundle:Seance')->recentMoviesSeance($limit);
 
         //Payantes
@@ -87,7 +116,6 @@ class SeanceController extends Controller
 
         //Top users
         //$topUsers = $em->getRepository('MCBundle:Seance')->seanceFree(10);
-
         return $this->render('MCBundle:Pages:seances.html.twig', $data);
     }
 
@@ -100,10 +128,24 @@ class SeanceController extends Controller
     public function viewSeancesAction($slug)
     {
         $em = $this->getDoctrine()->getManager();
-        $seance = $em->getRepository('MCBundle:Seance')->find($slug);
+        $result = $em->getRepository('MCBundle:Seance')->seanceID($slug);
+        $seance = null;
+        $participants = null;
 
-        return $this->render('MCBundle:Pages:viewSeance.html.twig', array(
+       
+        if ($result != null && key_exists("seance", $result[0]) && key_exists("participants", $result[0])) {
+            $seance = $result[0]["seance"];
+            $participants = $result[0]["participants"];
+        }
+
+       //  dump($result,$participants,$seance);
+       // die;
+    
+        //dump($seance);
+        //die;
+        return $this->render('MCBundle:Pages:seanceView.html.twig', array(
             "seance" => $seance,
+            "participants" => $participants,
         ));
 
     }
@@ -197,7 +239,7 @@ class SeanceController extends Controller
 
         }
 
-        return $this->render('MCBundle:Pages:add-seances.html.twig', array(
+        return $this->render('MCBundle:Pages:seanceAdd.html.twig', array(
             'form' => $form->createView(),
             'formMaterial' => $formMaterial->createView(),
             'formAddress' => $formAddress->createView(),

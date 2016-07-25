@@ -24,10 +24,6 @@
 {% block body_mc %}
     <div class="page-container">
         <div class="page-content">
-            <!-- BEGIN PAGE HEADER-->
-            <!-- BEGIN THEME PANEL -->
-            <!-- END THEME PANEL -->
-            <!-- BEGIN PAGE BAR -->
             <div class="page-bar">
                 <div class="row">
                     <div class="col-sm-12">
@@ -49,8 +45,7 @@
                     </div>
                 </div>
             </div>
-            <!-- END PAGE BAR -->
-            <!-- BEGIN PAGE TITLE-->
+
             <div class="row">
                 <div class="col-sm-2">
                     {% include("MCBundle:Includes:submenu.html.twig") %}
@@ -67,14 +62,13 @@
                                 <h4 class="">
                                     <a href="{{ path("film_action", {"action":"last_add"}) }}">
                                         Récemment ajoutées</a>
-
                                 </h4>
                             </div>
 
 
                             <div class="col-sm-12">
                                 <div class="portfolio-content">
-                                    <div id="js-grid-last-film" class="cbp">
+                                    <div id="js-grid-juicy-projects" class="cbp">
                                         {% for film in lastFilms %}
                                             <div class="cbp-item">
                                                 <article class="card">
@@ -90,17 +84,21 @@
                                                                      height="235"
                                                                      class=" pull-left margin-right"
                                                                      alt="{{ film.title }}">
-                                                            {% endif %}                                    </a>
+                                                            {% endif %}</a>
                                                     </header>
                                                     <div class="card__body">
-                                                        <div class="card__category"><a
-                                                                    href="{{ path("film_view", {"slug": film.id}) }}">Voir
-                                                                séances</a></div>
-                                                        <h5 class="card__title"><a
-                                                                    href="#">{{ film.title | capitalize }}</a></h5>
+                                                        {#<div class="card__category"><a#}
+                                                                    {#href="{{ path("film_view", {"slug": film.id}) }}">Plus de détails</a></div>#}
+                                                        <h5 class="card__title  font-yellow-casablanca">
+                                                            {{ film.title |length > 26 ? film.title| capitalize|slice(0, 26) ~ '...' : film.title | capitalize }}
+
+                                                        </h5>
                                                         <ul class="card__description list-unstyled">
-
-
+                                                            <h5 class="sub_card_title">
+                                                                <a href="{{ path("film_view", {"slug": film.id}) }}"
+                                                                   class="font-yellow-casablanca">
+                                                                    {{ film.title | capitalize }}
+                                                                </a></h5>
                                                             {% if film.directors is defined and film.directors %}
                                                                 <li><b>De: </b>{{ film.directors }}</li>
                                                             {% endif %}
@@ -155,12 +153,11 @@
                                     <a href="{{ path("film_action", {"action":"new_film"}) }}">
                                         Récemment ajoutées</a>
                                 </h4>
-
                             </div>
 
                             <div class="col-sm-12">
                                 <div class="portfolio-content portfolio-1">
-                                    <div id="js-grid-new-film" class="cbp">
+                                    <div id="js-grid-juicy-projects" class="cbp">
                                         {% for film in newFilms %}
                                             <div class="cbp-item">
                                                 <article class="card">
@@ -179,13 +176,18 @@
                                                             {% endif %}                                    </a>
                                                     </header>
                                                     <div class="card__body">
-                                                        <div class="card__category"><a
-                                                                    href="{{ path("film_view", {"slug": film.id}) }}">Voir
-                                                                séances</a></div>
-                                                        <h5 class="card__title"><a
-                                                                    href="#">{{ film.title | capitalize }}</a></h5>
-                                                        <ul class="card__description list-unstyled">
+                                                        {#<div class="card__category"><a#}
+                                                                    {#href="{{ path("film_view", {"slug": film.id}) }}">Plus de détails</a></div>#}
+                                                        <h5 class="card__title  font-yellow-casablanca">
+                                                            {{ film.title |length > 26 ? film.title| capitalize|slice(0, 26) ~ '...' : film.title | capitalize }}
 
+                                                        </h5>
+                                                        <ul class="card__description list-unstyled">
+                                                            <h5 class="sub_card_title">
+                                                                <a href="{{ path("film_view", {"slug": film.id}) }}"
+                                                                   class="font-yellow-casablanca">
+                                                                    {{ film.title | capitalize }}
+                                                                </a></h5>
 
                                                             {% if film.directors is defined and film.directors %}
                                                                 <li><b>De: </b>{{ film.directors }}</li>
@@ -245,7 +247,7 @@
 
                             <div class="col-sm-12">
                                 <div class="portfolio-content portfolio-1">
-                                    <div id="js-grid-top-film" class="cbp">
+                                    <div id="js-grid-juicy-projects" class="cbp">
                                         {% for film in topFilms %}
                                             <div class="cbp-item">
                                                 <article class="card">
@@ -264,13 +266,18 @@
                                                             {% endif %}                                    </a>
                                                     </header>
                                                     <div class="card__body">
-                                                        <div class="card__category"><a
-                                                                    href="{{ path("film_view", {"slug": film.id}) }}">Voir
-                                                                séances</a></div>
-                                                        <h5 class="card__title"><a
-                                                                    href="#">{{ film.title | capitalize }}</a></h5>
-                                                        <ul class="card__description list-unstyled">
+                                                        {#<div class="card__category"><a#}
+                                                                    {#href="{{ path("film_view", {"slug": film.id}) }}">Plus de détails</a></div>#}
+                                                         <h5 class="card__title  font-yellow-casablanca">
+                                                            {{ film.title |length > 26 ? film.title| capitalize|slice(0, 26) ~ '...' : film.title | capitalize }}
 
+                                                        </h5>
+                                                        <ul class="card__description list-unstyled">
+                                                            <h5 class="sub_card_title">
+                                                                <a href="{{ path("film_view", {"slug": film.id}) }}"
+                                                                   class="font-yellow-casablanca">
+                                                                    {{ film.title | capitalize }}
+                                                                </a></h5>
 
                                                             {% if film.directors is defined and film.directors %}
                                                                 <li><b>De: </b>{{ film.directors }}</li>
@@ -346,16 +353,21 @@
                                                                      height="235"
                                                                      class=" pull-left margin-right"
                                                                      alt="{{ film.title }}">
-                                                            {% endif %}                                    </a>
+                                                            {% endif %} </a>
                                                     </header>
                                                     <div class="card__body">
-                                                        <div class="card__category"><a
-                                                                    href="{{ path("film_view", {"slug": film.id}) }}">Voir
-                                                                séances</a></div>
-                                                        <h5 class="card__title"><a
-                                                                    href="#">{{ film.title | capitalize }}</a></h5>
-                                                        <ul class="card__description list-unstyled">
+                                                        {#<div class="card__category"><a#}
+                                                                    {#href="{{ path("film_view", {"slug": film.id}) }}">Plus#}
+                                                                {#de détails</a></div>#}
+                                                        <h5 class="card__title  font-yellow-casablanca">
+                                                            {{ film.title |length > 26 ? film.title| capitalize|slice(0, 26) ~ '...' : film.title | capitalize }}
 
+                                                        </h5>
+                                                        <ul class="card__description list-unstyled">
+                                                        <h5 class="sub_card_title  font-yellow-casablanca">
+                                                                <a href="{{ path("film_view", {"slug": film.id}) }}">
+                                                                    {{ film.title | capitalize }}
+                                                                </a></h5>
 
                                                             {% if film.directors is defined and film.directors %}
                                                                 <li><b>De: </b>{{ film.directors }}</li>
@@ -401,11 +413,9 @@
                                 </div>
                             </div>
                             <div class="col-sm-12 text-right">
-                                <a href="{{ path("film_action", {"action":"new_film"}) }}" class="">Voir
-                                    tous &raquo;</a>
+                                <a href="{{ path("film_action", {"action":"new_film"}) }}" class="">Tout voir &raquo;</a>
                             </div>
                         {% endif %}
-
                     </div>
                 </div>
             </div>
@@ -417,7 +427,7 @@
     {{ parent() }}
     {% javascripts
     'bundles/mc/themes/global/plugins/cubeportfolio/js/jquery.cubeportfolio.min.js'
-    'bundles/mc/themes/pages/scripts/portfolio-1.js' %}
+    'bundles/mc/js/cubePortfolio-seance-home.js' %}
     {#  #}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}

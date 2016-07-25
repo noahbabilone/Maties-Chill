@@ -60,13 +60,14 @@
                                             {% for participate in participates %}
 
                                                 <li class="search-item clearfix">
-                                                    <a href="javascript:;">
+                                                    <a href="{{ path('seances_view',{'slug':  participate.seance.id}) }}">
                                                         <img src="{{ participate.seance.film.poster }}"/>
                                                     </a>
 
                                                     <div class="search-content" style="margin-top: -12px; ">
                                                         <h4 class="search-title">
-                                                            <a href="javascript:;">{{ participate.seance.film.title }}
+                                                            <a href="{{ path('seances_view',{'slug':  participate.seance.id}) }}">
+                                                                {{ participate.seance.film.title }}
                                                                 - {{ participate.seance.typeView }}</a>
                                                         </h4>
                                                         {#<p class="search-desc"> </p>#}
@@ -74,10 +75,12 @@
                                                             style="margin-top: -17px; margin-bottom: 5px;">
 
                                                             <li><b>Prix: </b> {{ participate.seance.price }}€</li>
-                                                            <li><b>Date: </b> {{ participate.seance.date | date('d F Y') }}
+                                                            <li>
+                                                                <b>Date: </b> {{ participate.seance.date | date('d F Y') }}
                                                                 à {{ participate.seance.date| date('h') }}
                                                                 h{{ participate.seance.date| date('i') }}</li>
-                                                            <li><b>Place(s) restante(s): </b> {{ participate.seance.maxPlace }}
+                                                            <li><b>Place(s)
+                                                                    restante(s): </b> {{ participate.seance.maxPlace }}
                                                             </li>
                                                         </ul>
                                                         <p class="search-desc margin-bottom-10">

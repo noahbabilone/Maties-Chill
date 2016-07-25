@@ -26,12 +26,12 @@ class MCController extends Controller
         if ($user) {
             $userSeance = $this->get('session');
             $em = $this->getDoctrine()->getManager();
-            $seances = $em->getRepository('MCBundle:Seance')->findByCreator($user->getId());
+            $seances = $em->getRepository('MCBundle:Seance')->findMySeance($user->getId());
 
             $userSeance->set('nbSeance', COUNT($seances));
             $nbParticipant = 0;
             foreach ($seances as $seance) {
-                $nbParticipant += COUNT($seance->getParticipant());
+                $nbParticipant += COUNT($seance['participants']);
             }
 
             $userSeance->set('nbParticipant', $nbParticipant);
@@ -52,7 +52,7 @@ class MCController extends Controller
         //$limitPage = 16;
         $numberPage = 1;
         $data = array();
-        $arrShow = array("8", "16", "32", "32");
+        $arrShow = array("10", "15","20", "25", "30");
         $data["shows"] = $arrShow;
         $arrSort = array("1" => "Date Croissante", "2" => "Date Décroissante", "3" => "Prix croissante", "4" => "Prix Dé&eacute;croissant");
         $data["sorts"] = $arrSort;
@@ -63,7 +63,7 @@ class MCController extends Controller
 
         $keyword = ($request->get('q') !== null && !empty($request->get('q'))) ? $request->get('q') : null;
 
-        $limitPage = ($request->get('show') !== null && in_array($request->get('show'), $arrShow)) ? $request->get('show') : 8;
+        $limitPage = ($request->get('show') !== null && in_array($request->get('show'), $arrShow)) ? $request->get('show') : 15;
         $order = ($request->get('order') !== null && 0 < intval($request->get('order'))
             && intval($request->get('order')) <= COUNT($arrSort)) ? $request->get('order') : null;
         $typeView = ($request->get('view') !== null && !empty($request->get('view'))) ? $request->get('view') : null;

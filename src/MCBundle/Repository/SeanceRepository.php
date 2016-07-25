@@ -22,19 +22,7 @@ class SeanceRepository extends EntityRepository
 
     }
 
-    public function seanceByFilm($id)
-    {
-        $query = $this->createQueryBuilder('s');
-        $query
-            ->innerJoin('s.film', 'f')
-            ->where('f.id = :id')
-            ->setParameter('id', $id);
-        $query->orderBy('s.id', 'DESC');
-        return $query
-            ->getQuery()
-            ->getResult();
-    }
-
+   
 
     public function searchSimple($search)
     {
@@ -114,7 +102,8 @@ class SeanceRepository extends EntityRepository
                     FROM MCBundle:Seance s
                     JOIN s.creator c
                     JOIN  MCBundle:Participant p
-                    WHERE c.id = :creator AND s.id = p.seance")
+                    WHERE c.id = :creator AND s.id = p.seance
+                    ORDER BY s.date ASC")
             ->setParameter('creator', $creator);
 
         return $query->getResult();
@@ -122,7 +111,27 @@ class SeanceRepository extends EntityRepository
 
     }
 
-    public function nextSeance($limit = null)
+    public function nextSeances($limit = null)
+    {
+
+        $em = $this->getEntityManager();
+        $query = $em->createQuery("
+                    SELECT s AS seance, (
+                      SELECT COUNT (p)
+                      FROM MCBundle:Participant p 
+                      JOIN p.seance sc 
+                      WHERE sc.id = s.id) AS participants  
+                    FROM MCBundle:Seance s 
+                    WHERE s.date >= :today 
+                    ORDER BY s.date ASC")
+            ->setParameter("today", new \DateTime())
+            ->setMaxResults($limit);
+
+        return $query->getResult();
+
+    }
+
+    public function seanceID($seance)
     {
 
         $em = $this->getEntityManager();
@@ -133,10 +142,9 @@ class SeanceRepository extends EntityRepository
                       JOIN p.seance sc 
                       WHERE sc.id = s.id) AS participants  
                     FROM MCBundle:Seance s 
-                    WHERE s.date > :today 
-                    ORDER BY s.date ASC")
-            ->setParameter("today", new \DateTime())
-            ->setMaxResults($limit);
+                    WHERE s.id = :seance")
+            ->setParameter("seance", $seance)
+            ->setMaxResults(1);
 
         return $query->getResult();
 
@@ -188,7 +196,7 @@ class SeanceRepository extends EntityRepository
                       JOIN p.seance sc 
                       WHERE sc.id = s.id) AS participants  
                     FROM MCBundle:Seance s 
-                    WHERE s.date > :today AND s.price > 0
+                    WHERE s.date >= :today AND s.price > 0
                     ORDER BY s.date ASC")
             ->setParameter("today", new \DateTime())
             ->setMaxResults($limit);
@@ -211,7 +219,7 @@ class SeanceRepository extends EntityRepository
                       JOIN p.seance sc 
                       WHERE sc.id = s.id) AS participants 
                     FROM MCBundle:Seance s 
-                    WHERE s.date > :today AND s.price <= 0
+                    WHERE s.date >= :today AND s.price <= 0
                     ORDER BY s.date ASC")
             ->setParameter("today", new \DateTime())
             ->setMaxResults($limit);
@@ -219,8 +227,8 @@ class SeanceRepository extends EntityRepository
         return $query->getResult();
 
     }
-    
-      /**
+
+    /**
      * @param $user
      * @param null $limit
      * @return mixed
@@ -236,7 +244,7 @@ class SeanceRepository extends EntityRepository
                       WHERE sc.id = s.id) AS participants  
                     FROM MCBundle:Seance s
                     JOIN s.creator c
-                    WHERE s.date > :today AND c.id = :id
+                    WHERE s.date >= :today AND c.id = :id
                     ORDER BY s.date ASC")
             ->setParameter("today", new \DateTime())
             ->setParameter("id", $user)
@@ -245,7 +253,87 @@ class SeanceRepository extends EntityRepository
         return $query->getResult();
 
     }
-    
+
+
+    /**
+     * @param $user
+     * @param $idSeance
+     * @param int $limit
+     * @return mixed
+     */
+    public function findOneSeanceUser($user, $idSeance, $limit = 1)
+    {
+        $em = $this->getEntityManager();
+        $query = $em->createQuery("
+                    SELECT s AS seance,  (
+                      SELECT COUNT (p)
+                      FROM MCBundle:Participant p 
+                      JOIN p.seance sc 
+                      WHERE sc.id = s.id) AS participants  
+                    FROM MCBundle:Seance s
+                    JOIN s.creator c
+                    WHERE c.id = :id AND s.id = :idSeance
+                    ORDER BY s.date ASC")
+            ->setParameter("idSeance", $idSeance)
+            ->setParameter("id", $user)
+            ->setMaxResults($limit);
+
+        return $query->getResult();
+
+    }
+
+
+    public function seance($typeSeance = null, $limit = null, $order = null, $typeView = null, $location = null)
+    {
+        $req = "SELECT s AS seance,(
+                      SELECT COUNT (p)
+                      FROM MCBundle:Participant p 
+                      JOIN p.seance sc 
+                      WHERE sc.id = s.id) AS participants
+                FROM MCBundle:Seance s
+                JOIN s.film f
+                JOIN s.address a
+                WHERE  s.date >= :today";
+        if ($typeSeance == 'seances_paying') {
+            $req .= " AND s.price > 0";
+        } else if ($typeSeance == 'seances_free') {
+            $req .= " AND s.price <= 0";
+        }
+
+        if ($typeView !== null) {
+            $req .= " AND s.typeView = :typeView";
+            $data['typeView'] = $typeView;
+        }
+        if ($location !== null) {
+            $req .= " AND (a.town = :location OR a.postCode = :location)";
+            $data['location'] = $location;
+        }
+
+        if ($typeSeance == 'recent_movies') {
+            $req .= " ORDER BY f.releaseDate DESC ";
+        } else if ($order === '2') {
+            $req .= " ORDER BY s.date DESC";
+        } else if ($order === '3') {
+            $req .= " ORDER BY s.price ASC";
+        } else if ($order === '4') {
+            $req .= " ORDER BY s.price DESC";
+        } else {//($order === '1' || $order == null) {
+            $req .= " ORDER BY s.date ASC";
+        }
+
+
+//dump($req);
+//        die;
+        $em = $this->getEntityManager();
+        $data['today'] = new \DateTime();
+
+        $query = $em->createQuery($req)
+            ->setParameters($data)
+            ->setMaxResults($limit);
+        return $query->getResult();
+
+
+    }
 
 
 }

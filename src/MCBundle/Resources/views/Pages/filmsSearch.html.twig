@@ -34,7 +34,7 @@
                                 <ul class="list-unstyled ">
                                     {% if film.originalTitle is defined and film.originalTitle %}
                                         <li><b>Titre: </b>
-                                            <a href="{{ path('mc_film_get_allocine',{'code': film.code}) }}">{{ film.originalTitle }}</a>
+                                            <a href="{{ path('allocine_get',{'code': film.code}) }}">{{ film.originalTitle }}</a>
                                         </li>
                                     {% endif %}
 

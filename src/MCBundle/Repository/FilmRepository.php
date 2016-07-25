@@ -50,14 +50,20 @@ class FilmRepository extends EntityRepository
      */
     public function lastFilm($limit = null)
     {
-        $query = $this->createQueryBuilder('a');
-        $query->orderBy('a.id', 'DESC');
-        if ($limit !== null) {
-            $query->setMaxResults($limit);
-        }
-        return $query
-            ->getQuery()
-            ->getResult();
+        $em = $this->getEntityManager();
+        $query = $em->createQuery("
+                    SELECT DISTINCT f  
+                    FROM MCBundle:Film f
+                    WHERE f.id in ( SELECT flm.id 
+                                   FROM MCBundle:Seance s
+                                   JOIN s.film flm
+                                   WHERE s.date >= :today)
+                    GROUP BY f.id
+                    ORDER BY f.id DESC")
+            ->setParameter("today", new \DateTime())
+            ->setMaxResults($limit);
+
+        return $query->getResult();
 
     }
 
@@ -67,16 +73,43 @@ class FilmRepository extends EntityRepository
      */
     public function newFilm($limit = null)
     {
-        $query = $this->createQueryBuilder('a');
-        $query->orderBy('a.releaseDate', 'DESC');
-        if ($limit !== null) {
-            $query->setMaxResults($limit);
-        }
-        return $query
-            ->getQuery()
-            ->getResult();
+        $em = $this->getEntityManager();
+        $query = $em->createQuery("
+                    SELECT DISTINCT f  
+                    FROM MCBundle:Film f
+                    WHERE f.id in ( SELECT flm.id 
+                                   FROM MCBundle:Seance s
+                                   JOIN s.film flm
+                                   WHERE s.date >= :today)
+                    GROUP BY f.id
+                    ORDER BY f.releaseDate DESC")
+            ->setParameter("today", new \DateTime())
+            ->setMaxResults($limit);
+
+        return $query->getResult();
 
     }
+
+    public function filmSeance($film,$limit=null)
+    {
+        $em = $this->getEntityManager();
+        $query = $em->createQuery("
+                SELECT s AS seance, (
+                      SELECT COUNT (p)
+                      FROM MCBundle:Participant p 
+                      JOIN p.seance sc 
+                      WHERE sc.id = s.id) AS participants 
+                FROM MCBundle:Seance s
+                JOIN s.film f
+                WHERE s.date >= :today AND f.id = :id 
+                ORDER BY s.date ASC")
+            ->setParameter("today", new \DateTime())
+            ->setParameter("id",$film )
+            ->setMaxResults($limit);
+
+        return $query->getResult();
+    }
+
 
     /**
      * @param null $limit
@@ -84,15 +117,20 @@ class FilmRepository extends EntityRepository
      */
     public function topFilm($limit = null)
     {
-        $query = $this->createQueryBuilder('a');
-        $query->orderBy('a.userRating', 'DESC');
-        if ($limit !== null) {
-            $query->setMaxResults($limit);
-        }
-        return $query
-            ->getQuery()
-            ->getResult();
+        $em = $this->getEntityManager();
+        $query = $em->createQuery("
+                    SELECT DISTINCT f  
+                    FROM MCBundle:Film f
+                    WHERE f.id in ( SELECT flm.id 
+                                   FROM MCBundle:Seance s
+                                   JOIN s.film flm
+                                   WHERE s.date >= :today)
+                    GROUP BY f.id
+                    ORDER BY f.userRating DESC")
+            ->setParameter("today", new \DateTime())
+            ->setMaxResults($limit);
 
+        return $query->getResult();
     }
 
     /**
@@ -127,7 +165,6 @@ class FilmRepository extends EntityRepository
             ->getQuery()
             ->getResult();
     }
-
 
 
 }

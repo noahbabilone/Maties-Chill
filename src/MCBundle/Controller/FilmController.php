@@ -23,9 +23,10 @@ class FilmController extends Controller
     public function filmsIndexAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $lastFilms = $em->getRepository('MCBundle:Film')->lastFilm(4);
-        $newFilms = $em->getRepository('MCBundle:Film')->newFilm(4);
-        $topFilms = $em->getRepository('MCBundle:Film')->topFilm(4);
+        $limit = 10;
+        $lastFilms = $em->getRepository('MCBundle:Film')->lastFilm($limit);
+        $newFilms = $em->getRepository('MCBundle:Film')->newFilm($limit);
+        $topFilms = $em->getRepository('MCBundle:Film')->topFilm($limit);
 
         return $this->render(
             'MCBundle:Pages:filmsIndex.html.twig',
@@ -37,7 +38,7 @@ class FilmController extends Controller
         );
 
     }
-    
+
     /**
      * @Route("/films/view/{slug}", name="film_view")
      * @param $slug
@@ -47,17 +48,18 @@ class FilmController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $film = $em->getRepository('MCBundle:Film')->find($slug);
-        $seances = $em->getRepository('Seance.php')->seanceByFilm($film->getId());
-        
-        return $this->render('MCBundle:Pages:viewFilm.html.twig', array(
+        $resultSeances = $em->getRepository('MCBundle:Film')->filmSeance($film->getId());
+        //dump($resultSeances);
+        //die;
+        return $this->render('MCBundle:Pages:filmView.html.twig', array(
             "film" => $film,
-            "seances" => $seances,
+            "resultSeances" => $resultSeances,
         ));
 
     }
-    
-    
-     /**
+
+
+    /**
      * @Route("/films/{action}", name="film_action")
      * Get all seances
      * @param null $action
@@ -109,8 +111,7 @@ class FilmController extends Controller
             )
         );
     }
-    
-    
+
 
     public function getFilmAction($action = null, Request $request)
     {
@@ -152,10 +153,9 @@ class FilmController extends Controller
             )
         );
     }
-    
-
 
     /**
+     * @Route("/allocine/get/{code}", name="allocine_get")
      * @param $code
      * @return Response
      */
@@ -165,6 +165,9 @@ class FilmController extends Controller
         $allocine = $this->get("mc_allocine");
         $result = $allocine->get($code);
         $data = json_decode($result);
+
+        dump($data);
+        die;
         $film = $this->parserMovie($data->movie);
         if ($film->getISAN()) {
             $em->persist($film);
@@ -245,7 +248,11 @@ class FilmController extends Controller
         return $film;
     }
 
-
+    /**
+     * @Route("/allocine/{keyword}", name="allocine")
+     * @param $keyword
+     * @return Response
+     */
     public function searchAllocineFilmAction($keyword)
     {
         $allocine = $this->get("mc_allocine");
