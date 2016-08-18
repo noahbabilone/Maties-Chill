@@ -20,26 +20,26 @@
         <div class="page-content">
             <div class="row margin-bottom-60 about-header" style="margin-top: 50px !important;">
                 <div class="col-md-12">
-                    <h1>Mathies Chill</h1>
-                    <h2>Vivez une nouvelle expériece ciné avec Maties&Chill </h2>
-                    <button type="button" class="btn btn-danger">Commencez</button>
+                    <h1>Maties<span class="font-yellow-casablanca">&Chill</span></h1>
+                    <h2>Vivez une nouvelle expérience ciné avec Maties&Chill </h2>
+                    <a href="{{ path('seances_home') }}" class="btn btn-danger">Commencez</a>
                 </div>
             </div>
 
-            <div class="clearfix"></div>
 
-            <div class="row margin-bottom-60" style="">
+            <div class="clearfix"></div>
+            <div class="row margin-bottom-60" style="padding-top:40px;">
                 <div class="col-lg-3 col-md-6">
                     <div class="portlet light">
                         <div class="card-icon">
                             <i class="icon-camcorder font-red-sunglo theme-font"></i>
                         </div>
                         <div class="card-title">
-                            <span> Partager vos séance ciné </span>
+                            <span>Création de séances</span>
                         </div>
                         <div class="card-desc">
-                                    <span> The best way to find yourself is
-                                        <br> to lose yourself in the service of others </span>
+                                    <span>Créer des séances en quelques clics 
+                                         <br>grâce à notre formulaire simplifié.</span>
                         </div>
                     </div>
                 </div>
@@ -49,100 +49,99 @@
                             <i class="icon-users font-green-haze theme-font"></i>
                         </div>
                         <div class="card-title">
-                            <span> Awards Winner </span>
+                            <span> Proposer des séances</span>
                         </div>
                         <div class="card-desc">
-                                    <span> The best way to find yourself is
-                                        <br> to lose yourself in the service of others </span>
+                                    <span> Proposer facilement vos séances à notre <br> communauté Maties&Chill. 
+ </span>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <div class="portlet light">
                         <div class="card-icon">
-                            <i class="icon-basket font-purple-wisteria theme-font"></i>
+                            <i class="icon-screen-desktop font-purple-wisteria theme-font"></i>
                         </div>
                         <div class="card-title">
-                            <span> eCommerce Components </span>
+                            <span>Rechercher des séances
+ </span>
                         </div>
                         <div class="card-desc">
-                                    <span> The best way to find yourself is
-                                        <br> to lose yourself in the service of others </span>
+                            <span> Grâce à notre base de données 
+                                <br>retrouver l’ensemble</span>
                         </div>
                     </div>
                 </div>
+
                 <div class="col-lg-3 col-md-6">
                     <div class="portlet light">
                         <div class="card-icon">
-                            <i class="icon-heart font-blue theme-font"></i>
+                            <i class="icon-map font-blue theme-font"></i>
                         </div>
                         <div class="card-title">
-                            <span> Adaptive Components </span>
+                            <span>Participer à des séances</span>
                         </div>
                         <div class="card-desc">
-                                    <span> The best way to find yourself is
-                                        <br> to lose yourself in the service of others </span>
+                                    <span>Avec Maties&Chill trouver des séances
+                                        <br>qui vous conviennent près de chez vous.</span>
                         </div>
                     </div>
+                </div>
+
+            </div>
+            <div class="row margin-bottom-60 about-cine">
+                <div class="col-md-12 margin-top-30">
+                    {#<h3 class="text-right"> Nous allons vous changer votre vison du cib</h3>#}
+                    {#<h2>Vous allons vous changer votre vision d </h2>#}
+                    <a href="{{ path('seances_home') }}" class="btn blue">Voir les séances</a>
                 </div>
             </div>
 
-
             <div class="row margin-bottom-40 stories-header" data-auto-height="true">
                 <div class="col-md-12">
-                    <h1>Members Success Stories</h1>
+                    <h1>Notre Equipes</h1>
                     <h2>Life is either a great adventure or nothing</h2>
                 </div>
                 <div class="row margin-bottom-20 stories-cont">
-                    <div class="col-lg-3 col-md-6">
+
+
+                    <div class="col-lg-4 col-md-6">
                         <div class="portlet light">
                             <div class="photo">
-                                <img src="http://www.keenthemes.com/preview/metronic/theme/assets/pages/media/users/teambg8.jpg"
+                                <img src="{{ asset('assets/img/djino.jpg') }}"
                                      alt="" class="img-responsive"/></div>
                             <div class="title">
-                                <span> Yannick </span>
+                                <span> Djino DIOMBAYE</span>
                             </div>
                             <div class="desc">
-                                <span> We are at our very best, and we are happiest, when we are fully engaged in work we enjoy on the journey toward the goal we've established for ourselves. </span>
+                                <span>Fervent amateur des technologies mobiles, Djino mets sans cesse en avant ses compétences au service de nos applis mobiles </span>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-6">
+                    <div class="col-lg-4 col-md-6">
                         <div class="portlet light">
                             <div class="photo">
-                                <img src="http://www.keenthemes.com/preview/metronic/theme/assets/pages/media/users/teambg8.jpg"
+                                <img src="{{ asset('assets/img/marco.jpg') }}"
                                      alt="" class="img-responsive"/></div>
                             <div class="title">
-                                <span> SAID </span>
+                                <span> Marc BIOFA </span>
                             </div>
                             <div class="desc">
-                                <span> Do what you love to do and give it your very best. Whether it's business or baseball, or the theater, or any field. If you don't love what you're doing and you can't give it your best, get out of it. </span>
+                                <span> Marc est la partie visible de l’iceberg Maties&Chill convaincu que le front est la première vitrine d’une appli web il prône une expérience utilisateur unique
+</span>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-6">
+                    <div class="col-lg-4 col-md-6">
                         <div class="portlet light">
                             <div class="photo">
-                                <img src="http://www.keenthemes.com/preview/metronic/theme/assets/pages/media/users/teambg8.jpg"
+                                <img src="{{ asset('assets/img/yann.jpg') }}"
                                      alt="" class="img-responsive"/></div>
                             <div class="title">
-                                <span> Djino </span>
+                                <span> Yannick SAID </span>
                             </div>
                             <div class="desc">
-                                <span> To be nobody but yourself in a world which is doing its best, to make you everybody else means to fight the hardest battle which any human being can fight; and never stop fighting. </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="portlet light">
-                            <div class="photo">
-                                <img src="http://www.keenthemes.com/preview/metronic/theme/assets/pages/media/users/teambg8.jpg"
-                                     alt="" class="img-responsive"/></div>
-                            <div class="title">
-                                <span> Marc  </span>
-                            </div>
-                            <div class="desc">
-                                <span> You have to accept whatever comes and the only important thing is that you meet it with courage and with the best that you have to give. Never give up, never surrender. Go all out or gain nothing. </span>
+                                <span>Back-end c’est notre sous-marin. Développeur Back-End dans l’âme Yannick est passionné de nouvelles technologies et des Volkswagen.</span>
                             </div>
                         </div>
                     </div>

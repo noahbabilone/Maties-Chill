@@ -24,7 +24,7 @@ use FOS\UserBundle\Model\User;
 class SeanceController extends Controller
 {
     /**
-     * @Route("/seances/get/{action}", name="seances_action")
+     * @Route("/seances/{action}", name="seances_action")
      * Get all seances
      * @param Request $request
      * @param $action
@@ -51,25 +51,20 @@ class SeanceController extends Controller
         $typeView = ($request->get('view') !== null && !empty($request->get('view'))) ? $request->get('view') : null;
         $location = ($request->get('location') !== null && !empty($request->get('location'))) ? $request->get('location') : null;
 
+
         if ($action == 'all') {
             $result = $em->getRepository('MCBundle:Seance')->seance($action, null, $order, $typeView, $location);
             $data["pageTitle"] = 'Toutes';
-        } else if ($action == 'next_seance') {
+        } else if ($action == 'next') {
             $result = $em->getRepository('MCBundle:Seance')->seance($action, null, $order, $typeView, $location);
             $data["pageTitle"] = 'Prochaines séances';
 
-        } else if ($action == 'recent_movies') {
-            $result = $em->getRepository('MCBundle:Seance')->seance($action, null, $order, $typeView, $location);
-            $data["pageTitle"] = 'Films recents';
-            $data["sorts"] = null;
-
-
-        } else if ($action == 'seances_paying') {
+        } else if ($action == 'paying') {
 
             $result = $em->getRepository('MCBundle:Seance')->seance($action, null, $order, $typeView, $location);
             $data["pageTitle"] = 'Séances gratuites';
 
-        } else if ($action == 'seances_free') {
+        } else if ($action == 'free') {
             $result = $em->getRepository('MCBundle:Seance')->seance($action, null, $order, $typeView, $location);
 
             $data["pageTitle"] = 'Séances gratuites';
@@ -78,8 +73,6 @@ class SeanceController extends Controller
             $data["pageTitle"] = 'Aucune séance';
 
         }
-
-
         $data['results'] = $this->get('knp_paginator')->paginate(
             $result,
             $request->query->get('page', $numberPage),
@@ -132,15 +125,15 @@ class SeanceController extends Controller
         $seance = null;
         $participants = null;
 
-       
+
         if ($result != null && key_exists("seance", $result[0]) && key_exists("participants", $result[0])) {
             $seance = $result[0]["seance"];
             $participants = $result[0]["participants"];
         }
 
-       //  dump($result,$participants,$seance);
-       // die;
-    
+        //  dump($result,$participants,$seance);
+        // die;
+
         //dump($seance);
         //die;
         return $this->render('MCBundle:Pages:seanceView.html.twig', array(
@@ -198,7 +191,7 @@ class SeanceController extends Controller
     /**
      * Get all seances
      * @param Request $request
-     * @Route("/seances/add", name="seances_add")
+     * @Route("/seances/add/form", name="seances_add")
      * @return Response
      */
     public function addSeanceAction(Request $request)

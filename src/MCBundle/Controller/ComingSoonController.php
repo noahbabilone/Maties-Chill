@@ -10,7 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class ComingSoonController extends Controller
 {
     /**
-     * @Route("/", name="coming_soon")
+     * @Route("/coming_soon", name="coming_soon")
      * @return Response
      */
     public function indexAction()

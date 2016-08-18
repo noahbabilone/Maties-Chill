@@ -90,7 +90,30 @@ class FilmRepository extends EntityRepository
 
     }
 
-    public function filmSeance($film,$limit=null)
+    /**
+     * @param null $limit
+     * @return array
+     */
+    public function recentFilm($limit = null)
+    {
+        $em = $this->getEntityManager();
+        $query = $em->createQuery("
+                    SELECT DISTINCT f  
+                    FROM MCBundle:Film f
+                    WHERE f.id in ( SELECT flm.id 
+                                   FROM MCBundle:Seance s
+                                   JOIN s.film flm
+                                   WHERE s.date >= :today)
+                    GROUP BY f.id
+                    ORDER BY f.releaseDate DESC AND f.id DESC")
+            ->setParameter("today", new \DateTime())
+            ->setMaxResults($limit);
+
+        return $query->getResult();
+
+    }
+
+    public function filmSeance($film, $limit = null)
     {
         $em = $this->getEntityManager();
         $query = $em->createQuery("
@@ -104,7 +127,7 @@ class FilmRepository extends EntityRepository
                 WHERE s.date >= :today AND f.id = :id 
                 ORDER BY s.date ASC")
             ->setParameter("today", new \DateTime())
-            ->setParameter("id",$film )
+            ->setParameter("id", $film)
             ->setMaxResults($limit);
 
         return $query->getResult();

@@ -59,7 +59,7 @@
                                         <ul>
                                             {% for participate in participates %}
 
-                                                <li class="search-item clearfix">
+                                                <li class="search-item clearfix" id="participation-line-{{ participate.seance.id }}">
                                                     <a href="{{ path('seances_view',{'slug':  participate.seance.id}) }}">
                                                         <img src="{{ participate.seance.film.poster }}"/>
                                                     </a>
@@ -93,8 +93,28 @@
                                                                     class="fa fa-envelope fa-fw"></i>Message</a>
                                                         <a href="" class="btn btn-xs yellow-casablanca"><i
                                                                     class="fa fa-shopping-cart fa-fw"></i>Payer</a>
-                                                        <a href="" class="btn btn-xs red"><i
+                                                        <a href=""
+                                                           id="btn-remove-{{ participate.seance.id }}"
+                                                           data-action="participate"
+                                                           data-title=" {{ participate.seance.film.title }} - {{ participate.seance.typeView }}"
+                                                           data-value="participate-{{ participate.seance.id }}"
+                                                           data-line="participation-line-{{ participate.seance.id }}"
+                                                           class="btn-remove btn btn-xs red"><i
                                                                     class="fa fa-trash fa-fw"></i>Rétracter</a>
+                                                        
+                                                        
+                                                         <a href=""
+                                                           id="btn-participate-{{ participate.seance.id }}"
+                                                           data-action="participate"
+                                                           data-title="{{ participate.seance.film.title }} - {{ participate.seance.typeView }}"
+                                                           data-value="participate-{{ participate.seance.id }}"
+                                                           data-line="participation-line-{{ participate.seance.id }}"
+                                                           class="btn-participate btn btn-xs hide green"><i
+                                                                    class="fa fa-plus fa-fw"></i> Participer</a>
+                                                        
+                                                        
+                                                        
+                                                        
 
                                                     </div>
 

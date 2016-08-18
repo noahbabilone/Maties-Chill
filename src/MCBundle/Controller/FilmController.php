@@ -82,12 +82,12 @@ class FilmController extends Controller
             $title = "Récents";
             $breadcrumb = "Récents";
 
-        } else if ($action == "new_film") {
+        } else if ($action == "news") {
             $result = $em->getRepository('MCBundle:Film')->newFilm();
             $title = "Nouveautés";
             $breadcrumb = "Nouveautés";
 
-        } else if ($action == "top_film") {
+        } else if ($action == "top") {
             $result = $em->getRepository('MCBundle:Film')->topFilm();
             $title = "Top films";
             $breadcrumb = "Top-film";

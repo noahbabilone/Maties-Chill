@@ -30,17 +30,17 @@ api-rest:
 mc_themes:
     resource: MCBundle\Controller\MCController
     type:     annotation
-    prefix:   /mc
+    prefix:   /
     
 mc_seance:
     resource: MCBundle\Controller\SeanceController
     type:     annotation
-    prefix:   /mc
+    prefix:   /
     
 mc_film:
     resource: MCBundle\Controller\FilmController
     type:     annotation
-    prefix:   /mc
+    prefix:   /
     
 mc_coming_soon:
     resource: MCBundle\Controller\ComingSoonController

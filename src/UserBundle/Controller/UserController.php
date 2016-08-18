@@ -106,11 +106,11 @@ class UserController extends Controller
 
         $idSeance = $request->get('view');
         if ($idSeance) {
-            $results = $em->getRepository('MCBundle:Seance')->findOneSeanceUser($user->getId(),$idSeance);
-            $participants = $em->getRepository('MCBundle:Participant')->findParticipantOneSeance($user->getId(),$idSeance);
-            
-           // dump($results);
-           // die();
+            $results = $em->getRepository('MCBundle:Seance')->findOneSeanceUser($user->getId(), $idSeance);
+            $participants = $em->getRepository('MCBundle:Participant')->findParticipantOneSeance($user->getId(), $idSeance);
+
+            // dump($results);
+            // die();
             return $this->render('MCBundle:Profile:seanceView.html.twig', array(
                 "results" => $results,
                 "participants" => $participants,
@@ -120,8 +120,8 @@ class UserController extends Controller
         $limitPage = 11;
         $numberPage = 1;
 
-        $entity = $em->getRepository('MCBundle:Seance')->findMySeance($user->getId()); 
-        
+        $entity = $em->getRepository('MCBundle:Seance')->findMySeance($user->getId());
+
         $results = $this->get('knp_paginator')->paginate(
             $entity,
             $request->query->get('page', $numberPage),
@@ -234,4 +234,74 @@ class UserController extends Controller
     }
 
 
+    /**
+     * @param Request $request
+     * @Route("/user/participation/remove", name="user_remove_participation",  options = {"expose"=true})
+     * @return response
+     * @throws NotFoundHttpException
+     */
+    public function removeParticipationAction(Request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+
+            if (null == $this->getUser()) {
+                throw new NotFoundHttpException("L'Utilisateur n'existe pas.");
+            }
+            $em = $this->getDoctrine()->getManager();
+            $participant = $em->getRepository('MCBundle:Participant')->findBy(array(
+                    "user" => $this->getUser()->getId(),
+                    "seance" => $request->get('id'),
+                )
+            );
+            
+            if (null === $participant[0]) {
+                throw new NotFoundHttpException("L'Participation dont la séance ID: " . $request->get('id') . " et User ID: " . $request->getUser()->getId() . " n'existe pas.");
+            }
+
+            $message = "Vous avez été retiré de la séance:" . $participant[0]->getSeance()->getFilm()->getTitle() . " - " . $participant[0]->getSeance()->getTypeView();
+            $participant[0]->setDisable(false);
+
+            //$em->remove($participant);
+            //$em->flush();
+            return new Response(json_encode(array('result' => 'success', 'message' => $message)));
+        }
+        return new response (json_encode(array('result' => 'error', "message" => "Error: isXmlHttpRequest")));
+
+    }
+
+    /**
+     * @param Request $request
+     * @Route("/user/participant/remove", name="user_remove_participant",  options = {"expose"=true})
+     * @return response
+     * @throws NotFoundHttpException
+     */
+    public function removeParticipantAction(Request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+
+            if (null == $this->getUser()) {
+                throw new NotFoundHttpException("L'Utilisateur n'existe pas.");
+            }
+            $em = $this->getDoctrine()->getManager();
+
+
+            $participant = $em->getRepository('MCBundle:Participant')->findBy(array(
+                    "user" => $request->get('participant'),
+                    "seance" => $request->get('id'),
+                )
+            );
+            
+            if (null === $participant[0]) {
+                throw new NotFoundHttpException("L'Participation dont la séance ID: " . $request->get('id') . " et User ID: " . $request->getUser()->getId() . " n'existe pas.");
+            }
+
+            $message = ucfirst($participant[0]->getUser()->getUsername())." a été retiré de la séance:" . $participant[0]->getSeance()->getFilm()->getTitle() . " - " . $participant[0]->getSeance()->getTypeView();
+            $participant[0]->setDisable(false);
+            //$em->remove($participant);
+            //$em->flush();
+            return new Response(json_encode(array('result' => 'success', 'message' => $message)));
+        }
+        return new response (json_encode(array('result' => 'error', "message" => "Error: isXmlHttpRequest")));
+
+    }
 }

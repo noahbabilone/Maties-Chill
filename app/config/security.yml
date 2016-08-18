@@ -27,17 +27,16 @@ security:
             logout:
                 path:   fos_user_security_logout
                 target: /
-#            remember_me:
-#                key:        %secret%
-#                lifetime: 1800 # 30 min
-#                path: /login
+            remember_me:
+                key:   %secret%
+                lifetime: 1800 # 30 min
+                path: /
 
     access_control:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: ROLE_USER }
 #        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/resetting, role: ROLE_USER }
-        - { path: ^/mc/, role: ROLE_USER }
+        - { path: ^/resetting/, role: ROLE_USER }
         - { path: ^/backoffice/, role: ROLE_USER }
         - { path: ^/profile/, role: ROLE_USER }
 #        - { path: ^/account/, role:  ROLE_SUPER_ADMIN}

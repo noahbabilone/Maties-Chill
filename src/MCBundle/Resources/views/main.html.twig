@@ -54,34 +54,31 @@
                 <ul class="nav navbar-nav">
 
                     <li class="classic-menu-dropdown">
-                        <a href="{{ path("seances_action", {"action":"all"}) }}" data-hover="megamenu-dropdown" data-close-others="true">
+                        <a href="{{ path("seances_home") }}" data-hover="megamenu-dropdown" data-close-others="true">
                             Séances
                             <i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu pull-left">
                             <li>
-                                <a href="{{ path("seances_action", {"action":"next_seance"}) }}">
-                                    <i class="fa fa-clock-o fa-fw"></i> Prochaines Séances </a>
+                                <a href="{{ path("seances_action", {"action":"next"}) }}">
+                                    <i class="icon-clock"></i> Prochaines Séances </a>
                             </li>
+
                             <li>
-                                <a href="{{ path("seances_action", {"action":"recent_movies"}) }}">
-                                    <i class="fa fa-download fa-fw"></i> Films Récents </a>
-                            </li>
-                            <li>
-                                <a href="{{ path("seances_action", {"action":"seances_paying"}) }}">
+                                <a href="{{ path("seances_action", {"action":"paying"}) }}">
                                     <i class="fa fa-money fa-fw"></i> Payantes </a>
                             </li>
                             <li>
-                                <a href="{{ path("seances_action", {"action":"seances_free"}) }}">
-                                    <i class="fa fa-star fa-fw"></i> Gratuites </a>
+                                <a href="{{ path("seances_action", {"action":"free"}) }}">
+                                    <i class="icon-star"></i> Gratuites </a>
                             </li>
                             <li>
                                 <a href="{{ path("seances_action", {"action":"all"}) }}">
-                                    <i class="fa fa-users fa-fw"></i> Top utilisateurs</a>
+                                    <i class="icon-users"></i> Top utilisateurs</a>
                             </li>
                             <li>
                                 <a href="{{ path("seances_action", {"action":"all"}) }}">
-                                    <i class="fa fa-list"></i> Toutes</a>
+                                    <i class="icon-list"></i> Toutes</a>
                             </li>
                             <li role="separator" class="divider"></li>
                             <li>
@@ -98,20 +95,24 @@
                         </a>
                         <ul class="dropdown-menu pull-left">
                             <li>
-                                <a href="{{ path("film_action", {"action":"new_film"}) }}">
-                                    <i class="fa fa-bookmark-o"></i>Nouveautés</a>
+                                <a href="{{ path("film_action", {"action":"news"}) }}">
+                                    <i class="icon-badge"></i> Nouveautés</a>
                             </li>
                             <li>
-                                <a href="{{ path("film_action", {"action":"top_add"}) }}">
-                                    <i class="fa fa-star-o"></i> Top Films</a>
+                                <a href="{{ path("film_action", {"action":"top"}) }}">
+                                    <i class="icon-star"></i> Top Films</a>
                             </li>
+                            {#<li>#}
+                            {#<a href="{{ path("seances_action", {"action":"recent_movies"}) }}">#}
+                            {#<i class="icon-arrow-down"></i> Films Récents </a>#}
+                            {#</li>#}
                             <li>
                                 <a href="{{ path("film_action", {"action":"last_add"}) }}" class="nav-link">
-                                    <i class="fa fa-plus fa-fw"></i> Ajoutés récemment </a>
+                                    <i class="icon-speedometer"></i> Récemment ajoutées </a>
                             </li>
                             <li>
                                 <a href="{{ path("film_action", {"action":"all"}) }}">
-                                    <i class="fa fa-tv fa-fw"></i> Tous </a>
+                                    <i class="icon-list"></i> Tous </a>
                             </li>
                             <li role="separator" class="divider"></li>
 
@@ -149,8 +150,8 @@
             </a>
             <!-- END RESPONSIVE MENU TOGGLER -->
             <!-- BEGIN TOP NAVIGATION MENU -->
-            <div class="top-menu">
-                <ul class="nav navbar-nav pull-right">
+            <div class="top-menu ">
+                <ul class="nav navbar-nav pull-right ">
                     {% if app.user %}
 
                         <li class="dropdown dropdown-user">
@@ -237,20 +238,22 @@
                         </li>
                         <li class="dropdown dropdown-quick-sidebar-toggler">
                             <a href="{{ path('fos_user_security_logout') }}" class="dropdown-toggle">
-                                <i class="icon-logout"></i></span>
+                                <i class="icon-logout"></i>
                             </a>
                         </li>
-                    {% else %}
-                        <li class=""><a href="{{ path('fos_user_security_login') }}" title="Connexion">
-                                <i class="icon-login "></i> Connexion </a></li>
-                        <li><a href="{{ path('fos_user_registration_register') }}"
+                        {% else %}
+                          <li class="form-login">
+                            <a href="{{ path('fos_user_security_login') }}" title="Connexion">
+                                <i class="icon-login"></i> Connexion </a>
+                        </li>
+                          <li class="form-login">
+                            <a href="{{ path('fos_user_registration_register') }}"
                                title="S'inscrire">
-                                <i class="icon-plus"></i>
-                                <span class="username username-hide-on-mobile">Inscription</span>
+                                <i class="icon-plus"></i> Inscription
                             </a>
 
                         </li>
-
+                        
                     {% endif %}
 
 
@@ -284,7 +287,7 @@
                 <p class="page-footer-inner">Copyright &copy; Estiam-Groupe-4 2016</p>
             </div>
         </div>
-       
+
     </div>
 
     <!-- END FOOTER -->

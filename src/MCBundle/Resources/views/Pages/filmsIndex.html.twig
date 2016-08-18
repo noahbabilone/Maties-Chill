@@ -60,7 +60,7 @@
                         {% if lastFilms is defined %}
                             <div class="col-sm-12">
                                 <h4 class="">
-                                    <a href="{{ path("film_action", {"action":"last_add"}) }}">
+                                    <a href="{{ path("film_action", {"action":"last"}) }}">
                                         Récemment ajoutées</a>
                                 </h4>
                             </div>
@@ -142,7 +142,7 @@
                                 </div>
                             </div>
                             <div class="col-sm-12 text-right">
-                                <a href="{{ path("film_action", {"action":"last_film"}) }}" class="">
+                                <a href="{{ path("film_action", {"action":"last"}) }}" class="">
                                     Tout voir &raquo;</a>
                             </div>
                         {% endif %}
@@ -150,7 +150,7 @@
                             <div class="col-sm-12">
 
                                 <h4 class="page-header">
-                                    <a href="{{ path("film_action", {"action":"new_film"}) }}">
+                                    <a href="{{ path("film_action", {"action":"news"}) }}">
                                         Récemment ajoutées</a>
                                 </h4>
                             </div>
@@ -233,14 +233,14 @@
                                 </div>
                             </div>
                             <div class="col-sm-12 text-right">
-                                <a href="{{ path("film_action", {"action":"new_film"}) }}" class="">
+                                <a href="{{ path("film_action", {"action":"news"}) }}" class="">
                                     Tout voir &raquo;</a>
                             </div>
                         {% endif %}
                         {% if topFilms is defined %}
                             <div class="col-sm-12">
                                 <h4 class="page-header">
-                                    <a href="{{ path("film_action", {"action":"top_film"}) }}">
+                                    <a href="{{ path("film_action", {"action":"top"}) }}">
                                         Récemment ajoutées</a>
                                 </h4>
                             </div>
@@ -323,7 +323,7 @@
                                 </div>
                             </div>
                             <div class="col-sm-12 text-right">
-                                <a href="{{ path("film_action", {"action":"top_film"}) }}" class="">
+                                <a href="{{ path("film_action", {"action":"top"}) }}" class="">
                                     Tout voir &raquo;</a>
                             </div>
                         {% endif %}
@@ -413,7 +413,7 @@
                                 </div>
                             </div>
                             <div class="col-sm-12 text-right">
-                                <a href="{{ path("film_action", {"action":"new_film"}) }}" class="">Tout voir &raquo;</a>
+                                <a href="{{ path("film_action", {"action":"news"}) }}" class="">Tout voir &raquo;</a>
                             </div>
                         {% endif %}
                     </div>

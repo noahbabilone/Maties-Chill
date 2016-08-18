@@ -294,9 +294,9 @@ class SeanceRepository extends EntityRepository
                 JOIN s.film f
                 JOIN s.address a
                 WHERE  s.date >= :today";
-        if ($typeSeance == 'seances_paying') {
+        if ($typeSeance == 'paying') {
             $req .= " AND s.price > 0";
-        } else if ($typeSeance == 'seances_free') {
+        } else if ($typeSeance == 'free') {
             $req .= " AND s.price <= 0";
         }
 
@@ -309,9 +309,10 @@ class SeanceRepository extends EntityRepository
             $data['location'] = $location;
         }
 
-        if ($typeSeance == 'recent_movies') {
+      /*  if ($typeSeance == 'recent_movies') {
             $req .= " ORDER BY f.releaseDate DESC ";
-        } else if ($order === '2') {
+        } else */
+        if ($order === '2') {
             $req .= " ORDER BY s.date DESC";
         } else if ($order === '3') {
             $req .= " ORDER BY s.price ASC";
