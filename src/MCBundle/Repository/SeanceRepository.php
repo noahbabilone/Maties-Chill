@@ -223,11 +223,9 @@ class SeanceRepository extends EntityRepository
                     ORDER BY s.date ASC")
             ->setParameter("today", new \DateTime())
             ->setMaxResults($limit);
-
         return $query->getResult();
-
     }
-
+    
     /**
      * @param $user
      * @param null $limit
@@ -238,10 +236,10 @@ class SeanceRepository extends EntityRepository
         $em = $this->getEntityManager();
         $query = $em->createQuery("
                     SELECT s AS seance,  (
-                      SELECT COUNT (p)
-                      FROM MCBundle:Participant p 
-                      JOIN p.seance sc 
-                      WHERE sc.id = s.id) AS participants  
+                          SELECT COUNT (p)
+                          FROM MCBundle:Participant p 
+                          JOIN p.seance sc 
+                          WHERE sc.id = s.id) AS participants  
                     FROM MCBundle:Seance s
                     JOIN s.creator c
                     WHERE s.date >= :today AND c.id = :id

@@ -138,12 +138,39 @@
                                     </div>
                                 </div>
 
-                                <div class="col-sm-2 col-sm-offset-1 text-right">
-                                    {% if (app.request.query.get("show") or app.request.query.get("order")  or app.request.query.get("view")) and
+                                <div class="col-sm-3 text-right">
+
+                                    {% if (app.request.query.get("show") or app.request.query.get("order")  or app.request.query.get("view")) or
                                     app.request.query.get("q") %}
                                         <a href="{{ path(  app.request.attributes.get('_route'), app.request.attributes.get('_route_params')| merge({'q': app.request.query.get("q")})) }}
                                     " class="btn btn-sm red">Réinitialiser le filtre</a>
                                     {% endif %}
+
+
+                                    <div class="btn-group">
+                                        <a {% if app.request.query.get("type_view") == "card" %}
+                                            class="btn btn-sm btn-default active"
+                                        {% else %}
+                                            class="btn btn-sm btn-default"
+                                        {% endif %}
+                                                href="{{ path(app.request.attributes.get('_route'),
+                                                app.request.attributes.get('_route_params')  |merge(app.request.query.all)|
+                                                merge({'type_view': 'card' })) }}">
+                                            <i class="icon-grid"></i>
+                                        </a>
+                                        <a {% if app.request.query.get("type_view") == "list" %}
+                                            class="btn btn-sm btn-default active"
+                                        {% else %}
+                                            class="btn btn-sm btn-default"
+                                        {% endif %}
+                                                href="{{ path(app.request.attributes.get('_route'),
+                                                app.request.attributes.get('_route_params')  |merge(app.request.query.all)|
+                                                merge({'type_view': 'list' })) }}">
+                                            <i class="icon-list"></i>
+                                        </a>
+
+                                    </div>
+
                                 </div>
 
                             </div>
@@ -179,7 +206,7 @@
                                         <div class="cbp-item">
                                             <article class="card">
                                                 <header class="card__thumb">
-                                                    <a href="{{ path("film_view", {"slug": result.seance.film.id}) }}">
+                                                    <a href="{{ path("seances_view", {"slug": result.seance.id}) }}">
                                                         {% if result.seance.film.poster is defined and result.seance.film.poster %}
 
                                                             <img src="{{ result.seance.film.poster }}"
@@ -250,7 +277,7 @@
                                                     <span class="fa fa-comments"></span>
                                                     <small>{{ random(50) }}</small>
                                                         <span class="pull-right"><a
-                                                                    href="{{ path("seances_view", {"slug": result.seance.film.id}) }}"
+                                                                    href="{{ path("seances_view", {"slug": result.seance.id}) }}"
                                                                     class="text-info">&nbsp;Suite&raquo;
                                                             </a></span>
                                                     {#<span class="pull-right"><a 
@@ -271,8 +298,6 @@
 
                                     </div>
                                 </div>
-
-
                             </div>
                         </div>
                     {% else %}

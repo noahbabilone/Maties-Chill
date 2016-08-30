@@ -2,6 +2,7 @@
 
 namespace MCBundle\Controller;
 
+use MCBundle\Entity\Comment;
 use MCBundle\Entity\Film;
 use MCBundle\Entity\Seance;
 use MCBundle\Entity\Address;
@@ -115,31 +116,51 @@ class SeanceController extends Controller
 
     /**
      * @Route("/seances/view/{slug}", name="seances_view")
+     * @param Request $request
      * @param $slug
      * @return Response
      */
-    public function viewSeancesAction($slug)
+    public function viewSeancesAction(Request $request, $slug)
     {
         $em = $this->getDoctrine()->getManager();
         $result = $em->getRepository('MCBundle:Seance')->seanceID($slug);
         $seance = null;
         $participants = null;
+        $data = array();
 
 
         if ($result != null && key_exists("seance", $result[0]) && key_exists("participants", $result[0])) {
-            $seance = $result[0]["seance"];
-            $participants = $result[0]["participants"];
+            $data["seance"] = $result[0]["seance"];
+//            $data["comments"] = $em->getRepository('MCBundle:Comment')->findBy(
+//                array("seance" => $data["seance"]->getId(),)
+//            );
+//
+//            dump($data);
+//            die;
+            $data["participants"] = $result[0]["participants"];
+
+            if (null !== $this->getUser() || null !== $data["seance"]) {
+                $participant = $em->getRepository('MCBundle:Participant')->findBy(array(
+                        "user" => $this->getUser()->getId(),
+                        "seance" => $data["seance"]->getId(),
+                    )
+                );
+
+                $data["isParticipant"] = (count($participant) > 0) ? true : false;
+//                dump($participant);
+//                dump($data);
+//                die;
+            }
         }
 
-        //  dump($result,$participants,$seance);
-        // die;
+        if ($request->getSession()->has('message') && $request->getSession()->has('response')) {
+            $data['message'] = $request->getSession()->get('message');
+            $data['response'] = $request->getSession()->get('response');
+            $request->getSession()->remove('message');
+            $request->getSession()->remove('response');
+        }
 
-        //dump($seance);
-        //die;
-        return $this->render('MCBundle:Pages:seanceView.html.twig', array(
-            "seance" => $seance,
-            "participants" => $participants,
-        ));
+        return $this->render('MCBundle:Pages:seanceView.html.twig', $data);
 
     }
 
@@ -151,7 +172,7 @@ class SeanceController extends Controller
     public function seanceByFilmAction($idFilm)
     {
         $em = $this->getDoctrine()->getManager();
-        $seances = $em->getRepository('MCBundle:Seance')->fin($idFilm);
+        $seances = $em->getRepository('MCBundle:Seance')->find($idFilm);
         $film = $em->getRepository('MCBundle:Film')->find($idFilm);
 
         return $this->render(
@@ -182,7 +203,18 @@ class SeanceController extends Controller
             $message = "La séance " . "(<b>" . $seance->getFilm()->getTitle() . " -  " . $seance->getTypeView() . "</b>)  a été supprimée.";
             //$em->remove($seance);
             //$em->flush();
-            return new Response(json_encode(array('result' => 'success', 'message' => $message)));
+            $seances = $em->getRepository('MCBundle:Seance')->findMySeance(
+                $this->getUser()->getId());
+            $request->getSession()->set('COUNT_SEANCE', COUNT($seances));
+
+
+            return new Response(json_encode(array(
+                        'result' => 'success',
+                        'message' => $message,
+                        'count' => $request->getSession()->get('COUNT_SEANCE'),
+                    )
+                )
+            );
         }
         return new response (json_encode(array('result' => 'error', "message" => "Error: isXmlHttpRequest")));
     }
@@ -217,7 +249,6 @@ class SeanceController extends Controller
                     $em->flush();
                     $film = $em->getRepository('MCBundle:Film')->find($film->getId());
                 }
-
             }
             $seance->setFilm($film);
             //$creator = $user = $this->get('security.context')->getToken()->getUser();
@@ -227,7 +258,7 @@ class SeanceController extends Controller
             $em->persist($seance);
             $em->flush();
 
-            $request->getSeance()->set('add-seance', true);
+            $request->getSession()->set('add-seance', true);
             return $this->redirectToRoute('seances_view', array('slug' => $seance->getId()), 301);
 
         }
@@ -237,6 +268,119 @@ class SeanceController extends Controller
             'formMaterial' => $formMaterial->createView(),
             'formAddress' => $formAddress->createView(),
         ));
+    }
+
+
+    /**
+     * @param Request $request
+     * @Route("/search_Film", name="search_film_ajax",  options = {"expose"=true})
+     * @return response
+     * @throws NotFoundHttpException
+     */
+    public function searchFilmAjaxAction(Request $request)
+    {
+
+        if ($request->isXmlHttpRequest()) {
+//            $em = $this->getDoctrine()->getManager();
+            $keyword = $request->get('search');
+            $count = ($request->get('count') == null) ? 10 : $request->get('count');
+            $data = array();
+//            $films = $em->getRepository('MCBundle:Film')->searchDB($keyword);
+//            foreach ($films as $film) {
+//                $data[] = array("title" => $film->getTitle(), "code" => $film->getISAN());
+//            }
+
+            $allocine = $this->get("mc_allocine");
+            $result = $allocine->search($keyword, $page = 1, $count = $count);
+            $movies = json_decode($result);
+
+            //dump($movies);
+            //die;
+            if (count($movies) > 0) {
+                if (array_key_exists('feed', $movies) && array_key_exists('movie', $movies->feed)) {
+//                    dump($movies);
+//                    die;
+
+                    foreach ($movies->feed->movie as $movie) {
+                        $title = null;
+                        if (array_key_exists('title', $movie))
+                            $title = $movie->title;
+
+                        if ($title == null && array_key_exists('originalTitle', $movie))
+                            $title = $movie->originalTitle;
+
+                        if (array_key_exists('poster', $movie) && array_key_exists('href', $movie->poster)) {
+                            $poster = $movie->poster->href;
+                        }
+
+                        if (isset($title) && !empty($title) && isset($poster) && !empty($poster)) {
+
+                            $search["code"] = $movie->code;
+                            $search["title"] = $title;
+                            $search["poster"] = $poster;
+
+                            if (array_key_exists('castingShort', $movie)) {
+                                if (array_key_exists('directors', $movie->castingShort))
+                                    $search["directors"] = $movie->castingShort->directors;
+                            }
+
+                            if (array_key_exists('castingShort', $movie)) {
+                                if (array_key_exists('actors', $movie->castingShort))
+                                    $search["actors"] = $movie->castingShort->actors;
+                            }
+
+                            if (array_key_exists('release', $movie))
+                                $search["date"] = $movie->release->releaseDate;
+
+                            if (array_key_exists('link', $movie))
+                                if (array_key_exists('href', $movie->link[0]))
+                                    $search["allocine"] = $movie->link[0]->href;
+
+                            if (array_key_exists('synopsisShort', $movie))
+                                $search["synopsis"] = $movie->synopsisShort;
+
+                            $data[] = $search;
+                        }
+                    }
+                }
+            }
+            return new Response(json_encode(array('response' => 'success', 'result' => $data)));
+        }
+        return new response (json_encode(array('response' => 'error', "result" => "Error: isXmlHttpRequest")));
+    }
+
+
+    public function addSeance()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $seance = new Seance();
+        $seance->setDate(new \DateTime("2016-6-25"));
+        $seance->setTypeView("VOSTFR");
+        $seance->setDescription("Le DKS dici forte miretur, quod alia quaedam in hoc facultas sit ingeni, neque haec dicendi ratio aut disciplina, ne nos quidem huic uni studio penitus umquam dediti fuimus. Etenim omnes artes, quae ad humanitatem pertinent, habent quoddam commune vinculum, et quasi cognatione quadam inter se continentur. ");
+        $seance->setContribution("Chips, soda, coca ou tout ce que vous voulez apporter ");
+        $seance->setPrice(6);
+        $seance->setMaxPlace(5);
+
+        $address = $em->getRepository('MCBundle:Address')->find(1);
+        $seance->setAddress($address);
+
+        $material = $em->getRepository('MCBundle:Material')->find(3);
+        $seance->addMaterial($material);
+        $material = $em->getRepository('MCBundle:Material')->find(1);
+        $seance->addMaterial($material);
+        $material = $em->getRepository('MCBundle:Material')->find(2);
+        $seance->addMaterial($material);
+
+        $modality = $em->getRepository('MCBundle:Modality')->find(2);
+        $seance->setModality($modality);
+        $film = $em->getRepository('MCBundle:Film')->find(2);
+        $seance->setFilm($film);
+        $user = $em->getRepository('UserBundle:User')->find(1);
+        $seance->setCreator($user);
+
+//        $em->persist($seance);
+//        $em->flush();
+        return new Response("Add");
     }
 
 
@@ -306,95 +450,48 @@ class SeanceController extends Controller
         return $film;
     }
 
-
     /**
      * @param Request $request
-     * @Route("/search_Film", name="search_film_ajax",  options = {"expose"=true})
+     * @Route("/seances/comment/form", name="seance_comment",  options = {"expose"=true})
      * @return response
      * @throws NotFoundHttpException
      */
-    public function searchFilmAjaxAction(Request $request)
+    public function commentAjaxAction(Request $request)
     {
-
         if ($request->isXmlHttpRequest()) {
-            $em = $this->getDoctrine()->getManager();
-            $keyword = $request->get('search');
-            $films = $em->getRepository('MCBundle:Film')->searchDB($keyword);
             $data = array();
-            foreach ($films as $film) {
-                $data[] = array("title" => $film->getTitle(), "code" => $film->getISAN());
+            if ($this->getUser() == null) {
+                return new Response(json_encode(array('response' => 'error', 'result' => "Vous devez être connecté.")));
             }
 
-            $allocine = $this->get("mc_allocine");
-            $result = $allocine->search($keyword, $page = 1, $count = 10);
-            $movies = json_decode($result);
 
-            //dump($movies);
-            //die;
-            if (count($movies) > 0) {
-                if (array_key_exists('feed', $movies) && array_key_exists('movie', $movies->feed)) {
+            $seance = $request->get('seance');
+            $em = $this->getDoctrine()->getManager();
+            $seanceOb = $em->getRepository('MCBundle:Seance')->find($seance);
 
-                    foreach ($movies->feed->movie as $movie) {
-                        $title = null;
-                        if (array_key_exists('title', $movie))
-                            $title = $movie->title;
-
-                        if ($title == null && array_key_exists('originalTitle', $movie))
-                            $title = $movie->originalTitle;
-
-                        if (array_key_exists('poster', $movie) && array_key_exists('href', $movie->poster)) {
-                            $poster = $movie->poster->href;
-                        }
-
-                        if ($title !== null) {
-                            $search["code"] = $movie->code;
-                            $search["title"] = $title;
-                            if (isset($poster) && !empty($poster)) {
-                                $search["poster"] = $poster;
-                            }
-                            $data[] = $search;
-                        }
-                    }
-                }
+            if ($seanceOb == null) {
+                return new Response(json_encode(array('response' => 'error', 'result' => "Séance non trouvée.")));
             }
+
+            $message = $request->get('message');
+            $comment = new Comment();
+            $comment->setUser($this->getUser());
+            $comment->setSeance($seanceOb);
+            $comment->setMessage($message);
+            $comment->setDisable(false);
+            $comment->setDate(new \DateTime());
+
+            dump($comment);
+            die;
+//            foreach ($films as $film) {
+//                $data[] = array("title" => $film->getTitle(), "code" => $film->getISAN());
+//            }
+
+
             return new Response(json_encode(array('response' => 'success', 'result' => $data)));
         }
         return new response (json_encode(array('response' => 'error', "result" => "Error: isXmlHttpRequest")));
-    }
 
-
-    public function addSeance()
-    {
-
-        $em = $this->getDoctrine()->getManager();
-        $seance = new Seance();
-        $seance->setDate(new \DateTime("2016-6-25"));
-        $seance->setTypeView("VOSTFR");
-        $seance->setDescription("Le DKS dici forte miretur, quod alia quaedam in hoc facultas sit ingeni, neque haec dicendi ratio aut disciplina, ne nos quidem huic uni studio penitus umquam dediti fuimus. Etenim omnes artes, quae ad humanitatem pertinent, habent quoddam commune vinculum, et quasi cognatione quadam inter se continentur. ");
-        $seance->setContribution("Chips, soda, coca ou tout ce que vous voulez apporter ");
-        $seance->setPrice(6);
-        $seance->setMaxPlace(5);
-
-        $address = $em->getRepository('MCBundle:Address')->find(1);
-        $seance->setAddress($address);
-
-        $material = $em->getRepository('MCBundle:Material')->find(3);
-        $seance->addMaterial($material);
-        $material = $em->getRepository('MCBundle:Material')->find(1);
-        $seance->addMaterial($material);
-        $material = $em->getRepository('MCBundle:Material')->find(2);
-        $seance->addMaterial($material);
-
-        $modality = $em->getRepository('MCBundle:Modality')->find(2);
-        $seance->setModality($modality);
-        $film = $em->getRepository('MCBundle:Film')->find(2);
-        $seance->setFilm($film);
-        $user = $em->getRepository('UserBundle:User')->find(1);
-        $seance->setCreator($user);
-
-//        $em->persist($seance);
-//        $em->flush();
-        return new Response("Add");
     }
 
 

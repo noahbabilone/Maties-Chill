@@ -7,16 +7,11 @@
 {% block stylesheets %}
     {{ parent() }}
     {% stylesheets
-
     'bundles/mc/themes/global/plugins/cubeportfolio/css/cubeportfolio.css'
     'bundles/mc/themes/global/css/components.min.css'
     'bundles/mc/themes/pages/css/portfolio.min.css'
     'bundles/mc/css/card.css'
     filter='cssrewrite' %}
-    {#
-   
-    
-    '#}
     <link rel="stylesheet" href="{{ asset_url }}"/>
     {% endstylesheets %}
 

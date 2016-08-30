@@ -20,7 +20,7 @@ class MaterialType extends AbstractType
                     'required' => false,
                     'attr' => array(
                         'class' => 'form-control',
-                        'placeholder' => 'Contribution',
+                        'placeholder' => 'Titre',
                         'autocomplete' => 'off'
                     ),
                 )

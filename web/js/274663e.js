@@ -493,7 +493,7 @@ h.navigationWrap.css({top:h.wrap.scrollTop()}),h.wrap.removeClass("cbp-popup-sin
     'use strict';
 
     // init cubeportfolio
-    $('#js-grid-juicy-projects').cubeportfolio({
+    $('#js-grid-juicy-projects,#js-grid-juicy-projects').cubeportfolio({
         filters: '#js-filters-juicy-projects',
         loadMore: '#js-loadMore-juicy-projects',
         loadMoreAction: 'click',

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>42Consulting - An Error Occurred: {{ status_text }} </title>
+    <link rel="icon" type="image/png" href="{{ asset('images/favicon/favicon-96x96.png') }}"
+          sizes="96x96">
+
+    <link href="{{ asset('bundles/mc/themes/global/plugins/font-awesome/css/font-awesome.min.css') }}"
+          rel="stylesheet"/>
+    <link href="{{ asset('bundles/mc/themes/global/plugins/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet"/>
+    <link rel="stylesheet"
+          href="{{ asset('bundles/mc/themes/global/plugins/simple-line-icons/simple-line-icons.min.css') }}"/>
+    <link href="{{ asset('bundles/mc/themes/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css') }}"
+          rel="stylesheet"/>
+    <link rel="stylesheet" href="{{ asset('bundles/mc/themes/global/css/components.min.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('bundles/mc/themes/layouts/layout/css/themes/darkblue.min.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('bundles/mc/themes/layouts/layout/css/layout.min.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('bundles/mc/themes/layouts/layout/css/custom.min.css') }}"/>
+
+    <link rel="stylesheet" href="{{ asset('bundles/mc/themes/global/css/plugins.min.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('bundles/mc/themes/pages/css/error.min.css') }}"/>
+
+</head>
+<body class="page-404-full-page">
+
+<div class="page-header navbar navbar-fixed-top">
+    <!-- BEGIN HEADER INNER -->
+    <div class="page-header-inner ">
+        <!-- BEGIN LOGO -->
+        <div class="page-logo">
+            <a href="{{ path('home_page') }}" class="text-center">
+                <h3 class="caption-subject bold" style="margin-top:15px;">
+                    <span class="font-white">Maties</span><span
+                            class="font-yellow-casablanca">&amp;Chill</span>{#uppercase#}
+
+                </h3>
+            </a>
+        </div>
+        <form class="search-form" role="search" method="get" action="{{ path('search_') }}">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Recherher..." name="q">
+                        <span class="input-group-btn">
+                            <a href="javascript:;" class="btn submit">
+                                <i class="icon-magnifier"></i>  
+                            </a>
+                        </span>
+            </div>
+        </form>
+        <div class="hor-menu  hidden-sm hidden-xs">
+            <ul class="nav navbar-nav">
+
+                <li class="classic-menu-dropdown">
+                    <a href="{{ path("seances_home") }}" data-hover="megamenu-dropdown" data-close-others="true">
+                        Séances
+                        <i class="fa fa-angle-down"></i>
+                    </a>
+                    <ul class="dropdown-menu pull-left">
+                        <li>
+                            <a href="{{ path("seances_action", {"action":"next"}) }}">
+                                <i class="icon-clock"></i> Prochaines Séances </a>
+                        </li>
+
+                        <li>
+                            <a href="{{ path("seances_action", {"action":"paying"}) }}">
+                                <i class="fa fa-money fa-fw"></i> Payantes </a>
+                        </li>
+                        <li>
+                            <a href="{{ path("seances_action", {"action":"free"}) }}">
+                                <i class="icon-star"></i> Gratuites </a>
+                        </li>
+                        <li>
+                            <a href="{{ path("seances_action", {"action":"all"}) }}">
+                                <i class="icon-users"></i> Top utilisateurs</a>
+                        </li>
+                        <li>
+                            <a href="{{ path("seances_action", {"action":"all"}) }}">
+                                <i class="icon-list"></i> Toutes</a>
+                        </li>
+                        <li role="separator" class="divider"></li>
+                        <li>
+                            <a href="{{ path('seances_add') }}">
+                                <i class="fa fa-plus"></i> Ajoutée</a>
+                        </li>
+
+
+                    </ul>
+                </li>
+                <li class="classic-menu-dropdown">
+                    <a href="{{ path('film_home') }}" data-hover="megamenu-dropdown" data-close-others="true"> Films
+                        <i class="fa fa-angle-down"></i>
+                    </a>
+                    <ul class="dropdown-menu pull-left">
+                        <li>
+                            <a href="{{ path("film_action", {"action":"news"}) }}">
+                                <i class="icon-badge"></i> Nouveautés</a>
+                        </li>
+                        <li>
+                            <a href="{{ path("film_action", {"action":"top"}) }}">
+                                <i class="icon-star"></i> Top Films</a>
+                        </li>
+                        {#<li>#}
+                        {#<a href="{{ path("seances_action", {"action":"recent_movies"}) }}">#}
+                        {#<i class="icon-arrow-down"></i> Films Récents </a>#}
+                        {#</li>#}
+                        <li>
+                            <a href="{{ path("film_action", {"action":"last_add"}) }}" class="nav-link">
+                                <i class="icon-speedometer"></i> Récemment ajoutées </a>
+                        </li>
+                        <li>
+                            <a href="{{ path("film_action", {"action":"all"}) }}">
+                                <i class="icon-list"></i> Tous </a>
+                        </li>
+                        <li role="separator" class="divider"></li>
+
+                        <li class="dropdown-submenu">
+                            <a href="javascript:;">
+                                <i class="fa fa-film"></i> Genre </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="javascript:;"> Actions</a></li>
+                                <li><a href="javascript:;"> Animations</a></li>
+                                <li><a href="javascript:;"> Aventures</a></li>
+                                <li><a href="javascript:;"> Bollywood</a></li>
+                                <li><a href="javascript:;"> Comédie</a></li>
+                                <li><a href="javascript:;"> Danse</a></li>
+                                <li><a href="javascript:;"> Dramatique</a></li>
+                                <li><a href="javascript:;"> D'horreur</a></li>
+                                <li><a href="javascript:;"> Fantastique</a></li>
+                                <li><a href="javascript:;"> Policier</a></li>
+                                <li><a href="javascript:;"> Romantique</a></li>
+                                <li><a href="javascript:;"> Science fiction</a></li>
+                                <li><a href="javascript:;"> Western</a></li>
+
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+
+        <!-- END LOGO -->
+        <!-- BEGIN RESPONSIVE MENU TOGGLER -->
+        <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse"
+           data-target=".navbar-collapse">
+            <span></span>
+        </a>
+        <!-- END RESPONSIVE MENU TOGGLER -->
+        <!-- BEGIN TOP NAVIGATION MENU -->
+        {#<div class="top-menu ">#}
+            {#<ul class="nav navbar-nav pull-right ">#}
+                {#{% if app.user %}#}
+
+                    {#<li class="dropdown dropdown-user">#}
+                        {#<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"#}
+                           {#data-close-others="true">#}
+                            {#<img alt="" class="img-circle" src="../assets/layouts/layout/img/avatar3_small.jpg"/>#}
+                            {#<span class="username username-hide-on-mobile"><i class="fa fa-tv fw"></i></span>#}
+                            {#<i class="fa fa-angle-down"></i>#}
+                        {#</a>#}
+                        {#<ul class="dropdown-menu dropdown-menu-default">#}
+                            {#<li>#}
+                                {#<a href="{{ path('user_seances') }}">#}
+                                    {#<i class="icon-screen-desktop"></i>Mes Séances#}
+                                    {#{% if app.session.get('COUNT_SEANCE') %}#}
+                                        {#<span class="badge badge-info COUNT_SEANCE">{{ app.session.get('COUNT_SEANCE') }} </span>#}
+                                    {#{% endif %}#}
+                                {#</a>#}
+                            {#</li>#}
+                            {#<li>#}
+                                {#<a href="{{ path('user_seances') }}">#}
+                                    {#<i class="icon-basket"></i>Participation(s)#}
+                                    {#{% if app.session.get('COUNT_PARTICIPATION') %}#}
+                                        {#<span class="badge badge-success COUNT_PARTICIPATION">{{ app.session.get('COUNT_PARTICIPATION') }} </span>#}
+                                    {#{% endif %}#}
+                                {#</a>#}
+                            {#</li>#}
+                            {#<li>#}
+                                {#<a href="{{ path('user_seances') }}">#}
+                                    {#<i class="icon-users"></i>Participant(s)#}
+                                    {#{% if app.session.get('COUNT_PARTICIPANT') %}#}
+                                        {#<span class="badge badge-success COUNT_PARTICIPANT">{{ app.session.get('COUNT_PARTICIPANT') }}</span>#}
+                                    {#{% endif %}#}
+                                {#</a>#}
+                            {#</li>#}
+                        {#</ul>#}
+
+                    {#</li>#}
+
+
+                    {#<li class="dropdown dropdown-user">#}
+                        {#<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"#}
+                           {#data-close-others="true">#}
+                            {#<img alt="" class="img-circle"#}
+                            {#src="https://www.b1g1.com/assets/admin/images/no_image_user.png"/>#}
+                            {#<img alt="" class="img-circle" src="https://thetransformedmale.files.wordpress.com/2011/06/bruce-wayne-armani.jpg"/>#}
+
+                            {#<span class="username username-hide-on-mobile">{{ app.user.username | capitalize }} </span>#}
+                            {#<i class="fa fa-angle-down"></i>#}
+                        {#</a>#}
+                        {#<ul class="dropdown-menu dropdown-menu-default">#}
+                            {#<li>#}
+                                {#<a href="{{ path('fos_user_profile_show') }}">#}
+                                    {#<i class="icon-user"></i>Profile </a>#}
+                            {#</li>#}
+                            {#<li>#}
+                                {#<a href="{{ path('fos_user_profile_edit') }}">#}
+                                    {#<i class="icon-pencil"></i>Modifier Profile </a>#}
+                            {#</li>#}
+                            {#<li>#}
+                                {#<a href="{{ path('fos_user_change_password') }}">#}
+                                    {#<i class="icon-key"></i>Mot de passe#}
+                                {#</a>#}
+                            {#</li>#}
+
+                            {#{% if is_granted('ROLE_ADMIN') %}#}
+
+                                {#<li>#}
+                                    {#<a href="{{ path('dashboard') }}">#}
+                                        {#<i class="icon-rocket"></i>Admin#}
+                                        {#<span class="badge badge-success"> 7 </span>#}
+                                    {#</a>#}
+                                {#</li>#}
+                            {#{% endif %}#}
+
+                            {#<li class="divider"></li>#}
+
+                            {#<li>#}
+                                {#<a href="{{ path('fos_user_security_logout') }}">#}
+                                    {#<i class="icon-logout"></i> Déconnexion </a>#}
+                            {#</li>#}
+
+
+                        {#</ul>#}
+                    {#</li>#}
+                    {#<li class="dropdown dropdown-quick-sidebar-toggler">#}
+                        {#<a href="{{ path('fos_user_security_logout') }}" class="dropdown-toggle">#}
+                            {#<i class="icon-logout"></i>#}
+                        {#</a>#}
+                    {#</li>#}
+                {#{% else %}#}
+                    {#<li class="form-login">#}
+                        {#<a href="{{ path('fos_user_security_login') }}" title="Connexion">#}
+                            {#<i class="icon-login"></i> Connexion </a>#}
+                    {#</li>#}
+                    {#<li class="form-login">#}
+                        {#<a href="{{ path('fos_user_registration_register') }}"#}
+                           {#title="S'inscrire">#}
+                            {#<i class="icon-plus"></i> Inscription#}
+                        {#</a>#}
+
+                    {#</li>#}
+
+                {#{% endif %}#}
+
+
+            {#</ul>#}
+        {#</div>#}
+    </div>
+</div>
+
+<div class="clearfix"></div>
+<div class="container">
+    <div class="row" style="margin-top: 7%;">
+
+
+        <div class="col-md-12 page-500">
+            <div class=" number font-yellow-casablanca"> 404</div>
+            <div class=" details">
+                <h3>Oops! You're lost.</h3>
+
+                <p>We can not find the page you're looking for.<br/></p>
+
+                <p>
+                    <a href="{{ path('home_page') }}" class="btn yellow-casablanca btn-outline"> Return
+                        home </a>
+                    <br></p>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+</body>
+</html>

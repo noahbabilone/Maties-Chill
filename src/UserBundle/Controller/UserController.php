@@ -2,6 +2,7 @@
 
 namespace UserBundle\Controller;
 
+use MCBundle\Entity\Participant;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use MCBundle\Entity\Film;
 use MCBundle\Entity\Seance;
@@ -18,7 +19,7 @@ class UserController extends Controller
 {
 
     /**
-     * @Route("/address", name="user_address")
+     * @Route("/profile/address", name="user_address")
      * Get all seances
      * @param Request $request
      * @return Response
@@ -46,13 +47,68 @@ class UserController extends Controller
         );
     }
 
+    /**
+     * @Route("/seance/participate/{seance}", name="user_participate")
+     * @param Request $request
+     * @param $seance
+     * @return Response
+     */
+    public function participate(Request $request, $seance)
+    {
+
+
+        if (null !== $this->getUser() || null !== $seance) {
+            $em = $this->getDoctrine()->getManager();
+            $participant = $em->getRepository('MCBundle:Participant')->findBy(array(
+                    "user" => $this->getUser()->getId(),
+                    "seance" => $seance,
+                )
+            );
+
+            $seance = $em->getRepository('MCBundle:Seance')->find($seance);
+            if (count($participant) == 0 && $seance->getCreator()->getId() !== $this->getUser()->getId()) {
+
+                $participant = new Participant();
+                $participant->setUser($this->getUser());
+                $participant->setSeance($seance);
+                $participant->setDisable(1);
+                $em->persist($participant);
+                $em->flush();
+                $response = "success";
+                $message = "Votre inscription à la séance à été prise en compte, Veuillez finaliser votre commande.";
+                $participation = $em->getRepository('MCBundle:Participant')->findParticipation($this->getUser()->getId());
+                $this->get('session')->set('COUNT_PARTICIPATION', COUNT($participation));
+
+            } else {
+                $message = "Vous êtes déjà inscrit à cette séance.";
+                $response = "Error";
+            }
+            
+        } else {
+
+            $response = "Error";
+            if ($seance == null) {
+                $message = "La séance demandée n'existe plus.";
+            } else {
+                $message = "Vous dévez être connecté.";
+            }
+        }
+
+        $request->getSession()->set('message', $message);
+        $request->getSession()->set('response', $response);
+
+        return $this->redirectToRoute('seances_view', array('slug' => $seance->getId()), 301);
+
+    }
+
 
     /**
-     * @Route("/address/form", name="user_address_add")
+     * @Route("/profile/address/form", name="user_address_add")
      * @param Request $request
      * @return Response
      */
-    public function addressAddAction(Request $request)
+    public
+    function addressAddAction(Request $request)
     {
         $user = $this->getUser();
         if (!$user) {
@@ -63,8 +119,6 @@ class UserController extends Controller
 
         if ($request->get('id') !== null) {
             $address = $em->getRepository('MCBundle:Address')->find($request->get('id'));
-            dump($user);
-            die;
             if ($address === null) {
                 throw new HttpException(400, "Address don't find.");
             }
@@ -91,12 +145,13 @@ class UserController extends Controller
 
 
     /**
-     * @Route("/seances", name="user_seances")
+     * @Route("/profile/seances", name="user_seances")
      * @param Request $request
      * @return Response
      * @throws HttpException
      */
-    public function userSeancesAction(Request $request)
+    public
+    function userSeancesAction(Request $request)
     {
         $user = $user = $this->getUser();
         if (!$user) {
@@ -136,12 +191,13 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/participation", name="user_participation")
+     * @Route("/profile/participations", name="user_participation")
      * @param Request $request
      * @return Response
      * @throws HttpException
      */
-    public function userParticipationAction(Request $request)
+    public
+    function userParticipationAction(Request $request)
     {
         $user = $this->getUser();
         if (!$user) {
@@ -178,12 +234,13 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/participants", name="user_participant")
+     * @Route("/profile/participants", name="user_participant")
      * @param Request $request
      * @return Response
      * @throws HttpException
      */
-    public function userParticipantAction(Request $request)
+    public
+    function userParticipantAction(Request $request)
     {
         $user = $this->getUser();
         if (!$user) {
@@ -211,11 +268,11 @@ class UserController extends Controller
 
     /**
      * @param Request $request
-     * @Route("/user/remove", name="user_address_remove",  options = {"expose"=true})
+     * @Route("/profile/user/address/remove", name="user_address_remove",  options = {"expose"=true})
      * @return response
      * @throws NotFoundHttpException
      */
-    public function removeSeanceAction(Request $request)
+    function removeAddressAction(Request $request)
     {
 
         if ($request->isXmlHttpRequest()) {
@@ -226,9 +283,17 @@ class UserController extends Controller
                 throw new NotFoundHttpException("L'adresse (ID: " . $id . ") n'existe pas.");
             }
             $message = "L'adresse " . "(ID: <b>" . $address->getId() . '</b>) ' . $address->getTitle() . ' a été supprimée.';
-            //$em->remove($seance);
-            //$em->flush();
-            return new Response(json_encode(array('result' => 'success', 'message' => $message)));
+            $em->remove($address);
+            $em->flush();
+            $request->getSession()->set('COUNT_ADDRESS', COUNT($this->getUser()->getAddress()));
+
+            return new Response(json_encode(array(
+                        'result' => 'success',
+                        'message' => $message,
+                        'count' => $request->getSession()->get('COUNT_ADDRESS'),
+                    )
+                )
+            );
         }
         return new response (json_encode(array('result' => 'error', "message" => "Error: isXmlHttpRequest")));
     }
@@ -236,11 +301,11 @@ class UserController extends Controller
 
     /**
      * @param Request $request
-     * @Route("/user/participation/remove", name="user_remove_participation",  options = {"expose"=true})
+     * @Route("/profile/participation/remove", name="user_remove_participation",  options = {"expose"=true})
      * @return response
      * @throws NotFoundHttpException
      */
-    public function removeParticipationAction(Request $request)
+    function removeParticipationAction(Request $request)
     {
         if ($request->isXmlHttpRequest()) {
 
@@ -253,7 +318,7 @@ class UserController extends Controller
                     "seance" => $request->get('id'),
                 )
             );
-            
+
             if (null === $participant[0]) {
                 throw new NotFoundHttpException("L'Participation dont la séance ID: " . $request->get('id') . " et User ID: " . $request->getUser()->getId() . " n'existe pas.");
             }
@@ -261,9 +326,19 @@ class UserController extends Controller
             $message = "Vous avez été retiré de la séance:" . $participant[0]->getSeance()->getFilm()->getTitle() . " - " . $participant[0]->getSeance()->getTypeView();
             $participant[0]->setDisable(false);
 
-            //$em->remove($participant);
-            //$em->flush();
-            return new Response(json_encode(array('result' => 'success', 'message' => $message)));
+            $em->remove($participant);
+            $em->flush();
+            $participation = $em->getRepository('MCBundle:Participant')->findParticipation($this->getUser()->getId());
+            $request->getSession()->set('COUNT_PARTICIPATION', COUNT($participation));
+
+            return new Response(json_encode(array(
+                        'result' => 'success',
+                        'message' => $message,
+                        'count' => $request->getSession()->get('COUNT_PARTICIPATION'),
+
+                    )
+                )
+            );
         }
         return new response (json_encode(array('result' => 'error', "message" => "Error: isXmlHttpRequest")));
 
@@ -271,11 +346,11 @@ class UserController extends Controller
 
     /**
      * @param Request $request
-     * @Route("/user/participant/remove", name="user_remove_participant",  options = {"expose"=true})
+     * @Route("/profile/participant/remove", name="user_remove_participant",  options = {"expose"=true})
      * @return response
      * @throws NotFoundHttpException
      */
-    public function removeParticipantAction(Request $request)
+    function removeParticipantAction(Request $request)
     {
         if ($request->isXmlHttpRequest()) {
 
@@ -290,16 +365,28 @@ class UserController extends Controller
                     "seance" => $request->get('id'),
                 )
             );
-            
+
             if (null === $participant[0]) {
                 throw new NotFoundHttpException("L'Participation dont la séance ID: " . $request->get('id') . " et User ID: " . $request->getUser()->getId() . " n'existe pas.");
             }
 
-            $message = ucfirst($participant[0]->getUser()->getUsername())." a été retiré de la séance:" . $participant[0]->getSeance()->getFilm()->getTitle() . " - " . $participant[0]->getSeance()->getTypeView();
+            $message = ucfirst($participant[0]->getUser()->getUsername()) . " a été retiré de la séance:" . $participant[0]->getSeance()->getFilm()->getTitle() . " - " . $participant[0]->getSeance()->getTypeView();
             $participant[0]->setDisable(false);
-            //$em->remove($participant);
-            //$em->flush();
-            return new Response(json_encode(array('result' => 'success', 'message' => $message)));
+            $em->remove($participant);
+            $em->flush();
+
+            $participants = $em->getRepository('MCBundle:Participant')->findParticipant($this->getUser()->getId());
+            $request->getSession()->set('COUNT_PARTICIPANT', COUNT($participants));
+
+            return new Response(json_encode(array(
+                        'result' => 'success',
+                        'message' => $message,
+                        'count' => $request->getSession()->get('COUNT_PARTICIPANT'),
+
+
+                    )
+                )
+            );
         }
         return new response (json_encode(array('result' => 'error', "message" => "Error: isXmlHttpRequest")));
 

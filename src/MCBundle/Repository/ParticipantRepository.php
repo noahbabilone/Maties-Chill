@@ -23,9 +23,10 @@ class ParticipantRepository extends EntityRepository
         $query = $em->createQuery("
                     SELECT p
                     FROM MCBundle:Participant p
+                    JOIN p.user u
                     JOIN p.seance s 
                     JOIN s.creator c
-                    WHERE s.date > :today AND c.id = :id
+                    WHERE s.date > :today AND c.id = :id AND u.id <> :id
                     ORDER BY s.date ASC")
             ->setParameter("today", new \DateTime())
             ->setParameter("id", $user)
@@ -41,15 +42,16 @@ class ParticipantRepository extends EntityRepository
      * @param null $limit
      * @return mixed
      */
-    public function findParticipantOneSeance($user,$seance, $limit = null)
+    public function findParticipantOneSeance($user, $seance, $limit = null)
     {
         $em = $this->getEntityManager();
         $query = $em->createQuery("
                     SELECT p
                     FROM MCBundle:Participant p
                     JOIN p.seance s 
+                    JOIN p.user u
                     JOIN s.creator c
-                    WHERE c.id = :id and s.id = :seance
+                    WHERE c.id = :id and s.id = :seance and u.id <> :id
                     ORDER BY s.date ASC")
             ->setParameter("id", $user)
             ->setParameter("seance", $seance)
@@ -58,11 +60,7 @@ class ParticipantRepository extends EntityRepository
         return $query->getResult();
 
     }
-    
-    
-    
-    
-    
+
     /**
      * @param $user
      * @param null $limit
@@ -75,8 +73,9 @@ class ParticipantRepository extends EntityRepository
                     SELECT p
                     FROM MCBundle:Participant p
                     JOIN p.seance s 
+                    JOIN s.creator c
                     JOIN p.user u
-                    WHERE s.date > :today AND u.id = :id
+                    WHERE s.date > :today AND u.id = :id AND c.id <> :id
                     ORDER BY s.date ASC")
             ->setParameter("today", new \DateTime())
             ->setParameter("id", $user)

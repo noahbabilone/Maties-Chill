@@ -20,9 +20,12 @@ security:
             pattern:   ^/
             anonymous: true
             provider:  main_providers
+            
             form_login:
                 login_path: fos_user_security_login
                 check_path: fos_user_security_check
+#                success_handler: authentication_handler
+#                failure_handler: authentication_handler
 #                default_target_path: /user
             logout:
                 path:   fos_user_security_logout
@@ -34,10 +37,12 @@ security:
 
     access_control:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/register, role: ROLE_USER }
-#        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting/, role: ROLE_USER }
         - { path: ^/backoffice/, role: ROLE_USER }
         - { path: ^/profile/, role: ROLE_USER }
+        - { path: ^/seance/participate/, role: ROLE_USER }
+        - { path: ^/seances/add/form, role: ROLE_USER }
+        - { path: ^/seances/comment/form, role: ROLE_USER }
 #        - { path: ^/account/, role:  ROLE_SUPER_ADMIN}
 #        - { path: ^/account/, role: ROLE_ADMIN, requires_channel: https }

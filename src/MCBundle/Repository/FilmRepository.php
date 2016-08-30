@@ -131,6 +131,34 @@ class FilmRepository extends EntityRepository
             ->setMaxResults($limit);
 
         return $query->getResult();
+    } 
+    
+    public function filmSeanceParticipant ($film, $limit = null)
+    {
+        $em = $this->getEntityManager();
+        $query = $em->createQuery("
+                      SELECT p
+                      FROM MCBundle:Participant p 
+                      JOIN p.seance sc 
+                      WHERE sc.id = :id")
+            ->setParameter("id", $film)
+            ->setMaxResults($limit);
+
+        return $query->getResult();
+    } 
+    
+    public function filmIDSeance($film, $limit = null)
+    {
+        $em = $this->getEntityManager();
+        $query = $em->createQuery("SELECT s 
+                FROM MCBundle:Seance s
+                JOIN s.film f
+                WHERE f.id = :id 
+                ORDER BY s.date ASC")
+            ->setParameter("id", $film)
+            ->setMaxResults($limit);
+
+        return $query->getResult();
     }
 
 

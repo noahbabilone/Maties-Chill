@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use MCBundle\Entity\Seance;
 use UserBundle\Entity\User;
 
-/**
+/**http://project-group-4.estiam.com/
  * Comment
  *
  * @ORM\Table(name="comment")
@@ -46,6 +46,13 @@ class Comment
      * @ORM\ManyToOne(targetEntity="MCBundle\Entity\Seance",  cascade={"persist"})
      */
     private $seance;
+    
+    /**
+     * @var text
+     *
+     * @ORM\Column(name="message", type="text", nullable=true)
+     */
+    protected $message;
     
 
     /**
@@ -149,4 +156,28 @@ class Comment
     {
         return $this->disable;
     }
+    
+    /**
+     * Set Message
+     *
+     * @param string $message
+     * @return Film
+     */
+    public function setMessage($message)
+    {
+        $this->message = $message;
+
+        return $this;
+    }
+
+    /**
+     * Get Message
+     *
+     * @return string
+     */
+    public function getMessage()
+    {
+        return $this->message;
+    }
+
 }

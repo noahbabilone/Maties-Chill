@@ -1,4 +1,7 @@
 services:
+    authentication_handler:
+        class:        UserBundle\Handler\AuthenticationHandler
+        arguments:    ["@router", "@security.context", "@fos_user.user_manager", "@service_container"]
 #    user.example:
 #        class: UserBundle\Example
 #        arguments: ["@service_id", "plain_value", %parameter%]

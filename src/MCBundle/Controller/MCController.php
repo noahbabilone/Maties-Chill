@@ -24,18 +24,18 @@ class MCController extends Controller
     {
         $user = $this->getUser();
         if ($user) {
-            $userSeance = $this->get('session');
+            $session = $this->get('session');
             $em = $this->getDoctrine()->getManager();
             $seances = $em->getRepository('MCBundle:Seance')->findMySeance($user->getId());
 
-            $userSeance->set('nbSeance', COUNT($seances));
-            $nbParticipant = 0;
-            foreach ($seances as $seance) {
-                $nbParticipant += COUNT($seance['participants']);
-            }
-
-            $userSeance->set('nbParticipant', $nbParticipant);
-
+            $participation = $em->getRepository('MCBundle:Participant')->findParticipation($user->getId());
+            $participants = $em->getRepository('MCBundle:Participant')->findParticipant($user->getId());
+            
+            $session->set('COUNT_SEANCE', COUNT($seances));
+            $session->set('COUNT_ADDRESS', COUNT( $user->getAddress()));
+            $session->set('COUNT_PARTICIPANT', COUNT($participants));
+            $session->set('COUNT_PARTICIPATION', COUNT($participation));
+            
         }
         return $this->render('MCBundle:Pages:index.html.twig');
     }
@@ -52,7 +52,7 @@ class MCController extends Controller
         //$limitPage = 16;
         $numberPage = 1;
         $data = array();
-        $arrShow = array("10", "15","20", "25", "30");
+        $arrShow = array("10", "15", "20", "25", "30");
         $data["shows"] = $arrShow;
         $arrSort = array("1" => "Date Croissante", "2" => "Date Décroissante", "3" => "Prix croissante", "4" => "Prix Dé&eacute;croissant");
         $data["sorts"] = $arrSort;
@@ -68,7 +68,7 @@ class MCController extends Controller
             && intval($request->get('order')) <= COUNT($arrSort)) ? $request->get('order') : null;
         $typeView = ($request->get('view') !== null && !empty($request->get('view'))) ? $request->get('view') : null;
         $location = ($request->get('location') !== null && !empty($request->get('location'))) ? $request->get('location') : null;
-        
+
         $result = $em->getRepository('MCBundle:Seance')->searchSeance($keyword, $limitPage, $order, $typeView, $location);
 
         $seances = $this->get('knp_paginator')->paginate(

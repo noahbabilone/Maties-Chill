@@ -114,28 +114,28 @@
                                 <a href="{{ path("film_action", {"action":"all"}) }}">
                                     <i class="icon-list"></i> Tous </a>
                             </li>
-                            <li role="separator" class="divider"></li>
+                            {#<li role="separator" class="divider"></li>#}
 
-                            <li class="dropdown-submenu">
-                                <a href="javascript:;">
-                                    <i class="fa fa-film"></i> Genre </a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="javascript:;"> Actions</a></li>
-                                    <li><a href="javascript:;"> Animations</a></li>
-                                    <li><a href="javascript:;"> Aventures</a></li>
-                                    <li><a href="javascript:;"> Bollywood</a></li>
-                                    <li><a href="javascript:;"> Comédie</a></li>
-                                    <li><a href="javascript:;"> Danse</a></li>
-                                    <li><a href="javascript:;"> Dramatique</a></li>
-                                    <li><a href="javascript:;"> D'horreur</a></li>
-                                    <li><a href="javascript:;"> Fantastique</a></li>
-                                    <li><a href="javascript:;"> Policier</a></li>
-                                    <li><a href="javascript:;"> Romantique</a></li>
-                                    <li><a href="javascript:;"> Science fiction</a></li>
-                                    <li><a href="javascript:;"> Western</a></li>
+                            {#<li class="dropdown-submenu">#}
+                                {#<a href="javascript:;">#}
+                                    {#<i class="fa fa-film"></i> Genre </a>#}
+                                {#<ul class="dropdown-menu">#}
+                                    {#<li><a href="javascript:;"> Actions</a></li>#}
+                                    {#<li><a href="javascript:;"> Animations</a></li>#}
+                                    {#<li><a href="javascript:;"> Aventures</a></li>#}
+                                    {#<li><a href="javascript:;"> Bollywood</a></li>#}
+                                    {#<li><a href="javascript:;"> Comédie</a></li>#}
+                                    {#<li><a href="javascript:;"> Danse</a></li>#}
+                                    {#<li><a href="javascript:;"> Dramatique</a></li>#}
+                                    {#<li><a href="javascript:;"> D'horreur</a></li>#}
+                                    {#<li><a href="javascript:;"> Fantastique</a></li>#}
+                                    {#<li><a href="javascript:;"> Policier</a></li>#}
+                                    {#<li><a href="javascript:;"> Romantique</a></li>#}
+                                    {#<li><a href="javascript:;"> Science fiction</a></li>#}
+                                    {#<li><a href="javascript:;"> Western</a></li>#}
 
-                                </ul>
-                            </li>
+                                {#</ul>#}
+                            {#</li>#}
                         </ul>
                     </li>
                 </ul>
@@ -165,24 +165,24 @@
                                 <li>
                                     <a href="{{ path('user_seances') }}">
                                         <i class="icon-screen-desktop"></i>Mes Séances
-                                        {% if app.session.get('nbSession') %}
-                                            <span class="badge badge-info nbSession"> {{ app.session.get('nbSession') }} </span>
+                                        {% if app.session.get('COUNT_SEANCE') %}
+                                            <span class="badge badge-info COUNT_SEANCE">{{ app.session.get('COUNT_SEANCE') }} </span>
                                         {% endif %}
                                     </a>
                                 </li>
                                 <li>
                                     <a href="{{ path('user_seances') }}">
                                         <i class="icon-basket"></i>Participation(s)
-                                        {% if app.session.get('nbPaticipation') %}
-                                            <span class="badge badge-success nbPaticipation"> {{ app.session.get('nbPaticipation') }} </span>
+                                        {% if app.session.get('COUNT_PARTICIPATION') %}
+                                            <span class="badge badge-success COUNT_PARTICIPATION">{{ app.session.get('COUNT_PARTICIPATION') }} </span>
                                         {% endif %}
                                     </a>
                                 </li>
                                 <li>
                                     <a href="{{ path('user_seances') }}">
                                         <i class="icon-users"></i>Participant(s)
-                                        {% if app.session.get('nbParticipant') %}
-                                            <span class="badge badge-success nbParticipant"> {{ app.session.get('nbParticipant') }}</span>
+                                        {% if app.session.get('COUNT_PARTICIPANT') %}
+                                            <span class="badge badge-success COUNT_PARTICIPANT">{{ app.session.get('COUNT_PARTICIPANT') }}</span>
                                         {% endif %}
                                     </a>
                                 </li>
