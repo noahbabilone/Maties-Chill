@@ -131,15 +131,10 @@ class SeanceController extends Controller
 
         if ($result != null && key_exists("seance", $result[0]) && key_exists("participants", $result[0])) {
             $data["seance"] = $result[0]["seance"];
-//            $data["comments"] = $em->getRepository('MCBundle:Comment')->findBy(
-//                array("seance" => $data["seance"]->getId(),)
-//            );
-//
-//            dump($data);
-//            die;
+            $data["comments"] = $em->getRepository('MCBundle:Comment')->findCommentSeance($data["seance"]->getId());
             $data["participants"] = $result[0]["participants"];
 
-            if (null !== $this->getUser() || null !== $data["seance"]) {
+            if (null != $this->getUser() && null != $data["seance"]) {
                 $participant = $em->getRepository('MCBundle:Participant')->findBy(array(
                         "user" => $this->getUser()->getId(),
                         "seance" => $data["seance"]->getId(),
@@ -254,6 +249,7 @@ class SeanceController extends Controller
             //$creator = $user = $this->get('security.context')->getToken()->getUser();
             $creator = $user = $this->getUser();
             $seance->setCreator($creator);
+            $seance->setDisable(true);
 
             $em->persist($seance);
             $em->flush();
@@ -477,12 +473,19 @@ class SeanceController extends Controller
             $comment = new Comment();
             $comment->setUser($this->getUser());
             $comment->setSeance($seanceOb);
+            $comment->setDate(new \DateTime());
             $comment->setMessage($message);
             $comment->setDisable(false);
             $comment->setDate(new \DateTime());
+            
+            $data['date']= $comment->getDate()->format('d-m-Y H:i:s');
+            $data['name']= ucfirst ($this->getUser()->getUsername());
+            
+            $em->persist($comment);
+            $em->flush();
 
-            dump($comment);
-            die;
+//            dump($comment);
+//            die;
 //            foreach ($films as $film) {
 //                $data[] = array("title" => $film->getTitle(), "code" => $film->getISAN());
 //            }
@@ -492,6 +495,31 @@ class SeanceController extends Controller
         }
         return new response (json_encode(array('response' => 'error', "result" => "Error: isXmlHttpRequest")));
 
+    }
+
+
+    /**
+     * Get all seances
+     * @param Request $request
+     * @Route("/seances/edit/{slug}", name="seances_edit")
+     * @return Response
+     */
+    public function editAction(Request $request, $slug)
+    {
+        $seance = new Seance();
+
+        $form = $this->createForm(new SeanceType(), $seance);
+        $em = $this->getDoctrine()->getManager();
+        $seance = $em->getRepository('MCBundle:Seance')->find($slug);
+        if ($form->handleRequest($request)->isValid()) {
+            dump($seance);
+            die;
+
+        }
+
+        return $this->render('MCBundle:Pages:seanceEdit.html.twig', array(
+            'form' => $form->createView(),
+        ));
     }
 
 

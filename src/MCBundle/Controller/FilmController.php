@@ -70,7 +70,7 @@ class FilmController extends Controller
     {
 
         $em = $this->getDoctrine()->getManager();
-        $limitPage = 8;
+        $limitPage = 15;
         $numberPage = 1;
 
         if ($action == null || $action == "all") {

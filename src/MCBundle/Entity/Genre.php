@@ -37,6 +37,10 @@ class Genre
      */
     private $disable;
 
+    public function  __construct()
+    {
+        $this->disable= true;
+    }
 
     /**
      * Get id

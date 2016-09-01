@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use MCBundle\Entity\Seance;
 use UserBundle\Entity\User;
 
-/**http://project-group-4.estiam.com/
+/**
  * Comment
  *
  * @ORM\Table(name="comment")

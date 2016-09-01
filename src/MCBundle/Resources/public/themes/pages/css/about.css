@@ -5,10 +5,11 @@ Anout Us Page
 /* BEGIN HEADER */
 .about-header {
     height: 500px;
-    background-image: url("../media/5.jpg");
+    background-image: url("../media/7.jpg");
     background-position: center;
     text-align: center;
     margin: 0px;
+    opacity: 0.9;
 }
 
 .about-header h1 {

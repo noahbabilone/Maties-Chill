@@ -1,0 +1,180 @@
+{% extends "MCBundle::main.html.twig" %}
+
+{% block title %}
+    Films - {{ parent() }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+    'bundles/mc/themes/pages/css/search.min.css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+
+{% endblock %}
+
+{% block body_mc %}
+    <div class="page-container page-mc">
+        <div class="page-content">
+            <div class="page-bar">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <ul class="page-breadcrumb">
+                            <li>
+                                <a href="{{ path('home_page') }}">Accueil</a>
+                                <i class="fa fa-circle"></i>
+                            </li>
+                            <li>
+                                <a href="{{ path('fos_user_profile_show') }}">Profil</a>
+                                <i class="fa fa-circle"></i>
+                            </li>
+                            <li>
+                                <span>Participation(s)</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- END PAGE BAR -->
+            <!-- BEGIN PAGE TITLE-->
+            <div class="row">
+
+                <div class="col-sm-2">
+                    {% include("MCBundle:Includes:submenu.seance.html.twig") %}
+                </div>
+                <div class="col-sm-10">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h3 class="page-title page-header">
+                                Payement
+                                {% if pay is defined %}
+                                    <small>{{ pay.seance.film.title | capitalize }}
+                                        - {{ pay.seance.typeView | upper }}</small>
+                                {% endif %}
+                            </h3>
+                        </div>
+                        {% if pay is defined %}
+                            <div class="col-sm-9">
+                                {% if pay.seance.film.title is defined %}
+                                    <h5 class="page-title font-green sbold uppercase">{{ pay.seance.film.title }}
+                                        - {{ pay.seance.typeView | upper }}</h5>
+                                {% endif %}
+
+                                {#<h4 class="caption font-yellow-casablanca sbold "> Infos</h4>#}
+                                <div class="table-scrollable table-scrollable-borderless">
+                                    <table class="table table-hover table-light">
+                                        {% if pay.seance.film.releaseDate is defined and pay.seance.film.releaseDate %}
+
+                                            <tr>
+                                                <td class="">Date de sortie</td>
+                                                <td class="">{{ pay.seance.film.releaseDate | date("d F Y") }}</td>
+                                            </tr>
+                                        {% endif %}
+                                        {% if pay.seance.film.runtime is defined and pay.seance.film.runtime %}
+                                            <tr>
+                                                <td class="col-sm-2">Durée</td>
+                                                <td class="col-sm-9">
+                                                    {{ pay.seance.film.runtime | date("g") }}
+                                                    h {{ pay.seance.film.runtime | date("i") }}min
+                                                </td>
+                                            </tr>
+                                        {% endif %}
+                                        {% if pay.seance.film.nationality is defined and pay.seance.film.nationality %}
+                                            <tr>
+                                                <td class="col-sm-2">Nationalité</td>
+                                                <td class="col-sm-9">{{ pay.seance.film.nationality | capitalize }}</td>
+                                            </tr>
+                                        {% endif %}
+                                        {% if pay.seance.film.directors is defined and pay.seance.film.directors %}
+                                            <tr>
+                                                <td class="col-sm-2">Réalisateur</td>
+                                                <td class="col-sm-9">{{ pay.seance.film.directors }}</td>
+                                            </tr>
+                                        {% endif %}
+                                        {% if pay.seance.film.actors is defined and pay.seance.film.actors %}
+                                            <tr>
+                                                <td class="col-sm-2">Avec</td>
+                                                <td class="col-sm-9">{{ pay.seance.film.actors }}</td>
+                                            </tr>
+                                        {% endif %}
+                                        {% if pay.seance.film.genre is defined and pay.seance.film.genre %}
+                                            <tr>
+                                                <td class="col-sm-2">Genre(s)</td>
+                                                <td class="col-sm-9">
+                                                    {% for genre in pay.seance.film.genre %}
+                                                        {{ genre.title }}
+                                                        {% if loop.index < pay.seance.film.genre |length %}/{% endif %}
+                                                    {% endfor %}
+                                                </td>
+                                            </tr>
+                                        {% endif %}
+                                    </table>
+                                </div>
+                                <div class="note note-success">
+                                    <h5 class="page-title  sbold uppercase">Mode de Paiment </h5>
+                                    <h4 class="margin-bottom-20">Carte Bleue</h4>
+                                    <a href="">
+
+                                        <img src="{{ asset('http://www.poli.fr/img/cms/600.jpg') }}"
+                                             width="190" class="image-responsive margin-bottom-10">
+                                    </a>
+
+                                    <h4 class="margin-bottom-10">Paypal</h4>
+                                    <a href="">
+                                        <img src="{{ asset('http://www.vaptech.fr/upload/useruploads/images/paypalrectangle-c50cd0bf.png') }}"
+                                             width="190" class="image-responsive">
+                                    </a>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3">
+                                <div id="js-grid-juicy-projects" class="cbp">
+                                    <div class="cbp-item graphic">
+                                        {% if pay.seance.film.poster is defined and pay.seance.film.poster %}
+                                            <a href="{{ pay.seance.film.poster }}" class="cbp-lightbox">
+                                                <img src="{{ pay.seance.film.poster }}"
+                                                     class="img-responsive pic-bordered thumbnail margin-right "
+                                                     alt=""/>
+
+                                            </a>
+                                        {% else %}
+                                            <img src="../../../uploads/images/400x300.png"
+                                                 class="img-responsive pic-bordered"
+                                                 alt="{{ pay.seance.film.title }}">
+                                        {% endif %}
+
+                                        {% if pay.seance.film.trailer is defined and pay.seance.film.trailer %}
+                                            <a href=""
+                                               data-trailer="{{ pay.seance.film.trailer }}"
+                                               class="btn green btn-sm btn-block btn-trailer"
+                                               data-title="{{ pay.seance.film.title }}">
+                                                <i class="fa fa-play fa-fw"></i> Voir la bande d'annonce </a>
+                                        {% endif %}
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    </div>
+{% endblock %}
+
+   {% block javascripts %}
+       {{ parent() }}
+       {% javascripts
+       'bundles/mc/js/applications.js' %}
+       {#  #}
+       <script src="{{ asset_url }}"></script>
+       {% endjavascripts %}
+
+   {% endblock %}

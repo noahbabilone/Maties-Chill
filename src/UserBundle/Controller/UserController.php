@@ -83,7 +83,7 @@ class UserController extends Controller
                 $message = "Vous êtes déjà inscrit à cette séance.";
                 $response = "Error";
             }
-            
+
         } else {
 
             $response = "Error";
@@ -389,6 +389,38 @@ class UserController extends Controller
             );
         }
         return new response (json_encode(array('result' => 'error', "message" => "Error: isXmlHttpRequest")));
+
+    }
+
+    /**
+     * @Route("/profile/pay/{seance}", name="user_pay")
+     * @param Request $request
+     * @return Response
+     * @throws HttpException
+     */
+    function payAction(Request $request, $seance)
+    {
+
+        if ($this->getUser() !== null) {
+
+
+            $em = $this->getDoctrine()->getManager();
+
+
+            $participant = $em->getRepository('MCBundle:Participant')->findBy(
+                array(
+                    "user" => $this->getUser(),
+                    "seance" => $seance,
+                )
+            );
+            if (count($participant) > 0) {
+                $data['pay'] = $participant[0];
+            }
+          
+            return $this->render('MCBundle:Profile:pay.html.twig', $data);
+
+
+        }
 
     }
 }

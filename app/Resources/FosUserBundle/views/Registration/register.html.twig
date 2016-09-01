@@ -26,16 +26,21 @@
                 ) {
                     $('#message-error').removeClass('hide');
                     $('.message-error').html('Veuillez remplir tous les champs');
+                                    e.preventDefault();
+
 
                 } else if (!regex.test($('#fos_user_registration_form_email').val())) {
                     $('#message-error').removeClass('hide');
                     $('.message-error').html('Email Invalide');
+                                    e.preventDefault();
+
                 } else if ($('#fos_user_registration_form_plainPassword_first').val() != $('#fos_user_registration_form_plainPassword_second').val()) {
                     $('#message-error').removeClass('hide');
                     $('.message-error').html('Veuillez confirmer le mot de passe');
+                                    e.preventDefault();
+
                 }
 
-                e.preventDefault();
             });
         });
 
